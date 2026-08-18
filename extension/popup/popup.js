@@ -39,6 +39,9 @@ const collectionFields = $('#collection-fields');
 const bookmarkCollectionSelect = $('#bookmark-collection');
 const collectionBookmarksEl = $('#collection-bookmarks');
 const collectionEmpty = $('#collection-empty');
+const collectionAddForm = $('#collection-add-form');
+const addSubmit = $('#add-submit');
+const collectionAddSubmit = $('#collection-add-submit');
 const profileForm = $('#profile-form');
 const passwordForm = $('#password-form');
 const deleteForm = $('#delete-form');
@@ -47,6 +50,9 @@ let authMode = 'login';
 let composerType = 'bookmark';
 let currentUser = null;
 let collectionsCache = [];
+let activeCollectionId = null;
+let editingBookmarkId = null;
+const bookmarkCache = new Map();
 
 function showView(name) {
   Object.entries(views).forEach(([key, el]) => {
@@ -90,6 +96,50 @@ function collectionName(bookmark) {
   return found ? found.name : '';
 }
 
+function cacheBookmarks(bookmarks) {
+  bookmarks.forEach((bookmark) => {
+    bookmarkCache.set(String(bookmark._id), bookmark);
+  });
+}
+
+function tagsToInput(bookmark) {
+  return Array.isArray(bookmark.tags) ? bookmark.tags.filter(Boolean).join(', ') : '';
+}
+
+function collectionIdOf(bookmark) {
+  if (!bookmark.collection) return '';
+  if (typeof bookmark.collection === 'object') {
+    return bookmark.collection._id || '';
+  }
+  return bookmark.collection;
+}
+
+function fillBookmarkForm(form, bookmark) {
+  form.elements.title.value = bookmark.title || '';
+  form.elements.url.value = bookmark.url || '';
+  form.elements.category.value = bookmark.category || '';
+  form.elements.tags.value = tagsToInput(bookmark);
+  if (form.elements.collectionId) {
+    fillCollectionSelect(collectionIdOf(bookmark));
+  }
+}
+
+function bookmarkPayload(form, collectionId) {
+  const data = new FormData(form);
+  const title = String(data.get('title') || '').trim();
+  const url = String(data.get('url') || '').trim();
+  return {
+    title,
+    url: url ? normalizeUrl(url) : '',
+    category: data.get('category'),
+    tags: data.get('tags'),
+    notes: '',
+    collectionId: collectionId === undefined
+      ? (data.get('collectionId') || '')
+      : collectionId,
+  };
+}
+
 function bookmarkRowHtml(bookmark) {
   const href = escapeHtml(normalizeUrl(bookmark.url));
   const title = escapeHtml(bookmark.title);
@@ -110,7 +160,10 @@ function bookmarkRowHtml(bookmark) {
       <span class="bookmark-host">${host}</span>
       ${chips ? `<div class="bookmark-meta">${chips}</div>` : ''}
     </a>
-    <button class="icon-btn icon-btn-danger" type="button" data-delete="${bookmark._id}" aria-label="Delete ${title}" title="Delete">×</button>
+    <div class="item-actions">
+      <button class="text-btn" type="button" data-edit="${bookmark._id}" aria-label="Edit ${title}">Edit</button>
+      <button class="icon-btn icon-btn-danger" type="button" data-delete="${bookmark._id}" aria-label="Delete ${title}" title="Delete">×</button>
+    </div>
   `;
 }
 
@@ -164,6 +217,7 @@ async function loadLibrary() {
     api.listCollections(),
   ]);
   collectionsCache = collections;
+  cacheBookmarks(bookmarks);
   renderCollections(collections);
   renderBookmarkList(bookmarkList, bookmarks, emptyState);
   fillCollectionSelect();
@@ -172,7 +226,15 @@ async function loadLibrary() {
 function hideComposer() {
   addForm.hidden = true;
   addForm.reset();
+  addSubmit.textContent = 'Save';
+  setComposerTabsHidden(false);
   setComposerType('bookmark');
+}
+
+function hideCollectionComposer() {
+  collectionAddForm.hidden = true;
+  collectionAddForm.reset();
+  collectionAddSubmit.textContent = 'Save';
 }
 
 function setComposerType(type) {
@@ -182,6 +244,11 @@ function setComposerType(type) {
   addForm.querySelectorAll('.composer-tab').forEach((tab) => {
     tab.classList.toggle('is-active', tab.dataset.type === type);
   });
+}
+
+function setComposerTabsHidden(hidden) {
+  const tabs = addForm.querySelector('.composer-tabs');
+  if (tabs) tabs.hidden = hidden;
 }
 
 async function bootMain(user) {
@@ -196,11 +263,14 @@ async function bootMain(user) {
 async function openCollection(id) {
   clearStatus();
   hideComposer();
+  hideCollectionComposer();
   const { collection } = await api.getCollection(id);
+  activeCollectionId = collection._id;
   $('#collection-title').dataset.id = collection._id;
   $('#collection-title').textContent = collection.name;
   $('#collection-description').textContent = collection.description || '';
   const bookmarks = collection.bookmarks || [];
+  cacheBookmarks(bookmarks);
   renderBookmarkList(collectionBookmarksEl, bookmarks, collectionEmpty);
   showView('collection');
 }
@@ -277,16 +347,25 @@ authForm.addEventListener('submit', async (event) => {
 });
 
 $('#show-add-form').addEventListener('click', () => {
+  hideCollectionComposer();
+  editingBookmarkId = null;
+  addSubmit.textContent = 'Save';
+  setComposerTabsHidden(false);
   addForm.hidden = false;
+  setComposerType('bookmark');
   fillCollectionSelect();
 });
 
 $('#cancel-add').addEventListener('click', () => {
+  editingBookmarkId = null;
   hideComposer();
 });
 
 addForm.querySelectorAll('.composer-tab').forEach((tab) => {
-  tab.addEventListener('click', () => setComposerType(tab.dataset.type));
+  tab.addEventListener('click', () => {
+    if (editingBookmarkId) return;
+    setComposerType(tab.dataset.type);
+  });
 });
 
 addForm.addEventListener('submit', async (event) => {
@@ -295,6 +374,20 @@ addForm.addEventListener('submit', async (event) => {
   const data = new FormData(addForm);
 
   try {
+    if (editingBookmarkId) {
+      const payload = bookmarkPayload(addForm);
+      if (!payload.title || !payload.url) {
+        showStatus('Please add a title and URL.');
+        return;
+      }
+      await api.updateBookmark(editingBookmarkId, payload);
+      editingBookmarkId = null;
+      hideComposer();
+      await loadLibrary();
+      showStatus('Bookmark updated.', 'success');
+      return;
+    }
+
     if (composerType === 'collection') {
       const name = String(data.get('name') || '').trim();
       if (!name) {
@@ -307,24 +400,56 @@ addForm.addEventListener('submit', async (event) => {
       });
       showStatus('Collection saved.', 'success');
     } else {
-      const title = String(data.get('title') || '').trim();
-      const url = String(data.get('url') || '').trim();
-      if (!title || !url) {
+      const payload = bookmarkPayload(addForm);
+      if (!payload.title || !payload.url) {
         showStatus('Please add a title and URL.');
         return;
       }
-      await api.createBookmark({
-        title,
-        url: normalizeUrl(url),
-        category: data.get('category'),
-        tags: data.get('tags'),
-        notes: '',
-        collectionId: data.get('collectionId') || undefined,
-      });
+      await api.createBookmark(payload);
       showStatus('Bookmark saved.', 'success');
     }
     hideComposer();
+    editingBookmarkId = null;
     await loadLibrary();
+  } catch (err) {
+    showStatus(err.message);
+  }
+});
+
+$('#show-collection-add').addEventListener('click', () => {
+  editingBookmarkId = null;
+  collectionAddSubmit.textContent = 'Save';
+  collectionAddForm.hidden = false;
+  collectionAddForm.reset();
+});
+
+$('#cancel-collection-add').addEventListener('click', () => {
+  editingBookmarkId = null;
+  hideCollectionComposer();
+});
+
+collectionAddForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  clearStatus();
+  const payload = bookmarkPayload(collectionAddForm, activeCollectionId || '');
+  if (!payload.title || !payload.url) {
+    showStatus('Please add a title and URL.');
+    return;
+  }
+
+  try {
+    if (editingBookmarkId) {
+      await api.updateBookmark(editingBookmarkId, payload);
+      showStatus('Bookmark updated.', 'success');
+    } else {
+      await api.createBookmark(payload);
+      showStatus('Bookmark saved.', 'success');
+    }
+    hideCollectionComposer();
+    editingBookmarkId = null;
+    if (activeCollectionId) {
+      await openCollection(activeCollectionId);
+    }
   } catch (err) {
     showStatus(err.message);
   }
@@ -334,9 +459,9 @@ async function handleBookmarkDelete(id) {
   if (!confirm('Delete this bookmark?')) return;
   try {
     await api.deleteBookmark(id);
-    const collectionId = $('#collection-title').dataset.id;
-    if (!views.collection.hidden && collectionId) {
-      await openCollection(collectionId);
+    bookmarkCache.delete(id);
+    if (!views.collection.hidden && activeCollectionId) {
+      await openCollection(activeCollectionId);
     } else {
       await loadLibrary();
     }
@@ -346,17 +471,51 @@ async function handleBookmarkDelete(id) {
   }
 }
 
-function bindBookmarkDeletes(container) {
+function openBookmarkEditor(bookmark) {
+  clearStatus();
+  if (!views.collection.hidden) {
+    hideComposer();
+    editingBookmarkId = bookmark._id;
+    collectionAddForm.hidden = false;
+    collectionAddSubmit.textContent = 'Save changes';
+    fillBookmarkForm(collectionAddForm, bookmark);
+    collectionAddForm.scrollIntoView({ block: 'nearest' });
+    return;
+  }
+
+  hideCollectionComposer();
+  editingBookmarkId = bookmark._id;
+  setComposerType('bookmark');
+  setComposerTabsHidden(true);
+  addForm.hidden = false;
+  addSubmit.textContent = 'Save changes';
+  fillBookmarkForm(addForm, bookmark);
+  addForm.scrollIntoView({ block: 'nearest' });
+}
+
+function bindBookmarkActions(container) {
   container.addEventListener('click', async (event) => {
-    const btn = event.target.closest('[data-delete]');
-    if (!btn) return;
+    const editBtn = event.target.closest('[data-edit]');
+    if (editBtn) {
+      event.preventDefault();
+      const bookmark = bookmarkCache.get(String(editBtn.dataset.edit));
+      if (!bookmark) {
+        showStatus('We could not find that bookmark.');
+        return;
+      }
+      openBookmarkEditor(bookmark);
+      return;
+    }
+
+    const deleteBtn = event.target.closest('[data-delete]');
+    if (!deleteBtn) return;
     event.preventDefault();
-    await handleBookmarkDelete(btn.dataset.delete);
+    await handleBookmarkDelete(deleteBtn.dataset.delete);
   });
 }
 
-bindBookmarkDeletes(bookmarkList);
-bindBookmarkDeletes(collectionBookmarksEl);
+bindBookmarkActions(bookmarkList);
+bindBookmarkActions(collectionBookmarksEl);
 
 collectionList.addEventListener('click', async (event) => {
   const openBtn = event.target.closest('[data-open-collection]');
@@ -385,6 +544,8 @@ collectionList.addEventListener('click', async (event) => {
 
 $('#collection-back').addEventListener('click', async () => {
   clearStatus();
+  activeCollectionId = null;
+  hideCollectionComposer();
   showView('main');
   await loadLibrary();
 });

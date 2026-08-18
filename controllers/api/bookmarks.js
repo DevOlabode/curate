@@ -59,14 +59,49 @@ module.exports.getOne = async (req, res) => {
 
 module.exports.update = async (req, res) => {
   const data = normalizeBookmarkBody(req.body);
-  const bookmark = await Bookmark.findOneAndUpdate(
-    { _id: req.params.id, user: req.user._id },
-    data,
-    { new: true, runValidators: true }
-  );
+  const bookmark = await Bookmark.findOne({ _id: req.params.id, user: req.user._id });
   if (!bookmark) {
     throw new ExpressError("We couldn't find that bookmark.", 404);
   }
+
+  const oldCollectionId = bookmark.collection ? bookmark.collection.toString() : '';
+  let nextCollectionId = oldCollectionId;
+
+  if (Object.prototype.hasOwnProperty.call(req.body, 'collectionId')) {
+    const collectionId = req.body.collectionId;
+    if (!collectionId) {
+      nextCollectionId = '';
+    } else {
+      if (!mongoose.Types.ObjectId.isValid(collectionId)) {
+        throw new ExpressError("We couldn't find that collection.", 404);
+      }
+      const collection = await Collection.findOne({ _id: collectionId, owner: req.user._id });
+      if (!collection) {
+        throw new ExpressError("We couldn't find that collection.", 404);
+      }
+      nextCollectionId = collection._id.toString();
+    }
+  }
+
+  bookmark.set(data);
+  bookmark.collection = nextCollectionId || null;
+  await bookmark.save();
+
+  if (oldCollectionId !== nextCollectionId) {
+    if (oldCollectionId) {
+      await Collection.updateOne(
+        { _id: oldCollectionId },
+        { $pull: { bookmarks: bookmark._id } }
+      );
+    }
+    if (nextCollectionId) {
+      await Collection.updateOne(
+        { _id: nextCollectionId },
+        { $addToSet: { bookmarks: bookmark._id } }
+      );
+    }
+  }
+
   res.json({ bookmark });
 };
 

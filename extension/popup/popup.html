@@ -118,7 +118,7 @@
         </div>
 
         <div class="row-actions">
-          <button class="btn btn-primary btn-sm" type="submit">Save</button>
+          <button class="btn btn-primary btn-sm" type="submit" id="add-submit">Save</button>
           <button class="btn btn-secondary btn-sm" type="button" id="cancel-add">Cancel</button>
         </div>
       </form>
@@ -138,8 +138,38 @@
 
     <section id="view-collection" class="view" hidden>
       <button type="button" class="back-btn" id="collection-back">Back to library</button>
-      <h1 class="view-title" id="collection-title"></h1>
+      <div class="toolbar">
+        <div>
+          <p class="kicker">Collection</p>
+          <h1 class="view-title" id="collection-title"></h1>
+        </div>
+        <button class="btn btn-primary btn-sm" type="button" id="show-collection-add">+ Add</button>
+      </div>
       <p class="view-subtitle" id="collection-description"></p>
+
+      <form id="collection-add-form" class="add-form" hidden>
+        <label class="field">
+          <span>Title</span>
+          <input name="title">
+        </label>
+        <label class="field">
+          <span>URL</span>
+          <input name="url" placeholder="voult.dev">
+        </label>
+        <label class="field">
+          <span>Category</span>
+          <input name="category" placeholder="Frontend">
+        </label>
+        <label class="field">
+          <span>Tags</span>
+          <input name="tags" placeholder="react, css">
+        </label>
+        <div class="row-actions">
+          <button class="btn btn-primary btn-sm" type="submit" id="collection-add-submit">Save</button>
+          <button class="btn btn-secondary btn-sm" type="button" id="cancel-collection-add">Cancel</button>
+        </div>
+      </form>
+
       <div id="collection-bookmarks" class="bookmark-list"></div>
       <p id="collection-empty" class="empty" hidden>No bookmarks in this collection.</p>
     </section>

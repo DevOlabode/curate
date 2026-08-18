@@ -2,6 +2,8 @@ const User = require('../../models/user');
 const { signToken } = require('../../utils/jwt');
 const ExpressError = require('../../utils/expressError');
 const { registrationErrorMessage } = require('../../utils/duplicateKeyError');
+const { sendPasswordResetEmail, appUrl } = require('../../utils/mailer');
+const { createResetToken, hashResetToken, RESET_TTL_MS } = require('../../utils/passwordReset');
 
 function publicUser(user) {
   return {
@@ -65,3 +67,72 @@ module.exports.me = async (req, res) => {
 module.exports.logout = async (_req, res) => {
   res.json({ ok: true });
 };
+
+module.exports.forgotPassword = async (req, res) => {
+  const email = typeof req.body.email === 'string' ? req.body.email.trim() : '';
+  if (!email) {
+    throw new ExpressError('Please enter the email on your account.', 400);
+  }
+
+  const user = await User.findOne({
+    email: new RegExp(`^${email.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i'),
+  });
+
+  if (user) {
+    const { token, hashed } = createResetToken();
+    user.resetPasswordToken = hashed;
+    user.resetPasswordExpires = new Date(Date.now() + RESET_TTL_MS);
+    await user.save();
+
+    try {
+      await sendPasswordResetEmail({
+        to: user.email,
+        resetUrl: `${appUrl(req)}/reset-password/${token}`,
+        firstName: user.firstName,
+      });
+    } catch (err) {
+      console.error('Password reset email failed:', err.message);
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpires = undefined;
+      await user.save();
+      throw new ExpressError('We couldn’t send that email right now. Please try again in a few minutes.', 500);
+    }
+  }
+
+  res.json({
+    ok: true,
+    message: 'If that email is in Curate, we sent a reset link. Check your inbox.',
+  });
+};
+
+module.exports.resetPassword = async (req, res) => {
+  const { token } = req.body;
+  const { password, confirmPassword } = req.body;
+
+  if (!token) {
+    throw new ExpressError('That reset link is invalid or has expired. Request a new one.', 400);
+  }
+  if (!password || password.length < 8) {
+    throw new ExpressError('Please choose a password with at least 8 characters.', 400);
+  }
+  if (password !== confirmPassword) {
+    throw new ExpressError('Those passwords don’t match.', 400);
+  }
+
+  const user = await User.findOne({
+    resetPasswordToken: hashResetToken(token),
+    resetPasswordExpires: { $gt: new Date() },
+  });
+
+  if (!user) {
+    throw new ExpressError('That reset link is invalid or has expired. Request a new one.', 400);
+  }
+
+  await user.setPassword(password);
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpires = undefined;
+  await user.save();
+
+  res.json({ ok: true, message: 'Your password is updated. You can sign in now.' });
+};
+

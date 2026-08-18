@@ -2,6 +2,7 @@ const { bookmarkSchema, collectionSchema} = require('./joiSchema.js');
 const passport = require('passport');
 const ExpressError = require('./utils/expressError.js')
 const { friendlyJoiMessage } = require('./utils/friendlyError.js')
+const { normalizeUrl } = require('./utils/normalizeUrl.js')
 
 
 module.exports.isLoggedIn = function(req, res, next){
@@ -22,15 +23,18 @@ module.exports.storeReturnTo = (req, res, next) => {
 
 module.exports.validateBookmark = (req, res, next)=>{
     const body = { ...req.body };
+    if (typeof body.url === 'string') {
+        body.url = normalizeUrl(body.url);
+    }
     if (Array.isArray(body.tags)) {
         body.tags = body.tags.join(', ');
     }
-    const { error } = bookmarkSchema.validate(body, { abortEarly: false });
+    const { error, value } = bookmarkSchema.validate(body, { abortEarly: false });
     if(error){
         throw new ExpressError(friendlyJoiMessage(error), 400)
-    }else{
-        next()
     }
+    req.body = { ...req.body, ...value };
+    next();
 };
 module.exports.validateCollection = (req, res, next)=>{
     const { error } = collectionSchema.validate(req.body, { abortEarly: false });

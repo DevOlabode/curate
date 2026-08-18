@@ -72,6 +72,9 @@ function friendlyJoiMessage(error) {
         if (field === 'password') return 'Please enter a password.';
         return `Please fill in ${field}.`;
       }
+      if (detail.type === 'string.uri') {
+        return 'Please enter a valid URL. voult.dev or reddit.com is fine — no https:// needed.';
+      }
       if (detail.type === 'string.email') return 'Please enter a valid email address.';
       return 'Some of that information wasn’t valid. Please try again.';
     })

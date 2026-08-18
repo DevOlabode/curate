@@ -1,10 +1,11 @@
 const Bookmark = require('../models/bookmark')
 const { parseTags } = require('../utils/parseTags');
+const { normalizeUrl } = require('../utils/normalizeUrl');
 
 function bookmarkFromBody(body, userId, collectionId) {
     return {
         title: body.title,
-        url: body.url,
+        url: normalizeUrl(body.url),
         category: typeof body.category === 'string' ? body.category.trim() : '',
         tags: parseTags(body.tags),
         notes: body.notes || '',

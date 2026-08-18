@@ -2,11 +2,12 @@ const Collection = require('../../models/collection');
 const Bookmark = require('../../models/bookmark');
 const ExpressError = require('../../utils/expressError');
 const { parseTags } = require('../../utils/parseTags');
+const { normalizeUrl } = require('../../utils/normalizeUrl');
 
 function normalizeBookmarkBody(body) {
   return {
     title: body.title,
-    url: body.url,
+    url: normalizeUrl(body.url),
     category: typeof body.category === 'string' ? body.category.trim() : '',
     tags: parseTags(body.tags),
     notes: body.notes || '',

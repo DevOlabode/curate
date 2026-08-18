@@ -14,6 +14,14 @@ router.route('/login')
     .get(redirectIfLoggedIn, user.loginForm)
     .post(storeReturnTo, loginAuthenticate, catchAsync(user.login))
 
+router.route('/forgot-password')
+    .get(redirectIfLoggedIn, user.forgotPasswordForm)
+    .post(redirectIfLoggedIn, catchAsync(user.forgotPassword))
+
+router.route('/reset-password/:token')
+    .get(redirectIfLoggedIn, catchAsync(user.resetPasswordForm))
+    .post(redirectIfLoggedIn, catchAsync(user.resetPassword))
+
 router.get('/logout', catchAsync(user.logout));
 
 router.get('/user/info', isLoggedIn, user.userInfo);

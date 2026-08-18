@@ -2,6 +2,8 @@ import { api, ApiError } from '../shared/api.js';
 import { login, register, logout, getSessionUser } from '../shared/auth.js';
 import { getTheme, setTheme } from '../shared/storage.js';
 import { getRuntime } from '../shared/browser.js';
+import { getApiBaseUrl } from '../shared/config.js';
+import { normalizeUrl } from '../shared/url.js';
 
 const $ = (sel) => document.querySelector(sel);
 
@@ -58,7 +60,7 @@ function renderBookmarks(bookmarks) {
     item.className = 'bookmark-item';
     item.innerHTML = `
       <h3>${escapeHtml(bookmark.title)}</h3>
-      <a href="${escapeHtml(bookmark.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(bookmark.url)}</a>
+      <a href="${escapeHtml(normalizeUrl(bookmark.url))}" target="_blank" rel="noopener noreferrer">${escapeHtml(bookmark.url)}</a>
       <div class="bookmark-meta">
         <span class="chip">${escapeHtml(bookmark.category || 'General')}</span>
       </div>
@@ -118,6 +120,8 @@ function setAuthMode(mode) {
   authTitle.textContent = isRegister ? 'Create account' : 'Sign in';
   authSubmit.textContent = isRegister ? 'Sign up' : 'Sign in';
   toggleAuthMode.textContent = isRegister ? 'Already have an account?' : 'Create an account';
+  const forgotWrap = $('#forgot-wrap');
+  if (forgotWrap) forgotWrap.hidden = isRegister;
 }
 
 toggleAuthMode.addEventListener('click', () => {
@@ -167,7 +171,7 @@ addForm.addEventListener('submit', async (event) => {
   try {
     await api.createBookmark({
       title: data.get('title'),
-      url: data.get('url'),
+      url: normalizeUrl(data.get('url')),
       category: data.get('category'),
       tags: data.get('tags'),
       notes: '',
@@ -195,6 +199,10 @@ $('#theme-toggle').addEventListener('click', async () => {
 async function initTheme() {
   const theme = await getTheme();
   document.documentElement.setAttribute('data-theme', theme);
+  const forgotLink = $('#forgot-password-link');
+  if (forgotLink) {
+    forgotLink.href = `${await getApiBaseUrl()}/forgot-password`;
+  }
 }
 
 initTheme();

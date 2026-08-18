@@ -11,19 +11,22 @@ const bookmarkSchema = new Schema({
         required : true
     },
     category : {
-        type : String, 
-        required : true
+        type : String,
+        required : false
     },
-    tags : [ String ],
+    tags : {
+        type: [String],
+        default: []
+    },
     notes : String,
-    
+
     createdAt : {
         type : Date,
         default : Date.now
     },
     user : {
         type: Schema.Types.ObjectId,
-        ref: 'User'     
+        ref: 'User'
     },
     collection: {
         type: mongoose.Schema.Types.ObjectId,
@@ -32,7 +35,5 @@ const bookmarkSchema = new Schema({
 }, {
     suppressReservedKeysWarning: true
 });
-
-
 
 module.exports = mongoose.model('Bookmark', bookmarkSchema)

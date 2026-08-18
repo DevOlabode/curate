@@ -2,6 +2,7 @@ const express = require('express');
 const {isLoggedIn, validateBookmark} = require('../middleware');
 const catchAsync = require('../utils/catchAsync');
 const bookmarks = require('../controllers/bookmarks')
+const { requireValidId } = require('../middleware/validateId');
 
 const router = express.Router();
 
@@ -10,6 +11,8 @@ router.route('/')
     .post(isLoggedIn, validateBookmark,  catchAsync(bookmarks.newBookmark))
 
 router.get('/new', isLoggedIn, bookmarks.newForm);
+
+router.param('id', requireValidId('id', 'bookmark'));
 
 router.route('/:id')
     .get(isLoggedIn, catchAsync(bookmarks.showPage))

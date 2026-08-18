@@ -1,12 +1,13 @@
 const { bookmarkSchema, collectionSchema} = require('./joiSchema.js');
 const passport = require('passport');
 const ExpressError = require('./utils/expressError.js')
+const { friendlyJoiMessage } = require('./utils/friendlyError.js')
 
 
 module.exports.isLoggedIn = function(req, res, next){
     if(!req.isAuthenticated()){
         req.session.returnTo = req.originalUrl
-        req.flash('warning', 'You must be signed in first');
+        req.flash('warning', 'Please sign in first.');
         return res.redirect('/login');
     }
     next();
@@ -24,19 +25,17 @@ module.exports.validateBookmark = (req, res, next)=>{
     if (Array.isArray(body.tags)) {
         body.tags = body.tags.join(', ');
     }
-    const { error } = bookmarkSchema.validate(body);
+    const { error } = bookmarkSchema.validate(body, { abortEarly: false });
     if(error){
-        const message = error.details.map(el => el.message).join(',');
-        throw new ExpressError(message, 400)
+        throw new ExpressError(friendlyJoiMessage(error), 400)
     }else{
         next()
     }
 };
 module.exports.validateCollection = (req, res, next)=>{
-    const { error } = collectionSchema.validate(req.body);
+    const { error } = collectionSchema.validate(req.body, { abortEarly: false });
     if(error){
-        const message = error.details.map(el => el.message).join(',');
-        throw new ExpressError(message, 400)
+        throw new ExpressError(friendlyJoiMessage(error), 400)
     }else{
         next()
     }
@@ -44,7 +43,7 @@ module.exports.validateCollection = (req, res, next)=>{
 
 
 module.exports.loginAuthenticate = passport.authenticate('local', {
-    failureFlash : true,
+    failureFlash : { type: 'error', message: 'That username or password doesn’t match.' },
     failureRedirect : '/login'
 });
 

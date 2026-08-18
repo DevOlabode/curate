@@ -51,7 +51,7 @@ module.exports.userInfo = (req, res)=>{
 module.exports.editForm = async(req, res)=>{
     const user = await User.findById(req.user._id);
     if(!user){
-        req.flash('error', 'User not found!');
+        req.flash('error', "We couldn't find that account.");
         return res.redirect('/user/info');
     }
     res.render('user/edit', { user });
@@ -63,7 +63,7 @@ module.exports.editUser = async(req, res)=>{
     const user =await User.findById(userId);
 
     if(!user){
-        req.flash('error', 'User not found!');
+        req.flash('error', "We couldn't find that account.");
         res.redirect('/user/info')
     }
 
@@ -86,12 +86,12 @@ module.exports.changePassword = async (req, res) => {
     const { currentPassword, newPassword, confirmPassword } = req.body;
 
     if (newPassword !== confirmPassword) {
-        req.flash('error', 'New passwords do not match.');
+        req.flash('error', 'Those new passwords don’t match.');
         return res.redirect('/user/change-password');
     }
 
     if(currentPassword === newPassword){
-        req.flash('error', 'New Passwords must be different from the currrent password');
+        req.flash('error', 'Choose a password that’s different from your current one.');
         return res.redirect('/user/change-password')
     }
 
@@ -100,7 +100,7 @@ module.exports.changePassword = async (req, res) => {
     try {
         const isValid = await user.authenticate(currentPassword);
         if (!isValid.user) {
-            req.flash('error', 'Current password is incorrect.');
+            req.flash('error', 'That current password isn’t correct.');
             return res.redirect('/user/change-password');
         }
 
@@ -110,7 +110,7 @@ module.exports.changePassword = async (req, res) => {
         req.flash('success', 'Password changed successfully.');
         res.redirect('/user/info');
     } catch (err) {
-        req.flash('error', 'Something went wrong.');
+        req.flash('error', 'We couldn’t change your password. Please try again.');
         res.redirect('/user/change-password');
     }
 };

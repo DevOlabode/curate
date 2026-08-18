@@ -1,14 +1,13 @@
-const ExpressError = require('../utils/expressError');
+const { friendlyError } = require('../utils/friendlyError');
 
 module.exports.apiErrorHandler = function apiErrorHandler(err, req, res, next) {
   if (!req.path.startsWith('/api')) {
     return next(err);
   }
 
-  const statusCode = err.statusCode || 500;
-  const message = err.message || 'Something went wrong';
+  const { statusCode, message } = friendlyError(err);
 
-  if (process.env.NODE_ENV !== 'production' && statusCode === 500) {
+  if (statusCode >= 500) {
     console.error(err);
   }
 
@@ -16,5 +15,5 @@ module.exports.apiErrorHandler = function apiErrorHandler(err, req, res, next) {
 };
 
 module.exports.apiNotFound = function apiNotFound(req, res) {
-  res.status(404).json({ error: 'API route not found' });
+  res.status(404).json({ error: "That API route doesn’t exist." });
 };

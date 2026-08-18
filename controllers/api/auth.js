@@ -16,7 +16,7 @@ function publicUser(user) {
 module.exports.register = async (req, res) => {
   const { username, password, email, firstName, lastName } = req.body;
   if (!username || !password || !email || !firstName || !lastName) {
-    throw new ExpressError('All registration fields are required', 400);
+    throw new ExpressError('Please fill in all registration fields.', 400);
   }
 
   const user = new User({ username, email, firstName, lastName });
@@ -34,7 +34,7 @@ module.exports.register = async (req, res) => {
 module.exports.login = async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password) {
-    throw new ExpressError('Username and password are required', 400);
+    throw new ExpressError('Please enter a username and password.', 400);
   }
 
   const auth = User.authenticate();
@@ -51,7 +51,7 @@ module.exports.login = async (req, res) => {
   });
 
   if (error || !user) {
-    throw new ExpressError('Invalid username or password', 401);
+    throw new ExpressError('That username or password doesn’t match.', 401);
   }
 
   const token = signToken(user._id);

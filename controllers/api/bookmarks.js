@@ -6,7 +6,7 @@ function normalizeBookmarkBody(body) {
   return {
     title: body.title,
     url: body.url,
-    category: body.category,
+    category: typeof body.category === 'string' ? body.category.trim() : '',
     tags: parseTags(body.tags),
     notes: body.notes || '',
   };
@@ -27,7 +27,7 @@ module.exports.create = async (req, res) => {
 module.exports.getOne = async (req, res) => {
   const bookmark = await Bookmark.findOne({ _id: req.params.id, user: req.user._id });
   if (!bookmark) {
-    throw new ExpressError('Bookmark not found', 404);
+    throw new ExpressError("We couldn't find that bookmark.", 404);
   }
   res.json({ bookmark });
 };
@@ -40,7 +40,7 @@ module.exports.update = async (req, res) => {
     { new: true, runValidators: true }
   );
   if (!bookmark) {
-    throw new ExpressError('Bookmark not found', 404);
+    throw new ExpressError("We couldn't find that bookmark.", 404);
   }
   res.json({ bookmark });
 };
@@ -48,7 +48,7 @@ module.exports.update = async (req, res) => {
 module.exports.remove = async (req, res) => {
   const bookmark = await Bookmark.findOneAndDelete({ _id: req.params.id, user: req.user._id });
   if (!bookmark) {
-    throw new ExpressError('Bookmark not found', 404);
+    throw new ExpressError("We couldn't find that bookmark.", 404);
   }
   res.json({ ok: true, bookmark });
 };

@@ -22,6 +22,7 @@ const collectionBookmarksRoutes = require('./routes/collectionBookmarks');
 const apiRoutes = require('./routes/api');
 const corsOptions = require('./config/corsConfig');
 const { apiErrorHandler } = require('./middleware/apiError');
+const { friendlyError, redirectForError } = require('./utils/friendlyError');
 
 
 app.set('view engine', 'ejs');
@@ -71,17 +72,24 @@ app.get('/', (req, res)=>{
 
 
 app.all(/(.*)/, (req, res, next) => {
-    next(new ExpressError('Page not found', 404))
+    next(new ExpressError("That page doesn’t exist.", 404))
 });
 
 app.use(apiErrorHandler);
 
 app.use((err, req, res, next)=>{
-    const {statusCode = 500} = err;
-    if(!err.message){
-        err.message = 'Something Went Wrong!'
+    const { statusCode, message } = friendlyError(err);
+
+    if (statusCode >= 500) {
+        console.error(err);
     }
-    res.status(statusCode).render('error', { err })
+
+    if (statusCode === 400 || statusCode === 404) {
+        req.flash(statusCode === 404 ? 'error' : 'warning', message);
+        return res.redirect(redirectForError(req));
+    }
+
+    res.status(statusCode).render('error', { message, statusCode })
 });
 
 const PORT=process.env.PORT || 3000;

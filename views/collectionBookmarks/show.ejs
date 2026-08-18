@@ -7,7 +7,7 @@
     <li class="list-group-item">
       <a href="<%= bookmark.url %>" target="_blank" rel="noopener noreferrer">Visit URL</a>
     </li>
-    <li class="list-group-item"><span class="fw-bold">Category</span>: <%= bookmark.category %></li>
+    <li class="list-group-item"><span class="fw-bold">Category</span>: <%= bookmark.category || 'None' %></li>
     <li class="list-group-item">
       <div class="tags-container">
         <span class="tags-label">Tags:</span>

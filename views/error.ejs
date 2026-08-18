@@ -3,10 +3,8 @@
 <div class="container error-shell">
     <div class="empty-state">
         <p class="page-kicker">Something went wrong</p>
-        <h2 class="mb-3"><%= err.message %></h2>
-        <% if (process.env.NODE_ENV !== 'production' && err.stack) { %>
-        <p class="text-muted" style="white-space: pre-wrap; text-align: left; font-size: 0.85rem;"><%= err.stack %></p>
-        <% } %>
+        <h2 class="mb-3"><%= typeof message !== 'undefined' ? message : "We hit a snag. Please try again." %></h2>
+        <p class="text-muted">Your library is safe. You can go back and keep going from where you left off.</p>
         <a href="/" class="btn btn-primary mt-4">Back home</a>
     </div>
 </div>

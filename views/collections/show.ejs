@@ -31,7 +31,9 @@
             <a href="/collections/<%= collection._id %>/bookmarks/<%= bookmark._id %>" class="text-decoration-none text-dark fw-bold">
               <%= bookmark.title %>
             </a>
+            <% if (bookmark.category) { %>
             <span class="badge bg-secondary ms-2"><%= bookmark.category %></span>
+            <% } %>
           </div>
           <div class="d-flex gap-2">
             <a href="/collections/<%= collection._id %>/bookmarks/<%= bookmark._id %>" class="btn btn-sm btn-outline-primary">

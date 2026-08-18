@@ -1,5 +1,17 @@
 const Bookmark = require('../models/bookmark')
+const { parseTags } = require('../utils/parseTags');
 
+function bookmarkFromBody(body, userId, collectionId) {
+    return {
+        title: body.title,
+        url: body.url,
+        category: typeof body.category === 'string' ? body.category.trim() : '',
+        tags: parseTags(body.tags),
+        notes: body.notes || '',
+        user: userId,
+        ...(collectionId ? { collection: collectionId } : {}),
+    };
+}
 
 module.exports.index = async(req, res)=>{
     const bookmarks = await Bookmark.find({ user : req.user._id });
@@ -11,18 +23,16 @@ module.exports.newForm = (req, res)=>{
 };
 
 module.exports.newBookmark = async (req,res) => {
-    const newBookmark = req.body;
-    const bookmark = new Bookmark(newBookmark);
-    bookmark.user = req.user._id;
+    const bookmark = new Bookmark(bookmarkFromBody(req.body, req.user._id));
     await bookmark.save();
     res.redirect(`/bookmark/${bookmark._id}`)
 };
 
 module.exports.showPage = async(req, res)=>{
     const { id } = req.params;
-    const bookmark = await Bookmark.findById(id);
+    const bookmark = await Bookmark.findOne({ _id: id, user: req.user._id });
     if(!bookmark){
-        req.flash('error', 'Bookmark not found!');
+        req.flash('error', "We couldn't find that bookmark.");
         return res.redirect(`/bookmark`)
     }
     res.render('bookmark/show', { bookmark });
@@ -30,9 +40,9 @@ module.exports.showPage = async(req, res)=>{
 
 module.exports.editForm = async(req, res)=>{
     const { id } = req.params;
-    const bookmark = await Bookmark.findById(id);
+    const bookmark = await Bookmark.findOne({ _id: id, user: req.user._id });
     if(!bookmark){
-        req.flash('error', 'Bookmark not found!');
+        req.flash('error', "We couldn't find that bookmark.");
         return res.redirect(`/bookmark`)
     }
     res.render('bookmark/edit', { bookmark })
@@ -40,20 +50,27 @@ module.exports.editForm = async(req, res)=>{
 
 module.exports.editBookmark = async(req, res)=>{
     const { id } = req.params;
-    const ediitedBookmark = req.body;
-    const bookmark = await Bookmark.findByIdAndUpdate(id, { ...ediitedBookmark });
-       if(!bookmark){
-            req.flash('error', 'Bookmark not found!');
-            return res.redirect(`/bookmark`)
+    const bookmark = await Bookmark.findOneAndUpdate(
+        { _id: id, user: req.user._id },
+        bookmarkFromBody(req.body, req.user._id),
+        { new: true, runValidators: true }
+    );
+    if(!bookmark){
+        req.flash('error', "We couldn't find that bookmark.");
+        return res.redirect(`/bookmark`)
     }
 
-    req.flash('success', 'Campground successfully updated')
+    req.flash('success', 'Bookmark updated.');
     res.redirect(`/bookmark/${bookmark._id}`);
 };
 
 module.exports.deleteBookmark = async(req, res)=>{
     const { id } = req.params;
-    const delBookmark = await Bookmark.findByIdAndDelete(id);
-    req.flash('success', `Successfully deleted the ${delBookmark.title.toUpperCase()} bookmark`);
+    const delBookmark = await Bookmark.findOneAndDelete({ _id: id, user: req.user._id });
+    if(!delBookmark){
+        req.flash('error', "We couldn't find that bookmark.");
+        return res.redirect('/bookmark');
+    }
+    req.flash('success', `Deleted “${delBookmark.title}”.`);
     res.redirect('/bookmark');
 };

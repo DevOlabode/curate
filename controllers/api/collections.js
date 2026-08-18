@@ -7,7 +7,7 @@ function normalizeBookmarkBody(body) {
   return {
     title: body.title,
     url: body.url,
-    category: body.category,
+    category: typeof body.category === 'string' ? body.category.trim() : '',
     tags: parseTags(body.tags),
     notes: body.notes || '',
   };
@@ -21,7 +21,7 @@ module.exports.list = async (req, res) => {
 module.exports.create = async (req, res) => {
   const { name, description } = req.body;
   if (!name) {
-    throw new ExpressError('Collection name is required', 400);
+    throw new ExpressError('Please add a collection name.', 400);
   }
 
   const collection = new Collection({
@@ -40,7 +40,7 @@ module.exports.getOne = async (req, res) => {
     options: { sort: { createdAt: -1 } },
   });
   if (!collection) {
-    throw new ExpressError('Collection not found', 404);
+    throw new ExpressError("We couldn't find that collection.", 404);
   }
   res.json({ collection });
 };
@@ -56,7 +56,7 @@ module.exports.update = async (req, res) => {
     { new: true, runValidators: true }
   );
   if (!collection) {
-    throw new ExpressError('Collection not found', 404);
+    throw new ExpressError("We couldn't find that collection.", 404);
   }
   res.json({ collection });
 };
@@ -64,7 +64,7 @@ module.exports.update = async (req, res) => {
 module.exports.remove = async (req, res) => {
   const collection = await Collection.findOne({ _id: req.params.id, owner: req.user._id });
   if (!collection) {
-    throw new ExpressError('Collection not found', 404);
+    throw new ExpressError("We couldn't find that collection.", 404);
   }
   await Bookmark.deleteMany({ collection: collection._id });
   await Collection.findByIdAndDelete(collection._id);
@@ -74,7 +74,7 @@ module.exports.remove = async (req, res) => {
 module.exports.createBookmark = async (req, res) => {
   const collection = await Collection.findOne({ _id: req.params.id, owner: req.user._id });
   if (!collection) {
-    throw new ExpressError('Collection not found', 404);
+    throw new ExpressError("We couldn't find that collection.", 404);
   }
 
   const data = normalizeBookmarkBody(req.body);
@@ -92,14 +92,14 @@ module.exports.createBookmark = async (req, res) => {
 module.exports.getBookmark = async (req, res) => {
   const collection = await Collection.findOne({ _id: req.params.id, owner: req.user._id });
   if (!collection) {
-    throw new ExpressError('Collection not found', 404);
+    throw new ExpressError("We couldn't find that collection.", 404);
   }
   const bookmark = await Bookmark.findOne({
     _id: req.params.bookmarkId,
     collection: collection._id,
   });
   if (!bookmark) {
-    throw new ExpressError('Bookmark not found', 404);
+    throw new ExpressError("We couldn't find that bookmark.", 404);
   }
   res.json({ bookmark, collectionId: collection._id });
 };
@@ -107,7 +107,7 @@ module.exports.getBookmark = async (req, res) => {
 module.exports.updateBookmark = async (req, res) => {
   const collection = await Collection.findOne({ _id: req.params.id, owner: req.user._id });
   if (!collection) {
-    throw new ExpressError('Collection not found', 404);
+    throw new ExpressError("We couldn't find that collection.", 404);
   }
   const data = normalizeBookmarkBody(req.body);
   const bookmark = await Bookmark.findOneAndUpdate(
@@ -116,7 +116,7 @@ module.exports.updateBookmark = async (req, res) => {
     { new: true, runValidators: true }
   );
   if (!bookmark) {
-    throw new ExpressError('Bookmark not found', 404);
+    throw new ExpressError("We couldn't find that bookmark.", 404);
   }
   res.json({ bookmark });
 };
@@ -124,14 +124,14 @@ module.exports.updateBookmark = async (req, res) => {
 module.exports.removeBookmark = async (req, res) => {
   const collection = await Collection.findOne({ _id: req.params.id, owner: req.user._id });
   if (!collection) {
-    throw new ExpressError('Collection not found', 404);
+    throw new ExpressError("We couldn't find that collection.", 404);
   }
   const bookmark = await Bookmark.findOneAndDelete({
     _id: req.params.bookmarkId,
     collection: collection._id,
   });
   if (!bookmark) {
-    throw new ExpressError('Bookmark not found', 404);
+    throw new ExpressError("We couldn't find that bookmark.", 404);
   }
   collection.bookmarks = collection.bookmarks.filter(
     (id) => id.toString() !== bookmark._id.toString()

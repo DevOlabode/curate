@@ -38,7 +38,7 @@ module.exports.showPage = async (req, res) => {
     });
     
     if (!collection) {
-        req.flash('warning', 'Collection not found or you do not have permission to view it');
+        req.flash('warning', "We couldn't find that collection.");
         return res.redirect('/collections');
     }
     
@@ -54,7 +54,7 @@ module.exports.editForm = async (req, res) => {
     });
     
     if (!collection) {
-        req.flash('warning', 'Collection not found or you do not have permission to edit it');
+        req.flash('warning', "We couldn't find that collection.");
         return res.redirect('/collections');
     }
     
@@ -75,7 +75,7 @@ module.exports.editCollection = async (req, res) => {
     );
     
     if (!collection) {
-        req.flash('warning', 'Collection not found or you do not have permission to edit it');
+        req.flash('warning', "We couldn't find that collection.");
         return res.redirect('/collections');
     }
     
@@ -93,7 +93,7 @@ module.exports.deleteCollection = async (req, res) => {
     });
 
     if (!collection) {
-        req.flash('warning', 'Collection not found or you do not have permission to delete it');
+        req.flash('warning', "We couldn't find that collection.");
         return res.redirect('/collections');
     }
 

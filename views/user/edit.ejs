@@ -1,18 +1,18 @@
 <%- layout('./layout/boilerplate.ejs') %>
 
-<div class="container mt-5">
-  <h2 class="mb-4">Edit Your Profile</h2>
+<div class="container">
+  <p class="page-kicker">Account</p>
+  <h2 class="mb-4">Edit your profile</h2>
 
-  <form action="/user/edit?_method=put" method="POST" class="needs-validation" novalidate>
-
+  <form action="/user/edit?_method=put" method="POST" class="needs-validation form-card" novalidate>
     <div class="mb-3">
-        <label for="firstName" class="form-label">First Name</label>
-        <input type="text" id="firstName" name="firstName" class="form-control" value= '<%= user.firstName %>'>
+        <label for="firstName" class="form-label">First name</label>
+        <input type="text" id="firstName" name="firstName" class="form-control" value="<%= user.firstName %>">
         <div class="valid-feedback">Looks good!</div>
     </div>
 
     <div class="mb-3">
-        <label for="lastName" class="form-label">Last Name</label>
+        <label for="lastName" class="form-label">Last name</label>
         <input type="text" id="lastName" name="lastName" class="form-control" value="<%= user.lastName %>">
         <div class="valid-feedback">Looks good!</div>
     </div>
@@ -30,8 +30,8 @@
     </div>
 
     <div class="form-actions mt-4">
-      <button type="submit" class="btn btn-success">Save Changes</button>
-      <a href="/user/change-password" class="btn btn-primary">Change Password</a>
+      <button type="submit" class="btn btn-success">Save changes</button>
+      <a href="/user/change-password" class="btn btn-primary">Change password</a>
       <a href="/user/info" class="btn btn-secondary">Back</a>
     </div>
   </form>

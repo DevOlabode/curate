@@ -1,25 +1,26 @@
 <%- layout('./layout/boilerplate.ejs') %>
 
+<div class="container">
+  <p class="page-kicker">New</p>
+  <h2 class="mb-4">Create a collection</h2>
 
-<div class="container mt-5">
-  <h2 class="mb-4">Create a New Bookmark</h2>
+  <form action="/collections" method="POST" class="needs-validation form-card" novalidate>
+      <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input type="text" id="name" name="name" class="form-control" placeholder="Collection name" required>
+          <div class="valid-feedback">Looks good!</div>
+          <div class="invalid-feedback">Please enter a collection name.</div>
+      </div>
 
+      <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea name="description" id="description" class="form-control" placeholder="What belongs here?"></textarea>
+          <div class="valid-feedback">Looks good!</div>
+      </div>
 
-    <form action="/collections" method="POST" class="needs-validation" novalidate>
-        <div class="mb-3">
-            <label for="name" class="form-label">Name</label>
-            <input type="text" id="name" name="name" class="form-control" placeholder="Collection Name" required>
-            <div class="valid-feedback">Looks good!</div>
-            <div class="invalid-feedback">Please enter a collection name .</div>
-        </div>
-        
-        <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-            <textarea name="description" id="description" class="form-control" placeholder="Description"></textarea>
-            <div class="valid-feedback">Looks good!</div>
-        </div>
-
-        <button class="btn btn-success">Create Collection</button>
-    </form>
-
+      <div class="form-actions">
+        <button class="btn btn-success">Create collection</button>
+        <a href="/collections" class="btn btn-secondary">Back</a>
+      </div>
+  </form>
 </div>

@@ -1,46 +1,37 @@
 <nav class="navbar navbar-expand-lg">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">
+      <span class="logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M7 3.5A2.5 2.5 0 0 0 4.5 6v15.1l7.5-4.4 7.5 4.4V6A2.5 2.5 0 0 0 17 3.5H7z"></path>
+        </svg>
+      </span>
       <span>Curate</span>
     </a>
-    
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    
+
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav me-auto">
-        <a class="nav-link" href="/">
-          <i class="fas fa-home me-1"></i>Home
-        </a>
-        <a class="nav-link" href="/bookmark">
-          <i class="fas fa-bookmark me-1"></i>Bookmarks
-        </a>
-        <a class="nav-link" href="/bookmark/new">
-          <i class="fas fa-plus me-1"></i>New Bookmark
-        </a>
-        <a class="nav-link" href="/collections">
-            <i class="fas fa-folder-open me-1"></i>Collections
-        </a>
+        <a class="nav-link" href="/">Home</a>
+        <a class="nav-link" href="/bookmark">Bookmarks</a>
+        <a class="nav-link" href="/collections">Collections</a>
       </div>
       <div class="navbar-nav ms-auto align-items-center gap-2">
         <button id="theme-toggle" class="btn btn-sm" aria-label="Toggle theme" title="Toggle dark/light mode">
           <i class="fas fa-moon"></i>
         </button>
         <% if(!currentUser){ %>
-        <a href="/login" class="nav-link">
-          <i class="fas fa-user me-1"></i>Login
-        </a>
-        <a href="/signup" class="nav-link">
-          <i class="fas fa-user-plus me-1"></i>Sign Up
-        </a>
+        <a href="/login" class="nav-link">Login</a>
+        <a href="/signup" class="btn btn-primary btn-sm">Sign Up</a>
         <% }else{ %>
-        <a href="/user/info" class="nav-link opacity-75">
+        <a href="/bookmark/new" class="nav-link">New Bookmark</a>
+        <a href="/user/info" class="nav-link">
           <%= currentUser.username %>
         </a>
-        <a href="/logout" class="btn btn-danger btn-sm">
-          <i class="fas fa-sign-out-alt me-1"></i>Logout
-        </a>
+        <a href="/logout" class="btn btn-danger btn-sm">Logout</a>
         <% } %>
       </div>
     </div>

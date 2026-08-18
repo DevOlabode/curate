@@ -1,22 +1,26 @@
 <%- layout('./layout/boilerplate.ejs') %>
 
+<div class="auth-shell">
+  <div class="container">
+    <p class="page-kicker text-center">Welcome back</p>
+    <h2 class="mb-4 text-center">Log in</h2>
 
-<div class="container mt-5">
-    <h2 class="mb-4">Log In</h2>
-
-    <form action="/login" method="POST" class="needs-validation" novalidate>
+    <form action="/login" method="POST" class="needs-validation form-card mx-auto" novalidate>
         <div class="mb-3">
             <label for="username" class="form-label">Username</label>
             <input type="text" id="username" name="username" class="form-control" placeholder="Enter a username" required>
             <div class="valid-feedback">Looks good!</div>
-            <div class="invalid-feedback">Please enter your username .</div>
+            <div class="invalid-feedback">Please enter your username.</div>
         </div>
-        
+
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
             <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
             <div class="valid-feedback">Looks good!</div>
-            <div class="invalid-feedback">Please enter a password .</div>
+            <div class="invalid-feedback">Please enter a password.</div>
         </div>
-        <button class="btn btn-success">Log In</button>
+        <button class="btn btn-success w-100">Log in</button>
+        <p class="text-muted text-center mt-4 mb-0">No account yet? <a href="/signup">Sign up</a></p>
     </form>
+  </div>
+</div>

@@ -1,42 +1,47 @@
 <%- layout('./layout/boilerplate.ejs') %>
 
-<div class="container mt-5">
-    <h2 class="mb-4">Sign Up</h2>
+<div class="auth-shell">
+  <div class="container">
+    <p class="page-kicker text-center">Get started</p>
+    <h2 class="mb-4 text-center">Create your library</h2>
 
-    <form action="/signup" method="POST" class="needs-validation" novalidate>
+    <form action="/signup" method="POST" class="needs-validation form-card mx-auto" novalidate>
         <div class="mb-3">
-            <label for="username" class="form-label">First Name</label>
+            <label for="firstName" class="form-label">First name</label>
             <input type="text" id="firstName" name="firstName" class="form-control" placeholder="Enter your first name" required>
             <div class="valid-feedback">Looks good!</div>
-            <div class="invalid-feedback">Please enter your first name .</div>
+            <div class="invalid-feedback">Please enter your first name.</div>
         </div>
 
         <div class="mb-3">
-            <label for="lastName" class="form-label">Last Name</label>
+            <label for="lastName" class="form-label">Last name</label>
             <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Enter your last name" required>
             <div class="valid-feedback">Looks good!</div>
-            <div class="invalid-feedback">Please enter your last name</div>
+            <div class="invalid-feedback">Please enter your last name.</div>
         </div>
 
         <div class="mb-3">
             <label for="username" class="form-label">Username</label>
             <input type="text" id="username" name="username" class="form-control" placeholder="Enter a username" required>
             <div class="valid-feedback">Looks good!</div>
-            <div class="invalid-feedback">Please enter your username .</div>
+            <div class="invalid-feedback">Please enter your username.</div>
         </div>
 
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
             <div class="valid-feedback">Looks good!</div>
-            <div class="invalid-feedback">Please enter an email .</div>
+            <div class="invalid-feedback">Please enter an email.</div>
         </div>
 
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
             <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
             <div class="valid-feedback">Looks good!</div>
-            <div class="invalid-feedback">Please enter a password .</div>
+            <div class="invalid-feedback">Please enter a password.</div>
         </div>
-        <button class="btn btn-success">Sign Up</button>
+        <button class="btn btn-success w-100">Sign up</button>
+        <p class="text-muted text-center mt-4 mb-0">Already have an account? <a href="/login">Log in</a></p>
     </form>
+  </div>
+</div>

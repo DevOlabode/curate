@@ -1,12 +1,13 @@
 <%- layout('./layout/boilerplate.ejs') %>
 
-<div class="container mt-5">
-  <h2 class="mb-4"> <%= bookmark.title %> </h2>
-  <ul class="list-group mb-4">
+<div class="container">
+  <p class="page-kicker">Collection bookmark</p>
+  <h2 class="mb-4"><%= bookmark.title %></h2>
+  <ul class="list-group detail-panel mb-4">
     <li class="list-group-item">
-      <a href="<%= bookmark.url %>" target="_blank">Visit URL</a>
+      <a href="<%= bookmark.url %>" target="_blank" rel="noopener noreferrer">Visit URL</a>
     </li>
-    <li class="list-group-item"> <span class="fw-bold">Category</span>: <%= bookmark.category %></li>
+    <li class="list-group-item"><span class="fw-bold">Category</span>: <%= bookmark.category %></li>
     <li class="list-group-item">
       <div class="tags-container">
         <span class="tags-label">Tags:</span>
@@ -14,24 +15,16 @@
       </div>
     </li>
     <% if(!bookmark.notes || bookmark.notes.trim() === ''){ %>
-        <li class="list-group-item opacity-50 fst-italics">No notes provided</li>
+      <li class="list-group-item opacity-50 fst-italic">No notes provided</li>
     <% }else{ %>
-        <li class="list-group-item"> <span class="fw-bold"> Notes </span> : <%= bookmark.notes %></li>
-        <% } %>
+      <li class="list-group-item"><span class="fw-bold">Notes</span>: <%= bookmark.notes %></li>
+    <% } %>
   </ul>
   <div class="d-flex gap-3">
-    <a href="/collections/<%= collection._id %>" class="btn btn-secondary">
-      <i class="fas fa-arrow-left me-1"></i>Back
-    </a>
-
-    <a href="/collections/<%= collection._id %>/bookmarks/<%= bookmark._id %>/edit" class="btn btn-warning">
-      <i class="fas fa-edit me-1"></i>Edit
-    </a>
-
+    <a href="/collections/<%= collection._id %>" class="btn btn-secondary">Back</a>
+    <a href="/collections/<%= collection._id %>/bookmarks/<%= bookmark._id %>/edit" class="btn btn-warning">Edit</a>
     <form action="/collections/<%= collection._id %>/bookmarks/<%= bookmark._id %>?_method=delete" method="POST" style="display: inline;">
-      <button type="submit" class="btn btn-danger">
-        <i class="fas fa-trash me-1"></i>Delete
-      </button>
+      <button type="submit" class="btn btn-danger">Delete</button>
     </form>
   </div>
 </div>

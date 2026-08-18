@@ -1,40 +1,38 @@
 <%- layout('./layout/boilerplate.ejs') %>
 
-<!-- Hero Section -->
 <section class="hero">
   <div class="container">
     <div class="hero-content">
       <div class="hero-text">
+        <div class="hero-kicker">Personal knowledge library</div>
         <h1 class="hero-title">
-          Organize Your <span class="highlight">Development</span> Resources
+          Keep the links worth <span class="highlight">coming back to.</span>
         </h1>
         <p class="hero-description">
-          Build your personal knowledge base. Save, categorize, and access your favorite 
-          development links, tools, and references with smart tagging and organization.
+          Curate is a calm space for developers to save, tag, and revisit tools, docs, and references — organized into collections that actually stay useful.
         </p>
         <div class="hero-stats">
           <div class="stat">
-            <span class="stat-number">1000+</span>
-            <span class="stat-label">Resources</span>
+            <span class="stat-number">Save</span>
+            <span class="stat-label">Anything useful</span>
           </div>
           <div class="stat">
-            <span class="stat-number">50+</span>
-            <span class="stat-label">Categories</span>
+            <span class="stat-number">Sort</span>
+            <span class="stat-label">By tags & collections</span>
           </div>
           <div class="stat">
-            <span class="stat-number">24/7</span>
-            <span class="stat-label">Access</span>
+            <span class="stat-number">Return</span>
+            <span class="stat-label">Whenever you need it</span>
           </div>
         </div>
         <div class="hero-cta">
-          <a href="/bookmark/new" class="btn btn-primary btn-lg">
-            <i class="fas fa-plus"></i>
-            Start Collecting
-          </a>
-          <a href="/bookmark" class="btn btn-outline-light btn-lg">
-            <i class="fas fa-eye"></i>
-            Browse Bookmarks
-          </a>
+          <% if(!currentUser){ %>
+          <a href="/signup" class="btn btn-primary btn-lg">Start collecting</a>
+          <a href="/login" class="btn btn-outline-light btn-lg">I already have an account</a>
+          <% } else { %>
+          <a href="/bookmark/new" class="btn btn-primary btn-lg">Add a bookmark</a>
+          <a href="/bookmark" class="btn btn-outline-light btn-lg">Open library</a>
+          <% } %>
         </div>
       </div>
       <div class="hero-visual">
@@ -45,11 +43,10 @@
               <span class="bookmark-category">Frontend</span>
             </div>
             <h4>React Documentation</h4>
-            <p>Official React docs and tutorials</p>
+            <p>Official docs, patterns, and the pages you always re-open.</p>
             <div class="bookmark-tags">
               <span class="tag">#react</span>
               <span class="tag">#javascript</span>
-              <span class="tag">#frontend</span>
             </div>
           </div>
           <div class="bookmark-card bookmark-card-2">
@@ -58,11 +55,10 @@
               <span class="bookmark-category">Backend</span>
             </div>
             <h4>Node.js API Guide</h4>
-            <p>Backend development resources</p>
+            <p>Endpoints, auth notes, and the stack you trust.</p>
             <div class="bookmark-tags">
               <span class="tag">#nodejs</span>
               <span class="tag">#api</span>
-              <span class="tag">#backend</span>
             </div>
           </div>
           <div class="bookmark-card bookmark-card-3">
@@ -71,11 +67,10 @@
               <span class="bookmark-category">Design</span>
             </div>
             <h4>CSS Grid Layout</h4>
-            <p>Modern CSS techniques</p>
+            <p>Modern layout techniques, saved in one place.</p>
             <div class="bookmark-tags">
               <span class="tag">#css</span>
               <span class="tag">#layout</span>
-              <span class="tag">#design</span>
             </div>
           </div>
         </div>
@@ -84,74 +79,83 @@
   </div>
 </section>
 
-<!-- Features Section -->
-<section class="features">
+<section class="steps">
   <div class="container">
     <div class="section-header">
-      <h2>Why Choose Curate?</h2>
-      <p>Everything you need to organize your development resources</p>
+      <p class="page-kicker">How it works</p>
+      <h2>Collect once. Find it forever.</h2>
+      <p>A simple ritual for the resources you refuse to lose in a browser graveyard.</p>
     </div>
-    <div class="features-grid">
-      <div class="feature-item">
-        <div class="feature-icon">
-          <i class="fas fa-tags"></i>
-        </div>
-        <h3>Collections</h3>
-        <p>Create curated groups of bookmarks to keep related resources neatly organized</p>
+    <div class="steps-grid">
+      <div class="step-item">
+        <div class="step-num">01</div>
+        <h3>Capture</h3>
+        <p>Drop in a URL, title, and a few notes while the context is still fresh.</p>
       </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <i class="fas fa-search"></i>
-        </div>
-        <h3>Quick Search</h3>
-        <p>Find resources instantly with powerful search and filtering</p>
+      <div class="step-item">
+        <div class="step-num">02</div>
+        <h3>Arrange</h3>
+        <p>Tag by topic and file into collections so related work lives together.</p>
       </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <i class="fas fa-mobile-alt"></i>
-        </div>
-        <h3>Mobile Ready</h3>
-        <p>Access your bookmarks anywhere with responsive design</p>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <i class="fas fa-shield-alt"></i>
-        </div>
-        <h3>Secure & Private</h3>
-        <p>Your data stays private and secure with encrypted storage</p>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <i class="fas fa-sync"></i>
-        </div>
-        <h3>Always Synced</h3>
-        <p>Your bookmarks sync across all your devices automatically</p>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <i class="fas fa-bolt"></i>
-        </div>
-        <h3>Lightning Fast</h3>
-        <p>Optimized for speed with instant loading and smooth interactions</p>
+      <div class="step-item">
+        <div class="step-num">03</div>
+        <h3>Return</h3>
+        <p>Open your library later and pick up exactly where your curiosity left off.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA Section -->
-<% if(!currentUser){ %>
-  <section class="cta-section">
+<section class="features">
   <div class="container">
-    <div class="cta-content">
-      <h2>Ready to Organize Your Development Resources?</h2>
-      <p>Join thousands of developers who trust Curate to manage their knowledge base</p>
-      <div class="cta-buttons">
-        <a href="/signup" class="btn btn-primary btn-lg">
-          <i class="fas fa-rocket"></i>
-          Get Started Free
-        </a>
+    <div class="section-header">
+      <p class="page-kicker">Why Curate</p>
+      <h2>Built for people who keep a lot of tabs — on purpose.</h2>
+      <p>Less noise, more signal. A library that feels considered, not cluttered.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon"><i class="fas fa-layer-group"></i></div>
+        <h3>Collections</h3>
+        <p>Group related bookmarks into named sets you can reopen as a whole.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><i class="fas fa-tags"></i></div>
+        <h3>Thoughtful tags</h3>
+        <p>Label resources the way you think — by stack, problem, or mood.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><i class="fas fa-lock"></i></div>
+        <h3>Private by default</h3>
+        <p>Your notes and links stay with your account, not a public feed.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><i class="fas fa-moon"></i></div>
+        <h3>Light & dark</h3>
+        <p>A warm editorial look that stays readable from desk to late night.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><i class="fas fa-mobile-alt"></i></div>
+        <h3>Anywhere</h3>
+        <p>Responsive from the first screen, so the library travels with you.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><i class="fas fa-feather"></i></div>
+        <h3>Quiet UI</h3>
+        <p>No dashboards shouting for attention. Just the links you chose.</p>
       </div>
     </div>
   </div>
 </section>
-  <% } %>
+
+<% if(!currentUser){ %>
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-content">
+      <h2>Start a library you’ll actually use.</h2>
+      <p>Save the first link. The rest of your stack will follow.</p>
+      <a href="/signup" class="btn btn-primary btn-lg">Create a free account</a>
+    </div>
+  </div>
+</section>
+<% } %>

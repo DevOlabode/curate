@@ -1,5 +1,5 @@
 <% if(success && success.length > 0){ %>
-<div class="container mt-4">
+<div class="container flash-stack">
   <% for(let msg of success){ %>
   <div class="alert alert-success" role="alert">
     <i class="fas fa-check-circle"></i>
@@ -9,7 +9,7 @@
 </div>
 <% } %>
 <% if(error && error.length > 0){ %>
-<div class="container mt-4">
+<div class="container flash-stack">
   <% for(let msg of error){ %>
   <div class="alert alert-danger" role="alert">
     <i class="fas fa-exclamation-circle"></i>

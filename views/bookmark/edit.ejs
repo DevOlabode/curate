@@ -1,14 +1,15 @@
 <%- layout('./layout/boilerplate.ejs') %>
 
-<div class="container mt-5">
-  <h2 class="mb-4">Create a New Bookmark</h2>
+<div class="container">
+  <p class="page-kicker">Edit</p>
+  <h2 class="mb-4">Update bookmark</h2>
 
-  <form action="/bookmark/<%= bookmark._id %>?_method=put" method="POST" class="needs-validation" novalidate>
+  <form action="/bookmark/<%= bookmark._id %>?_method=put" method="POST" class="needs-validation form-card" novalidate>
     <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input type="text" id="title" name="title" class="form-control" value="<%= bookmark.title %>" placeholder="Title" required>
         <div class="valid-feedback">Looks good!</div>
-        <div class="invalid-feedback">Please enter a title .</div>
+        <div class="invalid-feedback">Please enter a title.</div>
     </div>
 
     <div class="mb-3">
@@ -34,13 +35,11 @@
 
     <div class="mb-3">
         <label for="notes" class="form-label">Notes</label>
-        <textarea id="notes" name="notes" class="form-control" rows="3" placeholder="Any extra info">
-            <%= bookmark.notes %>
-        </textarea>
+        <textarea id="notes" name="notes" class="form-control" rows="3" placeholder="Any extra info"><%= bookmark.notes %></textarea>
     </div>
 
     <div class="form-actions mt-4">
-      <button type="submit" class="btn btn-success">Update Bookmark</button>
+      <button type="submit" class="btn btn-success">Save changes</button>
       <a href="/bookmark" class="btn btn-secondary">Back</a>
     </div>
   </form>

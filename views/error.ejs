@@ -1,12 +1,12 @@
 <%- layout('./layout/boilerplate.ejs') %>
-<div class="row">
-    <div class="col-6 offset-3 mt-5">
-        <div class="alert alert-danger" role="alert">
-            <h4 class="alert-heading"><%= err.message %></h4>
-            <hr>
-            <p><%= err.stack %></p>
-            <hr>
-        </div>
+
+<div class="container error-shell">
+    <div class="empty-state">
+        <p class="page-kicker">Something went wrong</p>
+        <h2 class="mb-3"><%= err.message %></h2>
+        <% if (process.env.NODE_ENV !== 'production' && err.stack) { %>
+        <p class="text-muted" style="white-space: pre-wrap; text-align: left; font-size: 0.85rem;"><%= err.stack %></p>
+        <% } %>
+        <a href="/" class="btn btn-primary mt-4">Back home</a>
     </div>
 </div>
-

@@ -106,8 +106,10 @@ if (typeof module !== 'undefined' && module.exports) {
 
 
 const editButton = document.querySelector('#editUser');
-const pwForm = document.querySelector('.pw')
+const pwForm = document.querySelector('.pw');
 
-editButton.addEventListener('click', ()=>{
-    pwForm.style.display = pwForm.style.display === 'inline' ? 'none' : 'inline';
-});
+if (editButton && pwForm) {
+    editButton.addEventListener('click', () => {
+        pwForm.style.display = pwForm.style.display === 'block' ? 'none' : 'block';
+    });
+}

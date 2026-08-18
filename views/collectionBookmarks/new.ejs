@@ -1,19 +1,20 @@
 <%- layout('./layout/boilerplate.ejs') %>
 
-<div class="container mt-5">
-  <h2 class="mb-4">Create a New Bookmark</h2>
+<div class="container">
+  <p class="page-kicker">New</p>
+  <h2 class="mb-4">Add to collection</h2>
 
-  <form action="/collections/<%= collection._id %>/bookmarks" method="POST" class="needs-validation" novalidate>
+  <form action="/collections/<%= collection._id %>/bookmarks" method="POST" class="needs-validation form-card" novalidate>
     <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input type="text" id="title" name="title" class="form-control" placeholder="Title" required>
         <div class="valid-feedback">Looks good!</div>
-        <div class="invalid-feedback">Please enter a title .</div>
+        <div class="invalid-feedback">Please enter a title.</div>
     </div>
 
     <div class="mb-3">
         <label for="url" class="form-label">URL</label>
-        <input type="text" id="url" name="url" class="form-control" placeholder="URL" required>
+        <input type="text" id="url" name="url" class="form-control" placeholder="https://" required>
         <div class="valid-feedback">Looks good!</div>
         <div class="invalid-feedback">Please enter a URL.</div>
     </div>
@@ -38,7 +39,7 @@
     </div>
 
     <div class="form-actions mt-4">
-      <button type="submit" class="btn btn-success">Add Bookmark</button>
+      <button type="submit" class="btn btn-success">Add bookmark</button>
       <a href="/collections/<%= collection._id %>" class="btn btn-secondary">Back</a>
     </div>
   </form>

@@ -2,7 +2,7 @@
 (function() {
   var html = document.documentElement;
   var btn = document.getElementById('theme-toggle');
-  var saved = localStorage.getItem('dev-bookmark-theme') || 'light';
+  var saved = localStorage.getItem('curate-theme') || localStorage.getItem('dev-bookmark-theme') || 'light';
   html.setAttribute('data-theme', saved);
   updateIcon(saved);
   
@@ -11,7 +11,7 @@
       var current = html.getAttribute('data-theme');
       var next = current === 'dark' ? 'light' : 'dark';
       html.setAttribute('data-theme', next);
-      localStorage.setItem('dev-bookmark-theme', next);
+      localStorage.setItem('curate-theme', next);
       updateIcon(next);
     });
   }

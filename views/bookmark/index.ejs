@@ -1,16 +1,21 @@
 <%- layout('./layout/boilerplate.ejs') %>
 
-<div class="container mt-4">
-  <h3 class="text-center mb-4">Curate</h3>
-  <div class="d-flex justify-content-center">
-    <a href="/bookmark/new" class="btn btn-primary mb-4">Add Bookmark</a>
+<div class="container">
+  <div class="page-header">
+    <div>
+      <p class="page-kicker">Library</p>
+      <h2>Your bookmarks</h2>
+      <p class="text-muted mb-0">Everything you’ve chosen to keep close.</p>
+    </div>
+    <a href="/bookmark/new" class="btn btn-primary">Add bookmark</a>
   </div>
-  
+
   <% if(bookmarks.length === 0) { %>
-    <div class="text-center mt-5">
-      <i class="fas fa-bookmark fa-3x text-muted mb-3"></i>
-      <h4 class="text-muted">No bookmarks yet</h4>
-      <p class="text-muted">Create your first bookmark to get started!</p>
+    <div class="empty-state">
+      <i class="fas fa-bookmark fa-2x mb-3"></i>
+      <h4>No bookmarks yet</h4>
+      <p class="text-muted">Save the first link and start building your library.</p>
+      <a href="/bookmark/new" class="btn btn-primary">Create one</a>
     </div>
   <% } else { %>
     <ul class="list-group">

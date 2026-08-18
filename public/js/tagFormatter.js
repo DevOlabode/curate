@@ -1,4 +1,4 @@
-// Tag Formatter for Developer Bookmark Vault
+// Tag Formatter for Curate
 // Transforms comma-separated tags into styled hashtags
 
 class TagFormatter {

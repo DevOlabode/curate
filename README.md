@@ -1,4 +1,4 @@
-# Developer Bookmark Vault
+# Curate
 
 > **Your Personal Knowledge Management System for Development Resources**
 
@@ -86,7 +86,7 @@ A full-stack web application designed specifically for developers to save, organ
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/DevOlabode/developer-bookmark-vault.git
+   git clone https://github.com/DevOlabode/curate.git
    ```
 
 2. **Install dependencies**
@@ -133,7 +133,7 @@ A full-stack web application designed specifically for developers to save, organ
 ## Project Structure
 
 ```
-developer-bookmark-vault/
+curate/
 ├──  controllers/          # Route controllers
 │   ├── bookmarks.js          # Bookmark CRUD operations
 │   ├── collections.js        # Collection management
@@ -243,7 +243,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Support
 
 If you have any questions or need help, please:
-1. Check the [Issues](https://github.com/yourusername/developer-bookmark-vault/issues) page
+1. Check the [Issues](https://github.com/DevOlabode/curate/issues) page
 2. Create a new issue with detailed information
 3. Join our community discussions
 

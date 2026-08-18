@@ -15,7 +15,7 @@ module.exports.signUp = async(req, res)=>{
         req.login(registeredUser, (err) =>{
             if(err) return next(err)
             
-        req.flash('success','Welcome to Developer Bookmarks Vault');
+        req.flash('success','Welcome to Curate');
         res.redirect('/')
         })
     }catch(err){

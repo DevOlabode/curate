@@ -1,4 +1,4 @@
-# Curate Extension — Authentication
+# Curate Extension - Authentication
 
 ## Overview
 
@@ -29,9 +29,9 @@ sequenceDiagram
 
 ## Server secrets (never in extension)
 
-- `JWT_SECRET` — signs tokens
-- `SESSION_SECRET` — web sessions only
-- `MONGO_URI` — database
+- `JWT_SECRET` - signs tokens
+- `SESSION_SECRET` - web sessions only
+- `MONGO_URI` - database
 
 ## Expired / invalid tokens
 
@@ -53,6 +53,6 @@ sequenceDiagram
 
 ## Security notes
 
-- Tokens are inspectable if a device is compromised — use HTTPS only in production.
+- Tokens are inspectable if a device is compromised - use HTTPS only in production.
 - No refresh-token rotation in v1; tokens expire per `JWT_EXPIRES_IN` (default 7d).
 - Password never stored in extension storage.

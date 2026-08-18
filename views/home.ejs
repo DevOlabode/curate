@@ -4,74 +4,58 @@
   <div class="container">
     <div class="hero-content">
       <div class="hero-text">
-        <div class="hero-kicker">Personal knowledge library</div>
+        <div class="hero-kicker">Browser extension</div>
         <h1 class="hero-title">
           Keep the links worth <span class="highlight">coming back to.</span>
         </h1>
         <p class="hero-description">
-          Curate is a calm space for developers to save, tag, and revisit tools, docs, and references — organized into collections that actually stay useful.
+          Curate is a popup for developers. Save tools, docs, and references, then group them into collections that stay useful.
         </p>
         <div class="hero-stats">
           <div class="stat">
             <span class="stat-number">Save</span>
-            <span class="stat-label">Anything useful</span>
+            <span class="stat-label">From the toolbar</span>
           </div>
           <div class="stat">
             <span class="stat-number">Sort</span>
-            <span class="stat-label">By tags & collections</span>
+            <span class="stat-label">Tags and collections</span>
           </div>
           <div class="stat">
             <span class="stat-number">Return</span>
             <span class="stat-label">Whenever you need it</span>
           </div>
         </div>
-        <div class="hero-cta">
-          <% if(!currentUser){ %>
-          <a href="/signup" class="btn btn-primary btn-lg">Start collecting</a>
-          <a href="/login" class="btn btn-outline-light btn-lg">I already have an account</a>
+        <div class="hero-cta" id="download">
+          <% if (chromeStoreUrl) { %>
+          <a href="<%= chromeStoreUrl %>" class="btn btn-primary btn-lg" rel="noopener noreferrer">Add to Chrome</a>
           <% } else { %>
-          <a href="/bookmark/new" class="btn btn-primary btn-lg">Add a bookmark</a>
-          <a href="/bookmark" class="btn btn-outline-light btn-lg">Open library</a>
+          <span class="btn btn-primary btn-lg is-disabled" aria-disabled="true">Add to Chrome · Coming soon</span>
+          <% } %>
+          <% if (edgeStoreUrl) { %>
+          <a href="<%= edgeStoreUrl %>" class="btn btn-outline-light btn-lg" rel="noopener noreferrer">Add to Edge</a>
+          <% } else { %>
+          <span class="btn btn-outline-light btn-lg is-disabled" aria-disabled="true">Add to Edge · Coming soon</span>
           <% } %>
         </div>
+        <p class="install-note">After installing, click the Curate icon in your toolbar and sign in.</p>
       </div>
       <div class="hero-visual">
-        <div class="bookmark-showcase">
-          <div class="bookmark-card bookmark-card-1">
-            <div class="bookmark-header">
-              <i class="fas fa-code"></i>
-              <span class="bookmark-category">Frontend</span>
-            </div>
-            <h4>React Documentation</h4>
-            <p>Official docs, patterns, and the pages you always re-open.</p>
-            <div class="bookmark-tags">
-              <span class="tag">#react</span>
-              <span class="tag">#javascript</span>
-            </div>
+        <div class="popup-mock" aria-hidden="true">
+          <div class="popup-mock-bar">
+            <span class="popup-mock-dot"></span>
+            <span>Curate</span>
           </div>
-          <div class="bookmark-card bookmark-card-2">
-            <div class="bookmark-header">
-              <i class="fas fa-server"></i>
-              <span class="bookmark-category">Backend</span>
-            </div>
-            <h4>Node.js API Guide</h4>
-            <p>Endpoints, auth notes, and the stack you trust.</p>
-            <div class="bookmark-tags">
-              <span class="tag">#nodejs</span>
-              <span class="tag">#api</span>
-            </div>
+          <div class="popup-mock-row">
+            <strong>React Documentation</strong>
+            <span>react.dev</span>
           </div>
-          <div class="bookmark-card bookmark-card-3">
-            <div class="bookmark-header">
-              <i class="fas fa-palette"></i>
-              <span class="bookmark-category">Design</span>
-            </div>
-            <h4>CSS Grid Layout</h4>
-            <p>Modern layout techniques, saved in one place.</p>
-            <div class="bookmark-tags">
-              <span class="tag">#css</span>
-              <span class="tag">#layout</span>
-            </div>
+          <div class="popup-mock-row">
+            <strong>Node.js API Guide</strong>
+            <span>nodejs.org</span>
+          </div>
+          <div class="popup-mock-row">
+            <strong>CSS Grid Layout</strong>
+            <span>developer.mozilla.org</span>
           </div>
         </div>
       </div>
@@ -83,24 +67,24 @@
   <div class="container">
     <div class="section-header">
       <p class="page-kicker">How it works</p>
-      <h2>Collect once. Find it forever.</h2>
+      <h2>Install once. Find it forever.</h2>
       <p>A simple ritual for the resources you refuse to lose in a browser graveyard.</p>
     </div>
     <div class="steps-grid">
       <div class="step-item">
         <div class="step-num">01</div>
-        <h3>Capture</h3>
-        <p>Drop in a URL, title, and a few notes while the context is still fresh.</p>
+        <h3>Install</h3>
+        <p>Add Curate to Chrome or Edge, then pin it to your toolbar.</p>
       </div>
       <div class="step-item">
         <div class="step-num">02</div>
-        <h3>Arrange</h3>
-        <p>Tag by topic and file into collections so related work lives together.</p>
+        <h3>Capture</h3>
+        <p>Open the popup, sign in, and save a URL with a title, tags, and a category.</p>
       </div>
       <div class="step-item">
         <div class="step-num">03</div>
-        <h3>Return</h3>
-        <p>Open your library later and pick up exactly where your curiosity left off.</p>
+        <h3>Arrange</h3>
+        <p>File related links into collections so related work lives together.</p>
       </div>
     </div>
   </div>
@@ -109,20 +93,25 @@
 <section class="features">
   <div class="container">
     <div class="section-header">
-      <p class="page-kicker">Why Curate</p>
-      <h2>Built for people who keep a lot of tabs — on purpose.</h2>
-      <p>Less noise, more signal. A library that feels considered, not cluttered.</p>
+      <p class="page-kicker">What you get</p>
+      <h2>A library that lives in your toolbar.</h2>
+      <p>These are the features in the extension today.</p>
     </div>
     <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon"><i class="fas fa-bookmark"></i></div>
+        <h3>Bookmarks</h3>
+        <p>Save a title, URL, category, and tags from the popup, then open them later in one click.</p>
+      </div>
       <div class="feature-item">
         <div class="feature-icon"><i class="fas fa-layer-group"></i></div>
         <h3>Collections</h3>
         <p>Group related bookmarks into named sets you can reopen as a whole.</p>
       </div>
       <div class="feature-item">
-        <div class="feature-icon"><i class="fas fa-tags"></i></div>
-        <h3>Thoughtful tags</h3>
-        <p>Label resources the way you think — by stack, problem, or mood.</p>
+        <div class="feature-icon"><i class="fas fa-user"></i></div>
+        <h3>Sign in from the popup</h3>
+        <p>Create an account or log in without leaving the extension.</p>
       </div>
       <div class="feature-item">
         <div class="feature-icon"><i class="fas fa-lock"></i></div>
@@ -131,31 +120,35 @@
       </div>
       <div class="feature-item">
         <div class="feature-icon"><i class="fas fa-moon"></i></div>
-        <h3>Light & dark</h3>
+        <h3>Light and dark</h3>
         <p>A warm editorial look that stays readable from desk to late night.</p>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon"><i class="fas fa-mobile-alt"></i></div>
-        <h3>Anywhere</h3>
-        <p>Responsive from the first screen, so the library travels with you.</p>
       </div>
       <div class="feature-item">
         <div class="feature-icon"><i class="fas fa-feather"></i></div>
         <h3>Quiet UI</h3>
-        <p>No dashboards shouting for attention. Just the links you chose.</p>
+        <p>Your library is the home screen. Forms appear only when you add something.</p>
       </div>
     </div>
   </div>
 </section>
 
-<% if(!currentUser){ %>
 <section class="cta-section">
   <div class="container">
     <div class="cta-content">
-      <h2>Start a library you’ll actually use.</h2>
-      <p>Save the first link. The rest of your stack will follow.</p>
-      <a href="/signup" class="btn btn-primary btn-lg">Create a free account</a>
+      <h2>Get the extension.</h2>
+      <p>Install Curate, open the popup, and save the first link.</p>
+      <div class="hero-cta justify-content-center">
+        <% if (chromeStoreUrl) { %>
+        <a href="<%= chromeStoreUrl %>" class="btn btn-primary btn-lg" rel="noopener noreferrer">Add to Chrome</a>
+        <% } else { %>
+        <span class="btn btn-primary btn-lg is-disabled" aria-disabled="true">Add to Chrome · Coming soon</span>
+        <% } %>
+        <% if (edgeStoreUrl) { %>
+        <a href="<%= edgeStoreUrl %>" class="btn btn-outline-light btn-lg" rel="noopener noreferrer">Add to Edge</a>
+        <% } else { %>
+        <span class="btn btn-outline-light btn-lg is-disabled" aria-disabled="true">Add to Edge · Coming soon</span>
+        <% } %>
+      </div>
     </div>
   </div>
 </section>
-<% } %>

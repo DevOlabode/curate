@@ -1,4 +1,4 @@
-# Security Audit — Curate Browser Extension (Phase 11)
+# Security Audit - Curate Browser Extension (Phase 11)
 
 **Date:** 2026-08-18  
 **Scope:** `extension/`, `src/shared/`, `/api/v1` backend routes
@@ -27,15 +27,15 @@
 
 ## Findings
 
-### Low — Static host permissions for custom API URLs
+### Low - Static host permissions for custom API URLs
 
 Users who set a custom API base URL in options must also add that origin to `host_permissions` in `manifest.json` and rebuild. Documented in options UI and store readiness doc.
 
-### Low — JWT in local storage
+### Low - JWT in local storage
 
 Acceptable for v1. Tokens are revocable only by expiry or password change (no server-side denylist yet).
 
-### Informational — No refresh tokens
+### Informational - No refresh tokens
 
 Users re-authenticate after JWT expiry.
 

@@ -1,4 +1,4 @@
-/** Default API base URLs — no secrets. Overridable in options. */
+/** Default API base URLs - no secrets. Overridable in options. */
 export const DEFAULT_API_URLS = {
   development: 'http://localhost:3000',
   production: 'https://developer-bookmark-vault-5.onrender.com',

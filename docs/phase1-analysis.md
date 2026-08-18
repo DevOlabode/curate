@@ -1,4 +1,4 @@
-# Phase 1 — Application Analysis
+# Phase 1 - Application Analysis
 
 ## Stack
 
@@ -14,12 +14,12 @@
 
 ## Routes (web)
 
-- `/` — home
-- `/signup`, `/login`, `/logout` — auth
-- `/bookmark/*` — bookmark CRUD
-- `/collections/*` — collection CRUD
-- `/collections/:id/bookmarks/*` — collection-scoped bookmarks
-- `/user/*` — profile
+- `/` - home
+- `/signup`, `/login`, `/logout` - auth
+- `/bookmark/*` - bookmark CRUD
+- `/collections/*` - collection CRUD
+- `/collections/:id/bookmarks/*` - collection-scoped bookmarks
+- `/user/*` - profile
 
 ## Auth flow (web)
 
@@ -38,7 +38,7 @@
 | Web session | Server session cookie |
 | Extension (planned) | `chrome.storage.local` for token + preferences |
 
-## Environment variables (server only — never in extension)
+## Environment variables (server only - never in extension)
 
 - `MONGO_URI` / `DATABASE_URL`
 - `SESSION_SECRET`
@@ -51,7 +51,7 @@
 | Web component | Extension destination |
 |---------------|----------------------|
 | Bookmark CRUD logic | Shared API controllers + popup |
-| Collection CRUD | Options page + API |
+| Collection CRUD | Popup library + API |
 | Login/signup | Popup auth views |
 | CSS design tokens | `popup.css` / `options.css` (subset) |
 | Navbar, hero, footer | Not used in popup |
@@ -60,8 +60,8 @@
 
 ## MV3 considerations
 
-- No persistent background page — use service worker.
-- CSP on extension pages — no inline scripts, no `eval`.
+- No persistent background page - use service worker.
+- CSP on extension pages - no inline scripts, no `eval`.
 - Host permissions scoped to API origin only.
 - All extension JavaScript treat as public.
 

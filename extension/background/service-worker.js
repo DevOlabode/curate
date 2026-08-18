@@ -1,5 +1,5 @@
 /**
- * MV3 service worker — auth coordination and install lifecycle.
+ * MV3 service worker - auth coordination and install lifecycle.
  * Does not assume persistent execution.
  */
 

@@ -1,5 +1,5 @@
 /* ============================================================
-   Curate — Editorial Design System
+   Curate - Editorial Design System
    ============================================================ */
 
 :root {
@@ -389,6 +389,15 @@ a:hover { color: var(--primary-dark); }
 
 .btn-lg { padding: 14px 26px; font-size: 1rem; }
 .btn-sm { padding: 8px 12px; font-size: 0.8rem; }
+
+.btn.is-disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.55;
+  pointer-events: none;
+  box-shadow: none;
+  transform: none;
+  cursor: default;
+}
 
 /* ---------- Forms ---------- */
 .form-control,
@@ -800,6 +809,66 @@ html[data-theme="dark"] .tag {
 
 .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
 
+.install-note {
+  margin: 14px 0 0;
+  font-size: 0.88rem;
+  color: rgba(246, 240, 230, 0.58);
+}
+
+.popup-mock {
+  width: min(340px, 100%);
+  margin-left: auto;
+  background: rgba(255, 252, 247, 0.96);
+  color: var(--ink);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+html[data-theme="dark"] .popup-mock {
+  background: rgba(28, 25, 22, 0.94);
+  color: var(--ink-soft);
+}
+
+.popup-mock-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-display);
+  font-weight: 650;
+  color: var(--text-heading);
+}
+
+.popup-mock-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 8px;
+  background: linear-gradient(160deg, var(--ember), #8f2e12);
+}
+
+.popup-mock-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.popup-mock-row:last-child { border-bottom: 0; }
+
+.popup-mock-row strong {
+  color: var(--text-heading);
+  font-size: 0.95rem;
+}
+
+.popup-mock-row span {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
 .bookmark-showcase {
   position: relative;
   min-height: 420px;
@@ -1049,6 +1118,10 @@ html[data-theme="dark"] .hero .bookmark-card {
   .bookmark-showcase {
     min-height: 360px;
     margin-top: 12px;
+  }
+
+  .popup-mock {
+    margin: 12px auto 0;
   }
 
   .bookmark-card-1 { left: 8%; }

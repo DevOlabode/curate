@@ -54,3 +54,18 @@ export async function getSessionUser() {
     return null;
   }
 }
+
+export async function updateProfile(payload) {
+  const { user } = await api.updateMe(payload);
+  await setAuth(await getToken(), user);
+  return user;
+}
+
+export async function changePassword(payload) {
+  return api.changePassword(payload);
+}
+
+export async function deleteAccount() {
+  await api.deleteAccount();
+  await clearAuth();
+}

@@ -76,6 +76,11 @@ export const api = {
       body: JSON.stringify(payload),
     }),
   me: () => apiRequest('/auth/me'),
+  updateMe: (payload) =>
+    apiRequest('/auth/me', { method: 'PUT', body: JSON.stringify(payload) }),
+  changePassword: (payload) =>
+    apiRequest('/auth/password', { method: 'PUT', body: JSON.stringify(payload) }),
+  deleteAccount: () => apiRequest('/auth/me', { method: 'DELETE' }),
   logout: () => apiRequest('/auth/logout', { method: 'POST' }),
   listBookmarks: () => apiRequest('/bookmarks'),
   createBookmark: (payload) =>

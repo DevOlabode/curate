@@ -20,7 +20,7 @@
         <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle theme" title="Toggle theme">
           <span aria-hidden="true">◐</span>
         </button>
-        <button id="open-options" class="icon-btn" type="button" aria-label="Settings" title="Settings">⚙</button>
+        <button id="open-settings" class="icon-btn" type="button" aria-label="Settings" title="Settings" hidden>⚙</button>
       </div>
     </header>
 
@@ -76,30 +76,130 @@
       </div>
 
       <form id="add-form" class="add-form" hidden>
-        <label class="field">
-          <span>Title</span>
-          <input name="title" required>
-        </label>
-        <label class="field">
-          <span>URL</span>
-          <input name="url" required placeholder="voult.dev">
-        </label>
-        <label class="field">
-          <span>Category</span>
-          <input name="category" placeholder="Frontend">
-        </label>
-        <label class="field">
-          <span>Tags</span>
-          <input name="tags" placeholder="react, css">
-        </label>
+        <div class="composer-tabs" role="tablist">
+          <button type="button" class="composer-tab is-active" data-type="bookmark">Bookmark</button>
+          <button type="button" class="composer-tab" data-type="collection">Collection</button>
+        </div>
+
+        <div id="bookmark-fields">
+          <label class="field">
+            <span>Title</span>
+            <input name="title">
+          </label>
+          <label class="field">
+            <span>URL</span>
+            <input name="url" placeholder="voult.dev">
+          </label>
+          <label class="field">
+            <span>Category</span>
+            <input name="category" placeholder="Frontend">
+          </label>
+          <label class="field">
+            <span>Tags</span>
+            <input name="tags" placeholder="react, css">
+          </label>
+          <label class="field">
+            <span>Collection</span>
+            <select name="collectionId" id="bookmark-collection">
+              <option value="">None</option>
+            </select>
+          </label>
+        </div>
+
+        <div id="collection-fields" hidden>
+          <label class="field">
+            <span>Name</span>
+            <input name="name">
+          </label>
+          <label class="field">
+            <span>Description</span>
+            <input name="description" placeholder="Optional">
+          </label>
+        </div>
+
         <div class="row-actions">
           <button class="btn btn-primary btn-sm" type="submit">Save</button>
           <button class="btn btn-secondary btn-sm" type="button" id="cancel-add">Cancel</button>
         </div>
       </form>
 
-      <div id="bookmark-list" class="bookmark-list"></div>
-      <p id="empty-state" class="empty" hidden>No bookmarks yet.</p>
+      <div class="library-section">
+        <h2 class="section-title">Collections</h2>
+        <div id="collection-list" class="collection-list"></div>
+        <p id="collections-empty" class="empty" hidden>No collections yet.</p>
+      </div>
+
+      <div class="library-section">
+        <h2 class="section-title">Bookmarks</h2>
+        <div id="bookmark-list" class="bookmark-list"></div>
+        <p id="empty-state" class="empty" hidden>No bookmarks yet.</p>
+      </div>
+    </section>
+
+    <section id="view-collection" class="view" hidden>
+      <button type="button" class="back-btn" id="collection-back">Back to library</button>
+      <h1 class="view-title" id="collection-title"></h1>
+      <p class="view-subtitle" id="collection-description"></p>
+      <div id="collection-bookmarks" class="bookmark-list"></div>
+      <p id="collection-empty" class="empty" hidden>No bookmarks in this collection.</p>
+    </section>
+
+    <section id="view-settings" class="view" hidden>
+      <button type="button" class="back-btn" id="settings-back">Back to library</button>
+      <h1 class="view-title">Account</h1>
+      <p class="view-subtitle" id="settings-user-line"></p>
+
+      <form id="profile-form" class="stack-form">
+        <h2 class="section-title">Edit profile</h2>
+        <label class="field">
+          <span>First name</span>
+          <input name="firstName" required>
+        </label>
+        <label class="field">
+          <span>Last name</span>
+          <input name="lastName" required>
+        </label>
+        <label class="field">
+          <span>Username</span>
+          <input name="username" required autocomplete="username">
+        </label>
+        <label class="field">
+          <span>Email</span>
+          <input name="email" type="email" required autocomplete="email">
+        </label>
+        <button class="btn btn-primary btn-sm" type="submit">Save profile</button>
+      </form>
+
+      <form id="password-form" class="stack-form settings-block">
+        <h2 class="section-title">Change password</h2>
+        <label class="field">
+          <span>Current password</span>
+          <input name="currentPassword" type="password" required autocomplete="current-password">
+        </label>
+        <label class="field">
+          <span>New password</span>
+          <input name="newPassword" type="password" required minlength="8" autocomplete="new-password">
+        </label>
+        <label class="field">
+          <span>Confirm new password</span>
+          <input name="confirmPassword" type="password" required minlength="8" autocomplete="new-password">
+        </label>
+        <button class="btn btn-primary btn-sm" type="submit">Update password</button>
+      </form>
+
+      <div class="settings-block">
+        <button class="btn btn-secondary" type="button" id="logout-btn">Log out</button>
+      </div>
+
+      <form id="delete-form" class="stack-form settings-block danger-panel">
+        <h2 class="section-title">Delete account</h2>
+        <p class="hint">This permanently deletes your profile, bookmarks, and collections. Type your username to confirm.</p>
+        <label class="field">
+          <span>Username</span>
+          <input name="confirmUsername" required autocomplete="off">
+        </label>
+        <button class="btn btn-danger" type="submit">Delete account</button>
+      </form>
     </section>
   </div>
   <script type="module" src="popup.js"></script>

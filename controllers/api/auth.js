@@ -1,4 +1,6 @@
 const User = require('../../models/user');
+const Bookmark = require('../../models/bookmark');
+const Collection = require('../../models/collection');
 const { signToken } = require('../../utils/jwt');
 const ExpressError = require('../../utils/expressError');
 const { registrationErrorMessage } = require('../../utils/duplicateKeyError');
@@ -65,6 +67,65 @@ module.exports.me = async (req, res) => {
 };
 
 module.exports.logout = async (_req, res) => {
+  res.json({ ok: true });
+};
+
+module.exports.updateMe = async (req, res) => {
+  const firstName = typeof req.body.firstName === 'string' ? req.body.firstName.trim() : '';
+  const lastName = typeof req.body.lastName === 'string' ? req.body.lastName.trim() : '';
+  const username = typeof req.body.username === 'string' ? req.body.username.trim() : '';
+  const email = typeof req.body.email === 'string' ? req.body.email.trim() : '';
+
+  if (!firstName || !lastName || !username || !email) {
+    throw new ExpressError('Please fill in all profile fields.', 400);
+  }
+
+  const user = req.user;
+  user.firstName = firstName;
+  user.lastName = lastName;
+  user.username = username;
+  user.email = email;
+
+  try {
+    await user.save();
+  } catch (err) {
+    throw new ExpressError(registrationErrorMessage(err), 400);
+  }
+
+  res.json({ user: publicUser(user) });
+};
+
+module.exports.changePassword = async (req, res) => {
+  const { currentPassword, newPassword, confirmPassword } = req.body;
+
+  if (!currentPassword || !newPassword) {
+    throw new ExpressError('Please enter your current and new password.', 400);
+  }
+  if (newPassword.length < 8) {
+    throw new ExpressError('Please choose a password with at least 8 characters.', 400);
+  }
+  if (newPassword !== confirmPassword) {
+    throw new ExpressError('Those passwords don’t match.', 400);
+  }
+  if (currentPassword === newPassword) {
+    throw new ExpressError('Choose a password that’s different from your current one.', 400);
+  }
+
+  const isValid = await req.user.authenticate(currentPassword);
+  if (!isValid.user) {
+    throw new ExpressError('That current password isn’t correct.', 400);
+  }
+
+  await req.user.setPassword(newPassword);
+  await req.user.save();
+  res.json({ ok: true, message: 'Your password is updated.' });
+};
+
+module.exports.deleteMe = async (req, res) => {
+  const userId = req.user._id;
+  await Bookmark.deleteMany({ user: userId });
+  await Collection.deleteMany({ owner: userId });
+  await User.findByIdAndDelete(userId);
   res.json({ ok: true });
 };
 

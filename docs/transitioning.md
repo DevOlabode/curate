@@ -1,6 +1,6 @@
 For your current Curate web app, I’d give Cursor a **single comprehensive engineering task**, but explicitly tell it to preserve existing functionality and avoid inventing features.
 
-# Engineering Task — Convert Bookmark Vault Web App to Browser Extension
+# Engineering Task - Convert Bookmark Vault Web App to Browser Extension
 
 ## Objective
 
@@ -17,7 +17,7 @@ Do **not** introduce unrelated features or redesign the product unless required 
 
 ---
 
-## Phase 1 — Analyze the Existing Application
+## Phase 1 - Analyze the Existing Application
 
 Before making code changes:
 
@@ -53,7 +53,7 @@ Produce an implementation plan before proceeding.
 
 ---
 
-# Phase 2 — Extension Architecture
+# Phase 2 - Extension Architecture
 
 Implement a proper Manifest V3 architecture.
 
@@ -84,7 +84,7 @@ Prefer reusable shared components and utilities.
 
 ---
 
-# Phase 3 — Manifest V3
+# Phase 3 - Manifest V3
 
 Create a valid production Manifest V3 configuration.
 
@@ -106,7 +106,7 @@ Do not request permissions simply because they might be useful later.
 
 ---
 
-# Phase 4 — Convert the Existing UI
+# Phase 4 - Convert the Existing UI
 
 Adapt the existing Bookmark Vault interface for extension usage.
 
@@ -137,7 +137,7 @@ Do not add unrelated features.
 
 ---
 
-# Phase 5 — Authentication
+# Phase 5 - Authentication
 
 Audit the existing authentication system carefully.
 
@@ -161,7 +161,7 @@ Document the authentication flow.
 
 ---
 
-# Phase 6 — API Integration
+# Phase 6 - API Integration
 
 Ensure the extension can communicate with the existing Bookmark Vault backend.
 
@@ -185,7 +185,7 @@ If backend changes are required, document exactly why they are required before m
 
 ---
 
-# Phase 7 — Extension Storage
+# Phase 7 - Extension Storage
 
 Determine whether existing application storage should remain as-is or be migrated to browser extension storage.
 
@@ -203,7 +203,7 @@ Do not store sensitive information unnecessarily.
 
 ---
 
-# Phase 8 — Background Service Worker
+# Phase 8 - Background Service Worker
 
 Create a background service worker only where it provides actual value.
 
@@ -223,7 +223,7 @@ Do not assume the service worker remains alive indefinitely.
 
 ---
 
-# Phase 9 — Browser Compatibility
+# Phase 9 - Browser Compatibility
 
 The extension must work on:
 
@@ -243,7 +243,7 @@ Do not create two separate implementations unless absolutely necessary.
 
 ---
 
-# Phase 10 — Build System
+# Phase 10 - Build System
 
 Create a reliable production build process.
 
@@ -273,7 +273,7 @@ Do not unnecessarily replace the existing build system.
 
 ---
 
-# Phase 11 — Security Audit
+# Phase 11 - Security Audit
 
 Perform a security review specifically for a browser extension.
 
@@ -311,7 +311,7 @@ Do not expose secrets through the extension bundle.
 
 ---
 
-# Phase 12 — Privacy and Store Readiness
+# Phase 12 - Privacy and Store Readiness
 
 Prepare the project for Chrome Web Store and Microsoft Edge Add-ons submission.
 
@@ -335,7 +335,7 @@ Document what user data is processed and why.
 
 ---
 
-# Phase 13 — Testing
+# Phase 13 - Testing
 
 Create or update tests where appropriate.
 
@@ -381,7 +381,7 @@ At minimum, manually verify:
 
 ---
 
-# Phase 14 — Production Audit
+# Phase 14 - Production Audit
 
 After implementation, perform a final audit as if you were preparing the extension for public release.
 

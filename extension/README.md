@@ -1,6 +1,6 @@
 # Curate Extension
 
-Manifest V3 browser extension for [Curate](https://github.com/DevOlabode/curate) — save and organize development bookmarks via the Curate API.
+Manifest V3 browser extension for [Curate](https://github.com/DevOlabode/curate) - save and organize development bookmarks via the Curate API.
 
 Targets **Google Chrome** and **Microsoft Edge** (Chromium).
 
@@ -32,8 +32,10 @@ Output: `dist/extension/`
 
 1. Copy `.env.example` → `.env` and set `JWT_SECRET`.
 2. Start the web/API server: `npm run dev`
-3. In extension **Settings** (options page), set environment to **Development** (`http://localhost:3000`).
+3. Open extension options from `chrome://extensions` (Details, then Extension options) and set environment to **Development** (`http://localhost:3000`).
 4. Rebuild after source changes: `npm run build:extension`, then reload the extension.
+
+API connection (environment and base URL) is developer-only. Open it from `chrome://extensions` (Details, then Extension options). It is not shown in the popup.
 
 ## Scripts
 
@@ -49,7 +51,7 @@ See `docs/phase1-analysis.md`, `docs/authentication.md`, `docs/security-audit.md
 
 ## Permissions
 
-- `storage` — auth token and preferences
-- Host permissions — Curate API (production + localhost for dev)
+- `storage` - auth token and preferences
+- Host permissions - Curate API (production + localhost for dev)
 
 No content scripts. No broad site access.

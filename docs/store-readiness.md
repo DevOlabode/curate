@@ -1,4 +1,4 @@
-# Store & Privacy Readiness — Curate Extension (Phase 12)
+# Store & Privacy Readiness - Curate Extension (Phase 12)
 
 ## Extension metadata
 
@@ -32,8 +32,8 @@ The extension **does not**:
 
 Copy into store submission:
 
-> **storage** — Saves your login token and extension preferences on your device.  
-> **host_permissions** — Allows the extension to sync bookmarks with the Curate server you configure.
+> **storage** - Saves your login token and extension preferences on your device.  
+> **host_permissions** - Allows the extension to sync bookmarks with the Curate server.
 
 ## Privacy policy requirements
 

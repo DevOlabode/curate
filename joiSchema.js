@@ -16,6 +16,7 @@ module.exports.bookmarkSchema = Joi.object({
         Joi.array().items(Joi.string().allow(''))
     ).optional(),
     notes : Joi.string().allow('').optional(),
+    collectionId : Joi.string().hex().length(24).allow('').optional(),
 }).required();
 
 module.exports.collectionSchema = Joi.object({

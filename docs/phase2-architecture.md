@@ -1,4 +1,4 @@
-# Phase 2 — Extension Architecture
+# Phase 2 - Extension Architecture
 
 ```text
 curate/

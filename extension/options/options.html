@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curate — Settings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,650&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main class="options-page">
+    <header>
+      <p class="kicker">Curate extension</p>
+      <h1>Settings</h1>
+      <p class="subtitle">Configure API connection, account, and collections.</p>
+    </header>
+
+    <div id="status" class="status" hidden></div>
+
+    <section class="panel">
+      <h2>API connection</h2>
+      <form id="settings-form" class="stack-form">
+        <label class="field">
+          <span>Environment</span>
+          <select name="environment" id="environment">
+            <option value="production">Production</option>
+            <option value="development">Development (localhost)</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>API base URL</span>
+          <input name="apiBaseUrl" id="apiBaseUrl" type="url" required>
+        </label>
+        <p class="hint">Custom URLs must be listed in <code>host_permissions</code> inside <code>manifest.json</code>.</p>
+        <button class="btn btn-primary" type="submit">Save settings</button>
+        <button class="btn btn-secondary" type="button" id="test-connection">Test connection</button>
+      </form>
+    </section>
+
+    <section class="panel" id="account-panel" hidden>
+      <h2>Account</h2>
+      <p id="account-info" class="muted"></p>
+      <button class="btn btn-danger" type="button" id="logout-btn">Log out</button>
+    </section>
+
+    <section class="panel" id="collections-panel" hidden>
+      <h2>Collections</h2>
+      <ul id="collections-list" class="list"></ul>
+      <form id="collection-form" class="stack-form inline-top">
+        <label class="field">
+          <span>New collection name</span>
+          <input name="name" required>
+        </label>
+        <label class="field">
+          <span>Description</span>
+          <input name="description">
+        </label>
+        <button class="btn btn-primary" type="submit">Create collection</button>
+      </form>
+    </section>
+  </main>
+  <script type="module" src="options.js"></script>
+</body>
+</html>

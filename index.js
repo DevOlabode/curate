@@ -3,6 +3,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const path = require('path');
 const ejsMate = require('ejs-mate');
@@ -18,6 +19,9 @@ const ExpressError = require('./utils/expressError');
 const bookmarkRoutes = require('./routes/bookmark');
 const collectionRoutes = require('./routes/collections');
 const collectionBookmarksRoutes = require('./routes/collectionBookmarks');
+const apiRoutes = require('./routes/api');
+const corsOptions = require('./config/corsConfig');
+const { apiErrorHandler } = require('./middleware/apiError');
 
 
 app.set('view engine', 'ejs');
@@ -29,6 +33,8 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(cors(corsOptions));
 
 require('./config/dbConfig')();
 
@@ -57,6 +63,8 @@ app.use('/', userRoutes);
 app.use('/collections', collectionRoutes);
 app.use('/collections/:id/bookmarks', collectionBookmarksRoutes)
 
+app.use('/api/v1', apiRoutes);
+
 app.get('/', (req, res)=>{
     res.render('home')
 });
@@ -65,6 +73,8 @@ app.get('/', (req, res)=>{
 app.all(/(.*)/, (req, res, next) => {
     next(new ExpressError('Page not found', 404))
 });
+
+app.use(apiErrorHandler);
 
 app.use((err, req, res, next)=>{
     const {statusCode = 500} = err;

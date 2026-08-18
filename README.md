@@ -103,6 +103,9 @@ A full-stack web application designed specifically for developers to save, organ
    # Session
    SESSION_SECRET=your-super-secret-session-key-here
    
+   # Extension API (server only)
+   JWT_SECRET=your-jwt-secret-here
+   
    # Server
    PORT=3000
    NODE_ENV=development
@@ -129,6 +132,18 @@ A full-stack web application designed specifically for developers to save, organ
 
 6. **Access the application**
    Open your browser and navigate to `http://localhost:3000`
+
+## Browser extension
+
+Curate ships as a **Manifest V3** extension for Chrome and Edge.
+
+```bash
+# Set JWT_SECRET in .env (see .env.example), then:
+npm run dev
+npm run build:extension
+```
+
+Load unpacked from `dist/extension/`. See [extension/README.md](extension/README.md) and [docs/authentication.md](docs/authentication.md).
 
 ## Project Structure
 

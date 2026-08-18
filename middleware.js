@@ -20,7 +20,11 @@ module.exports.storeReturnTo = (req, res, next) => {
 };
 
 module.exports.validateBookmark = (req, res, next)=>{
-    const { error } = bookmarkSchema.validate(req.body);
+    const body = { ...req.body };
+    if (Array.isArray(body.tags)) {
+        body.tags = body.tags.join(', ');
+    }
+    const { error } = bookmarkSchema.validate(body);
     if(error){
         const message = error.details.map(el => el.message).join(',');
         throw new ExpressError(message, 400)

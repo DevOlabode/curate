@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curate</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,650&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div id="app" class="popup-app">
+    <header class="popup-header">
+      <div class="brand">
+        <span class="logo-mark" aria-hidden="true"></span>
+        <span class="brand-name">Curate</span>
+      </div>
+      <div class="header-actions">
+        <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle theme" title="Toggle theme">
+          <span aria-hidden="true">◐</span>
+        </button>
+        <button id="open-options" class="icon-btn" type="button" aria-label="Settings" title="Settings">⚙</button>
+      </div>
+    </header>
+
+    <div id="status" class="status" hidden></div>
+
+    <section id="view-loading" class="view">
+      <p class="muted center">Loading…</p>
+    </section>
+
+    <section id="view-auth" class="view" hidden>
+      <h1 class="view-title" id="auth-title">Sign in</h1>
+      <p class="view-subtitle">Access your bookmark library.</p>
+      <form id="auth-form" class="stack-form" novalidate>
+        <div id="register-fields" hidden>
+          <label class="field">
+            <span>First name</span>
+            <input name="firstName" type="text" autocomplete="given-name">
+          </label>
+          <label class="field">
+            <span>Last name</span>
+            <input name="lastName" type="text" autocomplete="family-name">
+          </label>
+          <label class="field">
+            <span>Email</span>
+            <input name="email" type="email" autocomplete="email">
+          </label>
+        </div>
+        <label class="field">
+          <span>Username</span>
+          <input name="username" type="text" required autocomplete="username">
+        </label>
+        <label class="field">
+          <span>Password</span>
+          <input name="password" type="password" required autocomplete="current-password">
+        </label>
+        <button class="btn btn-primary" type="submit" id="auth-submit">Sign in</button>
+      </form>
+      <p class="center muted">
+        <button type="button" class="link-btn" id="toggle-auth-mode">Create an account</button>
+      </p>
+    </section>
+
+    <section id="view-main" class="view" hidden>
+      <div class="toolbar">
+        <div>
+          <p class="kicker">Library</p>
+          <p class="user-line" id="user-line"></p>
+        </div>
+        <button class="btn btn-primary btn-sm" type="button" id="show-add-form">+ Add</button>
+      </div>
+
+      <form id="add-form" class="add-form" hidden>
+        <label class="field">
+          <span>Title</span>
+          <input name="title" required>
+        </label>
+        <label class="field">
+          <span>URL</span>
+          <input name="url" type="url" required placeholder="https://">
+        </label>
+        <label class="field">
+          <span>Category</span>
+          <input name="category" required placeholder="Frontend">
+        </label>
+        <label class="field">
+          <span>Tags</span>
+          <input name="tags" placeholder="react, css">
+        </label>
+        <div class="row-actions">
+          <button class="btn btn-primary btn-sm" type="submit">Save</button>
+          <button class="btn btn-secondary btn-sm" type="button" id="cancel-add">Cancel</button>
+        </div>
+      </form>
+
+      <div id="bookmark-list" class="bookmark-list"></div>
+      <p id="empty-state" class="empty" hidden>No bookmarks yet.</p>
+    </section>
+  </div>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

@@ -553,39 +553,162 @@ html[data-theme="dark"] .tag {
 
 .flash-stack {
   position: fixed;
-  top: calc(var(--navbar-h) + 28px);
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(640px, calc(100% - 32px));
+  top: calc(var(--navbar-h) + 20px);
+  right: 20px;
+  left: auto;
+  transform: none;
+  width: min(380px, calc(100% - 32px));
   z-index: 1080;
   margin: 0;
-}
-
-.alert {
-  padding: 14px 18px;
-  border-radius: 14px;
-  border: 1px solid;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 10px;
-  margin-bottom: 12px;
-  backdrop-filter: blur(12px);
+  pointer-events: none;
 }
 
-.alert-success {
-  background: var(--moss-soft);
-  border-color: color-mix(in srgb, var(--moss) 30%, transparent);
-  color: var(--success);
+.flash {
+  pointer-events: auto;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: start;
+  padding: 14px 14px 16px;
+  background: var(--surface);
+  color: var(--text-body);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(18px) saturate(1.3);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  animation: flashIn 0.45s var(--ease) both;
 }
 
-.alert-danger {
-  background: #f6d5d2;
-  border-color: color-mix(in srgb, var(--danger) 30%, transparent);
-  color: var(--danger);
+.flash-mark {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  color: #fffaf4;
+  background: var(--ink);
 }
 
-html[data-theme="dark"] .alert-danger {
-  background: rgba(194, 65, 59, 0.16);
+.flash-success .flash-mark {
+  background: linear-gradient(160deg, #2a7a5c, var(--moss));
+}
+
+.flash-error .flash-mark {
+  background: linear-gradient(160deg, #d75a2a, var(--ember));
+}
+
+.flash-warning .flash-mark {
+  background: linear-gradient(160deg, #e0c178, var(--warning));
+  color: #1a1612;
+}
+
+.flash-info .flash-mark {
+  background: linear-gradient(160deg, #3d342c, var(--ink));
+}
+
+.flash-body { min-width: 0; padding-top: 2px; }
+
+.flash-kicker {
+  margin: 0 0 4px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ember);
+}
+
+.flash-success .flash-kicker { color: var(--moss); }
+.flash-error .flash-kicker { color: var(--ember); }
+.flash-warning .flash-kicker { color: var(--warning); }
+.flash-info .flash-kicker { color: var(--muted); }
+
+.flash-copy {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  color: var(--text-heading);
+}
+
+.flash-close {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.flash-close:hover {
+  background: var(--paper-deep);
+  color: var(--ink);
+}
+
+.flash-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: color-mix(in srgb, var(--ember) 22%, transparent);
+  transform-origin: left;
+  animation: flashTimer 5.5s linear forwards;
+  animation-play-state: var(--flash-pause, running);
+}
+
+.flash-success .flash-progress {
+  background: color-mix(in srgb, var(--moss) 35%, transparent);
+}
+
+.flash:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.flash.is-leaving {
+  animation: flashOut 0.32s var(--ease) forwards;
+}
+
+@keyframes flashIn {
+  from {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes flashOut {
+  to {
+    opacity: 0;
+    transform: translateX(24px) scale(0.96);
+  }
+}
+
+@keyframes flashTimer {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+
+@media (max-width: 768px) {
+  .flash-stack {
+    top: calc(var(--navbar-h) + 12px);
+    right: 12px;
+    left: 12px;
+    width: auto;
+  }
 }
 
 /* ---------- Hero ---------- */

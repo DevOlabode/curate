@@ -1,20 +1,32 @@
-<% if(success && success.length > 0){ %>
-<div class="container flash-stack">
-  <% for(let msg of success){ %>
-  <div class="alert alert-success" role="alert">
-    <i class="fas fa-check-circle"></i>
-    <span><%= msg %></span>
-  </div>
-  <% } %>
-</div>
-<% } %>
-<% if(error && error.length > 0){ %>
-<div class="container flash-stack">
-  <% for(let msg of error){ %>
-  <div class="alert alert-danger" role="alert">
-    <i class="fas fa-exclamation-circle"></i>
-    <span><%= msg %></span>
-  </div>
+<%
+  const flashes = [
+    { items: success, type: 'success', kicker: 'Saved', icon: 'fa-check' },
+    { items: info, type: 'info', kicker: 'Note', icon: 'fa-bookmark' },
+    { items: warning, type: 'warning', kicker: 'Heads up', icon: 'fa-exclamation' },
+    { items: error, type: 'error', kicker: 'Couldn’t do that', icon: 'fa-times' },
+  ];
+  const hasFlashes = flashes.some((group) => group.items && group.items.length);
+%>
+<% if (hasFlashes) { %>
+<div class="flash-stack" role="status" aria-live="polite">
+  <% for (const group of flashes) { %>
+    <% if (group.items && group.items.length) { %>
+      <% for (const msg of group.items) { %>
+      <article class="flash flash-<%= group.type %>">
+        <span class="flash-mark" aria-hidden="true">
+          <i class="fas <%= group.icon %>"></i>
+        </span>
+        <div class="flash-body">
+          <p class="flash-kicker"><%= group.kicker %></p>
+          <p class="flash-copy"><%= msg %></p>
+        </div>
+        <button type="button" class="flash-close" aria-label="Dismiss">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <span class="flash-progress" aria-hidden="true"></span>
+      </article>
+      <% } %>
+    <% } %>
   <% } %>
 </div>
 <% } %>

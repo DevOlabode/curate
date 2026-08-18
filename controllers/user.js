@@ -1,5 +1,5 @@
 const User = require('../models/user');
-const passport = require('passport');
+const { registrationErrorMessage } = require('../utils/duplicateKeyError');
 
 
 module.exports.signUpForm = (req, res)=>{
@@ -19,7 +19,7 @@ module.exports.signUp = async(req, res)=>{
         res.redirect('/')
         })
     }catch(err){
-        req.flash('error', err.message);
+        req.flash('error', registrationErrorMessage(err));
         res.redirect('/signup')
     }
 };
@@ -48,22 +48,13 @@ module.exports.userInfo = (req, res)=>{
     res.render('user/info');
 };
 
-module.exports.user = async(req, res)=>{
-    const { password } = req.body;
-    const {id} = req.user; 
-    const user = await User.findById(id);
-    const auth = User.authenticate();
-    auth(user.username, password , (err, user, result) => {
-    if (err) {
-        req.flash('error', err.message);
-        res.redirect('/user/info')
-    } else if (user) {
-        return res.render('user/edit', { user })
-    } else {
-        req.flash('error', "Invalid password!");
-        res.redirect('/user/info')
+module.exports.editForm = async(req, res)=>{
+    const user = await User.findById(req.user._id);
+    if(!user){
+        req.flash('error', 'User not found!');
+        return res.redirect('/user/info');
     }
-    });
+    res.render('user/edit', { user });
 };
 
 module.exports.editUser = async(req, res)=>{

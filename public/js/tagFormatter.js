@@ -102,14 +102,4 @@ function updateTagPreview(tagsString) {
 // Export for use in other scripts
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = TagFormatter;
-} 
-
-
-const editButton = document.querySelector('#editUser');
-const pwForm = document.querySelector('.pw');
-
-if (editButton && pwForm) {
-    editButton.addEventListener('click', () => {
-        pwForm.style.display = pwForm.style.display === 'block' ? 'none' : 'block';
-    });
 }

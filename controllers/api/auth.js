@@ -1,6 +1,7 @@
 const User = require('../../models/user');
 const { signToken } = require('../../utils/jwt');
 const ExpressError = require('../../utils/expressError');
+const { registrationErrorMessage } = require('../../utils/duplicateKeyError');
 
 function publicUser(user) {
   return {
@@ -23,7 +24,7 @@ module.exports.register = async (req, res) => {
   try {
     registeredUser = await User.register(user, password);
   } catch (err) {
-    throw new ExpressError(err.message, 400);
+    throw new ExpressError(registrationErrorMessage(err), 400);
   }
   const token = signToken(registeredUser._id);
 

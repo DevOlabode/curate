@@ -18,9 +18,9 @@ router.get('/logout', catchAsync(user.logout));
 
 router.get('/user/info', isLoggedIn, user.userInfo);
 
-router.post('/user', isLoggedIn, catchAsync(user.user));
-
-router.put('/user/edit', isLoggedIn, catchAsync(user.editUser));
+router.route('/user/edit')
+    .get(isLoggedIn, catchAsync(user.editForm))
+    .put(isLoggedIn, catchAsync(user.editUser));
 
 router.route('/user/change-password')
     .get(isLoggedIn, user.changepasswordForm)

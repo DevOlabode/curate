@@ -70,10 +70,15 @@ function sipsInfo(file) {
   return { width, height };
 }
 
-function toJpeg(src, dest) {
-  execFileSync('sips', ['-s', 'format', 'jpeg', '-s', 'formatOptions', '90', src, '--out', dest], {
+function flattenToPng(src, dest) {
+  const tmpJpg = `${dest}.tmp.jpg`;
+  execFileSync('sips', ['-s', 'format', 'jpeg', '-s', 'formatOptions', '90', src, '--out', tmpJpg], {
     stdio: 'pipe',
   });
+  execFileSync('sips', ['-s', 'format', 'png', tmpJpg, '--out', dest], {
+    stdio: 'pipe',
+  });
+  fs.unlinkSync(tmpJpg);
 }
 
 function screenshotHtml(htmlFile, width, height, destPng) {
@@ -94,14 +99,14 @@ function screenshotHtml(htmlFile, width, height, destPng) {
   );
 }
 
-function fitOnCanvas(src, destJpg, canvasW, canvasH, padHex) {
+function fitOnCanvas(src, destPng, canvasW, canvasH, padHex) {
   const { width, height } = sipsInfo(src);
   const maxW = canvasW - 80;
   const maxH = canvasH - 80;
   const scale = Math.min(maxW / width, maxH / height, 1);
   const nw = Math.max(1, Math.round(width * scale));
   const nh = Math.max(1, Math.round(height * scale));
-  const tmp = destJpg.replace(/\.jpg$/, '.tmp.png');
+  const tmp = `${destPng}.fit.png`;
 
   execFileSync('sips', ['--resampleHeightWidth', String(nh), String(nw), src, '--out', tmp], {
     stdio: 'pipe',
@@ -115,7 +120,7 @@ function fitOnCanvas(src, destJpg, canvasW, canvasH, padHex) {
   if (padded.width !== canvasW || padded.height !== canvasH) {
     execFileSync('sips', ['-z', String(canvasH), String(canvasW), tmp], { stdio: 'pipe' });
   }
-  toJpeg(tmp, destJpg);
+  flattenToPng(tmp, destPng);
   fs.unlinkSync(tmp);
 }
 
@@ -123,47 +128,55 @@ function main() {
   fs.mkdirSync(path.join(OUT, 'screenshots'), { recursive: true });
 
   const iconPath = path.join(OUT, 'icon-128.png');
-  fs.writeFileSync(iconPath, PNG.sync.write(renderIcon(128)));
+  const iconRaw = path.join(OUT, 'icon-128.raw.png');
+  fs.writeFileSync(iconRaw, PNG.sync.write(renderIcon(128)));
+  flattenToPng(iconRaw, iconPath);
+  fs.unlinkSync(iconRaw);
   console.log('[store] icon-128.png');
 
+  const smallRaw = path.join(OUT, 'small-tile-440x280.raw.png');
   const smallPng = path.join(OUT, 'small-tile-440x280.png');
-  const smallJpg = path.join(OUT, 'small-tile-440x280.jpg');
-  screenshotHtml(path.join(SRC, 'small-tile.html'), 440, 280, smallPng);
-  toJpeg(smallPng, smallJpg);
-  fs.unlinkSync(smallPng);
-  console.log('[store] small-tile-440x280.jpg');
+  screenshotHtml(path.join(SRC, 'small-tile.html'), 440, 280, smallRaw);
+  flattenToPng(smallRaw, smallPng);
+  fs.unlinkSync(smallRaw);
+  console.log('[store] small-tile-440x280.png');
 
+  const largeRaw = path.join(OUT, 'large-tile-1400x560.raw.png');
   const largePng = path.join(OUT, 'large-tile-1400x560.png');
-  const largeJpg = path.join(OUT, 'large-tile-1400x560.jpg');
-  screenshotHtml(path.join(SRC, 'large-tile.html'), 1400, 560, largePng);
-  toJpeg(largePng, largeJpg);
-  fs.unlinkSync(largePng);
-  console.log('[store] large-tile-1400x560.jpg');
+  screenshotHtml(path.join(SRC, 'large-tile.html'), 1400, 560, largeRaw);
+  flattenToPng(largeRaw, largePng);
+  fs.unlinkSync(largeRaw);
+  console.log('[store] large-tile-1400x560.png');
 
   const shots = [
     {
       src: 'Screenshot 2026-08-18 at 20.45.41.png',
-      dest: '01-sign-in-1280x800.jpg',
+      dest: '01-sign-in-1280x800.png',
       pad: 'F4EFE6',
     },
     {
       src: 'Screenshot 2026-08-18 at 20.45.15.png',
-      dest: '02-create-account-1280x800.jpg',
+      dest: '02-create-account-1280x800.png',
       pad: '12100E',
     },
     {
       src: 'Screenshot 2026-08-18 at 20.46.30.png',
-      dest: '03-library-1280x800.jpg',
+      dest: '03-library-1280x800.png',
       pad: 'F4EFE6',
     },
     {
       src: 'Screenshot 2026-08-18 at 20.46.57.png',
-      dest: '04-add-collection-1280x800.jpg',
+      dest: '04-add-collection-1280x800.png',
       pad: '12100E',
     },
     {
       src: 'Screenshot 2026-08-18 at 20.46.42.png',
-      dest: '05-library-dark-1280x800.jpg',
+      dest: '05-library-dark-1280x800.png',
+      pad: '12100E',
+    },
+    {
+      src: 'Screenshot 2026-08-19 at 13.42.43.png',
+      dest: '06-account-settings-1280x800.png',
       pad: '12100E',
     },
   ];

@@ -68,9 +68,8 @@ body {
 .logo-mark {
   width: 28px;
   height: 28px;
-  border-radius: 8px;
-  background: linear-gradient(160deg, var(--ember), #8f2e12);
-  box-shadow: 0 6px 14px rgba(196, 73, 29, 0.25);
+  display: block;
+  flex-shrink: 0;
 }
 
 .brand-name {
@@ -203,6 +202,34 @@ body {
   outline: none;
   border-color: var(--ember);
   box-shadow: 0 0 0 3px var(--ember-soft);
+}
+
+.password-field {
+  position: relative;
+}
+
+.password-field input {
+  width: 100%;
+  padding-right: 52px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: none;
+  color: var(--ember);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 4px 6px;
+}
+
+.password-toggle:hover {
+  text-decoration: underline;
 }
 
 .btn {

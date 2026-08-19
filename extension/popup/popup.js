@@ -308,6 +308,7 @@ function fillSettings(user) {
   profileForm.elements.email.value = user.email || '';
   passwordForm.reset();
   deleteForm.reset();
+  resetPasswordToggles();
 }
 
 async function boot() {
@@ -364,6 +365,7 @@ authForm.addEventListener('submit', async (event) => {
       await bootMain(user);
     }
     authForm.reset();
+    resetPasswordToggles();
     setAuthMode('login');
   } catch (err) {
     showStatus(err.message);
@@ -624,6 +626,7 @@ passwordForm.addEventListener('submit', async (event) => {
       confirmPassword: data.get('confirmPassword'),
     });
     passwordForm.reset();
+    resetPasswordToggles();
     showStatus('Password updated.', 'success');
   } catch (err) {
     showStatus(err.message);
@@ -662,6 +665,27 @@ $('#theme-toggle').addEventListener('click', async () => {
   const next = current === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', next);
   await setTheme(next);
+});
+
+function resetPasswordToggles() {
+  document.querySelectorAll('.password-field input').forEach((input) => {
+    input.type = 'password';
+  });
+  document.querySelectorAll('.password-toggle').forEach((btn) => {
+    btn.textContent = 'See';
+    btn.setAttribute('aria-label', 'Show password');
+  });
+}
+
+document.querySelectorAll('.password-toggle').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const input = btn.parentElement.querySelector('input');
+    if (!input) return;
+    const show = input.type === 'password';
+    input.type = show ? 'text' : 'password';
+    btn.textContent = show ? 'Hide' : 'See';
+    btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+  });
 });
 
 async function initTheme() {

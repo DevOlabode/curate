@@ -13,7 +13,7 @@
   <div id="app" class="popup-app">
     <header class="popup-header">
       <div class="brand">
-        <span class="logo-mark" aria-hidden="true"></span>
+        <img class="logo-mark" src="../assets/logo.svg" alt="" width="28" height="28">
         <span class="brand-name">Curate</span>
       </div>
       <div class="header-actions">
@@ -54,7 +54,10 @@
         </label>
         <label class="field">
           <span>Password</span>
-          <input name="password" type="password" required autocomplete="current-password">
+          <div class="password-field">
+            <input name="password" type="password" required autocomplete="current-password">
+            <button class="password-toggle" type="button" aria-label="Show password">See</button>
+          </div>
         </label>
         <button class="btn btn-primary" type="submit" id="auth-submit">Sign in</button>
       </form>
@@ -248,15 +251,24 @@
         <h2 class="section-title">Change password</h2>
         <label class="field">
           <span>Current password</span>
-          <input name="currentPassword" type="password" required autocomplete="current-password">
+          <div class="password-field">
+            <input name="currentPassword" type="password" required autocomplete="current-password">
+            <button class="password-toggle" type="button" aria-label="Show password">See</button>
+          </div>
         </label>
         <label class="field">
           <span>New password</span>
-          <input name="newPassword" type="password" required minlength="8" autocomplete="new-password">
+          <div class="password-field">
+            <input name="newPassword" type="password" required minlength="8" autocomplete="new-password">
+            <button class="password-toggle" type="button" aria-label="Show password">See</button>
+          </div>
         </label>
         <label class="field">
           <span>Confirm new password</span>
-          <input name="confirmPassword" type="password" required minlength="8" autocomplete="new-password">
+          <div class="password-field">
+            <input name="confirmPassword" type="password" required minlength="8" autocomplete="new-password">
+            <button class="password-toggle" type="button" aria-label="Show password">See</button>
+          </div>
         </label>
         <button class="btn btn-primary btn-sm" type="submit">Update password</button>
       </form>

@@ -72,6 +72,12 @@ function main() {
   console.log('[build:extension] copying shared modules…');
   copyDir(SHARED, path.join(OUT, 'shared'));
 
+  const logoSrc = path.join(ROOT, 'public/images/download.svg');
+  const logoDest = path.join(OUT, 'assets/logo.svg');
+  fs.mkdirSync(path.dirname(logoDest), { recursive: true });
+  fs.copyFileSync(logoSrc, logoDest);
+  console.log('[build:extension] copied assets/logo.svg');
+
   validateManifest(OUT);
 
   console.log(`[build:extension] done → ${OUT}`);

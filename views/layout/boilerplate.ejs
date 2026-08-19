@@ -12,13 +12,17 @@
     <link rel="stylesheet" href="/css/styles.css">
     <title>Curate</title>
 </head>
-<body>
+<body<%= typeof landing !== 'undefined' && landing ? ' class="is-landing"' : '' %>>
+    <% if (!(typeof landing !== 'undefined' && landing)) { %>
     <%- include('../partials/navbar.ejs') %>
+    <% } %>
     <%- include('../partials/flash.ejs') %>
     <%- body %>
+    <% if (!(typeof landing !== 'undefined' && landing)) { %>
     <footer class="site-footer">
       <p>Curate: a quieter place for the links you actually keep.</p>
     </footer>
+    <% } %>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
     <script src="/js/validateForms.js"></script>
     <script src="/js/tagFormatter.js"></script>

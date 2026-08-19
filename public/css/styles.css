@@ -1154,3 +1154,146 @@ html[data-theme="dark"] .hero .bookmark-card {
 
   .container { padding: 0 16px; }
 }
+
+/* ---------- Coming soon landing ---------- */
+body.is-landing {
+  padding-top: 0;
+}
+
+body.is-landing::before,
+body.is-landing::after {
+  display: none;
+}
+
+.soon-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 28px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+
+.soon-mark {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 650;
+  color: var(--text-heading);
+  letter-spacing: -0.03em;
+}
+
+.soon-mark:hover { color: var(--text-heading); }
+
+.soon-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.soon-status {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.soon {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 72px;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 72px 28px 96px;
+  position: relative;
+  z-index: 1;
+}
+
+.soon-intro {
+  position: sticky;
+  top: 92px;
+  align-self: start;
+}
+
+.soon-intro h1 {
+  font-family: var(--font-body);
+  font-weight: 650;
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  margin: 0 0 20px;
+}
+
+.soon-intro p {
+  margin: 0 0 14px;
+  font-size: 1.05rem;
+  color: var(--text-body);
+  max-width: 36rem;
+}
+
+.soon-intro p:last-child { margin-bottom: 0; }
+
+.soon-body h2 {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 16px;
+}
+
+.soon-body section + section {
+  margin-top: 48px;
+}
+
+.soon-body > section > p {
+  margin: 0 0 14px;
+  max-width: 40rem;
+}
+
+.soon-feature {
+  display: grid;
+  grid-template-columns: 168px 1fr;
+  gap: 20px;
+  padding: 22px 0;
+  border-top: 1px solid var(--line);
+}
+
+.soon-feature h3 {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.soon-feature p {
+  margin: 0;
+  color: var(--text-body);
+}
+
+.soon-close {
+  padding-top: 8px;
+}
+
+.soon-close p { margin-bottom: 0; }
+
+@media (max-width: 860px) {
+  .soon {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 40px 20px 72px;
+  }
+
+  .soon-intro { position: static; }
+
+  .soon-header { padding: 14px 20px; }
+
+  .soon-feature {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}

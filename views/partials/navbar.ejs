@@ -16,21 +16,11 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav me-auto">
         <a class="nav-link" href="/">Home</a>
-        <a class="nav-link" href="/#download">Download</a>
       </div>
       <div class="navbar-nav ms-auto align-items-center gap-2">
         <button id="theme-toggle" class="btn btn-sm" aria-label="Toggle theme" title="Toggle dark/light mode">
           <i class="fas fa-moon"></i>
         </button>
-        <% if(!currentUser){ %>
-        <a href="/login" class="nav-link">Login</a>
-        <a href="/signup" class="btn btn-primary btn-sm">Sign Up</a>
-        <% }else{ %>
-        <a href="/user/info" class="nav-link">
-          <%= currentUser.username %>
-        </a>
-        <a href="/logout" class="btn btn-danger btn-sm">Logout</a>
-        <% } %>
       </div>
     </div>
   </div>

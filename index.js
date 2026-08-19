@@ -67,10 +67,7 @@ app.use('/collections/:id/bookmarks', collectionBookmarksRoutes)
 app.use('/api/v1', apiRoutes);
 
 app.get('/', (req, res)=>{
-    res.render('home', {
-        chromeStoreUrl: process.env.CHROME_STORE_URL || '',
-        edgeStoreUrl: process.env.EDGE_STORE_URL || '',
-    })
+    res.render('home', { landing: true })
 });
 
 

@@ -1,14 +1,16 @@
 // Navbar scroll effect
 document.addEventListener('DOMContentLoaded', function() {
     const navbar = document.querySelector('.navbar');
-    
-    window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
+
+    if (navbar) {
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    }
     
     // Add active class to current nav link
     const currentLocation = window.location.pathname;

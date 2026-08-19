@@ -1286,6 +1286,7 @@ body.is-landing::after {
   text-transform: uppercase;
   color: var(--muted);
   margin: 0 0 28px;
+  scroll-margin-top: 88px;
 }
 
 .soon-prose p {

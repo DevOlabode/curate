@@ -197,6 +197,7 @@ html[data-theme="dark"] .icon-sun { display: block; }
   text-transform: uppercase;
   color: var(--muted);
   margin: 0 0 28px;
+  scroll-margin-top: 88px;
 }
 
 .soon-prose p {

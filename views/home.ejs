@@ -1,8 +1,13 @@
 <%- layout('./layout/boilerplate.ejs') %>
 
 <header class="soon-header">
-  <a class="soon-mark" href="/">Curate</a>
+  <a class="soon-brand" href="/">
+    <span class="soon-logo" aria-hidden="true"></span>
+    Curate
+  </a>
   <div class="soon-header-actions">
+    <a href="#about">About</a>
+    <a href="#features">Features</a>
     <span class="soon-status">Coming soon</span>
     <button id="theme-toggle" class="btn btn-sm" aria-label="Toggle theme" title="Toggle dark/light mode">
       <i class="fas fa-moon"></i>
@@ -10,62 +15,91 @@
   </div>
 </header>
 
-<main class="soon">
-  <div class="soon-intro">
-    <h1>A library for the links you keep opening.</h1>
-    <p>
-      Curate is a browser extension for developers. You save docs, repos, tools, and articles from a popup in your toolbar, then find them again without digging through a bookmarks bar.
+<main class="soon-page">
+  <section class="soon-hero">
+    <p class="soon-eyebrow">Browser extension</p>
+    <h1>Keep the links you actually return to.</h1>
+    <p class="soon-lede">
+      Curate is a private library in your toolbar. Save docs, repos, tools, and articles from a popup, file them into collections, and find them again without hunting through a bookmarks bar.
     </p>
-    <p>
-      The extension is not public yet. Chrome and Edge builds are on the way.
-    </p>
-  </div>
+    <div class="soon-meta">
+      <span>Chrome and Edge</span>
+      <span>Private accounts</span>
+      <span>Coming soon</span>
+    </div>
+  </section>
 
-  <div class="soon-body">
-    <section id="about">
+  <section class="soon-section" id="about">
+    <div class="soon-section-head">
       <h2>What it is</h2>
+    </div>
+    <div class="soon-prose">
       <p>
-        Most bookmarking tools either dump everything into one list or try to be a social product. Curate is smaller than that. It is a private library that lives next to the page you are already on.
+        Bookmark bars fill up and then get ignored. Social bookmarking tools ask you to publish. Curate is neither. It is a small, quiet place for the development links you keep reopening.
       </p>
       <p>
-        You sign in inside the popup, save a link with a title, category, and tags, and optionally file it into a collection. Later you open the same popup and go back to that link, or to a whole set of related ones.
+        You sign in inside the popup. You save a URL with a title, a category, and tags. You can leave it in the main library or drop it into a collection. Next time the popup opens, that library is the first thing you see.
       </p>
-    </section>
+    </div>
+  </section>
 
-    <section id="features">
+  <section class="soon-section" id="features">
+    <div class="soon-section-head">
       <h2>What it will include</h2>
-
-      <div class="soon-feature">
-        <h3>Bookmarks</h3>
-        <p>Save a title, URL, category, and tags from the popup. Open the link later in one click. Edit or delete it without leaving the extension.</p>
-      </div>
-      <div class="soon-feature">
-        <h3>Collections</h3>
-        <p>Group related bookmarks into named sets, such as a stack you are learning or a project you are shipping. Open a collection to see only those links, and add new ones straight into it.</p>
-      </div>
-      <div class="soon-feature">
-        <h3>Accounts in the popup</h3>
-        <p>Create an account or sign in from the extension. Edit your profile, change your password, log out, or delete your account there. The website is not the place you manage your library.</p>
-      </div>
-      <div class="soon-feature">
-        <h3>Private by default</h3>
-        <p>Links and notes stay on your account. There is no public feed, no sharing wall, and no one else browsing your library.</p>
-      </div>
-      <div class="soon-feature">
-        <h3>Light and dark</h3>
-        <p>A readable popup in both modes, so it works at a desk or late at night without becoming a different product.</p>
-      </div>
-      <div class="soon-feature">
-        <h3>Library first</h3>
-        <p>The home screen is your collections and bookmarks. Forms stay out of the way until you add or edit something.</p>
-      </div>
-    </section>
-
-    <section id="soon" class="soon-close">
-      <h2>Coming soon</h2>
-      <p>
-        Curate will ship as a Chrome and Edge extension. There is no download and no web signup on this site yet. Check back here when it is ready.
-      </p>
-    </section>
-  </div>
+    </div>
+    <ol class="soon-features">
+      <li>
+        <span class="soon-index">01</span>
+        <div>
+          <h3>Bookmarks</h3>
+          <p>Save a title, URL, category, and tags from the popup. Open the link later in one click. Edit or delete it without leaving the extension.</p>
+        </div>
+      </li>
+      <li>
+        <span class="soon-index">02</span>
+        <div>
+          <h3>Collections</h3>
+          <p>Group related bookmarks into named sets: a stack you are learning, a project you are shipping, a topic you refuse to lose. Open a collection and add straight into it.</p>
+        </div>
+      </li>
+      <li>
+        <span class="soon-index">03</span>
+        <div>
+          <h3>Accounts in the popup</h3>
+          <p>Create an account or sign in from the extension. Edit your profile, change your password, log out, or delete your account there. This website is not where you manage your library.</p>
+        </div>
+      </li>
+      <li>
+        <span class="soon-index">04</span>
+        <div>
+          <h3>Private by default</h3>
+          <p>Links and notes stay on your account. There is no public feed, no sharing wall, and no one else browsing what you saved.</p>
+        </div>
+      </li>
+      <li>
+        <span class="soon-index">05</span>
+        <div>
+          <h3>Light and dark</h3>
+          <p>The popup stays readable in both modes, so it works at a desk or late at night without becoming a different product.</p>
+        </div>
+      </li>
+      <li>
+        <span class="soon-index">06</span>
+        <div>
+          <h3>Library first</h3>
+          <p>The home screen is your collections and bookmarks. Forms stay hidden until you add or edit something.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
 </main>
+
+<section class="soon-close" id="soon">
+  <div class="soon-close-inner">
+    <p class="soon-eyebrow">Status</p>
+    <h2>Coming soon.</h2>
+    <p>
+      Curate will ship as a Chrome and Edge extension. There is no download and no web signup on this site yet. When it is ready, this page is where you will find it.
+    </p>
+  </div>
+</section>

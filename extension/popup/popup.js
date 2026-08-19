@@ -612,11 +612,6 @@ $('#logout-btn').addEventListener('click', async () => {
 deleteForm.addEventListener('submit', async (event) => {
   event.preventDefault();
   clearStatus();
-  const typed = String(new FormData(deleteForm).get('confirmUsername') || '').trim();
-  if (!currentUser || typed !== currentUser.username) {
-    showStatus('Type your username to confirm account deletion.');
-    return;
-  }
   if (!confirm('Delete your account permanently?')) return;
   try {
     await deleteAccount();

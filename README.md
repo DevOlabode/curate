@@ -1,267 +1,118 @@
 # Curate
 
-> **Your Personal Knowledge Management System for Development Resources**
+A private bookmark library for developers, as a Chrome and Edge extension.
 
-A full-stack web application designed specifically for developers to save, organize, and manage their development bookmarks efficiently. Built with modern web technologies and security best practices.
+Save docs, repos, tools, and articles from a popup. File them into collections. Open them later without digging through a bookmarks bar.
+
+The public site is a coming-soon landing page. Sign in, library, and account management live in the extension. The Express app behind this repo is the API and password-reset pages.
 
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
-![Node.js](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen.svg)
-![Express](https://img.shields.io/badge/express-5.x-blue.svg)
-![MongoDB](https://img.shields.io/badge/mongodb-5.x-green.svg)
+![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)
 
-##  Features
+## Status
 
-###  **User Management**
-- Secure user registration and authentication
-- Password hashing with bcrypt
-- Session management with Passport.js
-- User profile management
+The extension is not in the Chrome Web Store or Edge Add-ons yet. The landing page explains the product and says coming soon.
 
-###  **Bookmark Management**
-- Create, read, update, and delete bookmarks
-- Rich bookmark details (title, URL, category, tags, notes)
-- User-specific bookmark organization
+## What the extension includes
 
-###  **Collections System**
-- Organize bookmarks into custom collections
-- Collection descriptions and metadata
-- Easy bookmark-to-collection assignment
-- Collection-based browsing
+- **Bookmarks:** title, URL, category, and tags. Open, edit, or delete from the popup.
+- **Collections:** named groups of related links. Add bookmarks into a collection from that view.
+- **Accounts in the popup:** register, sign in, edit profile, change password, log out, delete account.
+- **Private by default:** links stay on your account. No public feed.
+- **Light and dark** theme.
+- **Library first:** the home screen is your collections and bookmarks. Forms appear when you add or edit.
 
-###  **Tagging & Categorization**
-- Custom tags for flexible organization
-- Category-based filtering
-- Tag cloud visualization
-- Advanced search by tags and categories
+## Repo layout
 
-###  **Responsive Design**
-- Mobile-first responsive design
-- Bootstrap 5 framework
-- Cross-browser compatibility
-- Touch-friendly interface
+| Path | Role |
+|------|------|
+| `landing/` | Static coming-soon site for Vercel |
+| `extension/` | Manifest V3 popup source |
+| `src/shared/` | Shared API client used by the extension |
+| `index.js` | Express API, password reset, and the same landing at `/` |
+| `dist/extension/` | Built unpacked extension (`npm run build:extension`) |
 
-###  **User Experience**
-- Flash messages for user feedback
-- Intuitive navigation
-- Loading states and error handling
-- Clean, modern UI
-
-##  Live Demo
-[Live Demo](https://developer-bookmark-vault-5.onrender.com/) 
-## Demo Account 
-- **Username** - ola
-- **Password** - ola
-
-## Tech Stack
-
-### **Backend**
-- **Node.js** - JavaScript runtime
-- **Express.js** - Web framework
-- **MongoDB** - NoSQL database
-- **Mongoose** - MongoDB object modeling
-- **Passport.js** - Authentication middleware
-- **bcrypt** - Password hashing
-- **Joi** - Input validation
-- **connect-flash** - Flash messages
-
-### **Frontend**
-- **EJS** - Templating engine
-- **Bootstrap 5** - CSS framework
-- **Font Awesome** - Icons
-- **Vanilla JavaScript** - Client-side functionality
-
-### **Development Tools**
-- **Nodemon** - Development server
-- **ESLint** - Code linting
-- **Prettier** - Code formatting
-
-##  Getting Started
+## Local development
 
 ### Prerequisites
-- Node.js (v14.0.0 or higher)
-- MongoDB (v4.4 or higher)
-- npm or yarn package manager
 
-### Installation
+- Node.js 18 or newer
+- MongoDB
+- npm
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/DevOlabode/curate.git
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Set up environment variables**
-   Create a `.env` file in the root directory:
-   ```env
-   # Database
-   DATABASE_URL=mongodb://localhost:27017/developerBookmarks
-   
-   # Session
-   SESSION_SECRET=your-super-secret-session-key-here
-   
-   # Extension API (server only)
-   JWT_SECRET=your-jwt-secret-here
-   
-   # Server
-   PORT=3000
-   NODE_ENV=development
-   ```
-
-4. **Start MongoDB**
-   Make sure MongoDB is running on your system:
-   ```bash
-   # On macOS/Linux
-   mongod
-   
-   # On Windows
-   # MongoDB should start automatically as a service
-   ```
-
-5. **Run the application**
-   ```bash
-   # Development mode
-   npm run dev
-   
-   # Production mode
-   npm start
-   ```
-
-6. **Access the application**
-   Open your browser and navigate to `http://localhost:3000`
-
-## Browser extension
-
-Curate ships as a **Manifest V3** extension for Chrome and Edge.
+### API server
 
 ```bash
-# Set JWT_SECRET in .env (see .env.example), then:
+git clone https://github.com/DevOlabode/curate.git
+cd curate
+npm install
+cp .env.example .env
+```
+
+Set at least `MONGO_URI`, `SESSION_SECRET`, and `JWT_SECRET` in `.env`. See [`.env.example`](.env.example).
+
+```bash
 npm run dev
+```
+
+API: `http://localhost:3000/api/v1`  
+Landing (Express): `http://localhost:3000`
+
+### Browser extension
+
+```bash
 npm run build:extension
 ```
 
-Load unpacked from `dist/extension/`. See [extension/README.md](extension/README.md) and [docs/authentication.md](docs/authentication.md).
+Then in Chrome (`chrome://extensions`) or Edge (`edge://extensions`):
 
-## Project Structure
+1. Turn on Developer mode.
+2. Load unpacked.
+3. Select `dist/extension/`.
 
-```
-curate/
-├──  controllers/          # Route controllers
-│   ├── bookmarks.js          # Bookmark CRUD operations
-│   ├── collections.js        # Collection management
-│   ├── collectionBookmarks.js # Collection-bookmark relationships
-│   └── user.js              # User management
-├──  models/               # Database models
-│   ├── bookmark.js          # Bookmark schema
-│   ├── collection.js        # Collection schema
-│   └── user.js              # User schema
-├──  routes/               # Express routes
-│   ├── bookmark.js          # Bookmark routes
-│   ├── collections.js       # Collection routes
-│   ├── collectionBookmarks.js # Collection-bookmark routes
-│   └── user.js              # User authentication routes
-├──  views/                # EJS templates
-│   ├── bookmark/            # Bookmark views
-│   ├── collections/         # Collection views
-│   ├── collectionBookmarks/ # Collection-bookmark views
-│   ├── user/                # User views
-│   ├── partials/            # Reusable components
-│   └── layout/              # Layout templates
-├──  public/               # Static assets
-│   ├── css/                 # Stylesheets
-│   ├── js/                  # Client-side JavaScript
-│   └── images/              # Images and icons
-├── 📁 utils/                # Utility functions
-│   ├── catchAsync.js        # Async error handling
-│   └── expressError.js      # Custom error class
-├── 📁 middleware/           # Express middleware
-│   └── validation.js        # Input validation
-├── 📁 seeds/                # Database seeding
-│   └── seed.js              # Sample data
-├── .env.example             # Environment variables template
-├── .gitignore               # Git ignore rules
-├── index.js                 # Main application entry
-├── package.json             # Dependencies and scripts
-└── README.md                # This file
-```
+For local API calls, open the extension options from `chrome://extensions` (Details, then Extension options) and set environment to Development (`http://localhost:3000`). That page is for developers. It is not in the popup.
 
-## 🔌 API Endpoints
+After source changes, run `npm run build:extension` again and reload the extension.
 
-### **Authentication**
-- `POST /register` - User registration
-- `POST /login` - User login
-- `POST /logout` - User logout
+More detail: [extension/README.md](extension/README.md).
 
-### **Bookmarks**
-- `GET /bookmark` - List all user bookmarks
-- `GET /bookmark/new` - New bookmark form
-- `POST /bookmark` - Create new bookmark
-- `GET /bookmark/:id` - View bookmark details
-- `GET /bookmark/:id/edit` - Edit bookmark form
-- `PUT /bookmark/:id` - Update bookmark
-- `DELETE /bookmark/:id` - Delete bookmark
+## Landing page (Vercel)
 
-### **Collections**
-- `GET /collections` - List all user collections
-- `GET /collections/new` - New collection form
-- `POST /collections` - Create new collection
-- `GET /collections/:id` - View collection details
-- `GET /collections/:id/edit` - Edit collection form
-- `PUT /collections/:id` - Update collection
-- `DELETE /collections/:id` - Delete collection
+The deployable static site is in [`landing/`](landing/). No Node, Mongo, or env vars.
 
-### **Collection Bookmarks**
-- `GET /collections/:id/bookmarks` - List bookmarks in collection
-- `GET /collections/:id/bookmarks/new` - Add bookmark to collection form
-- `POST /collections/:id/bookmarks` - Add bookmark to collection
-- `DELETE /collections/:id/bookmarks/:bookmarkId` - Remove bookmark from collection
+In Vercel: set **Root Directory** to `landing`, framework **Other**, leave build and output empty. Do not run `node index.js` on Vercel.
 
-## 🧪 Testing
+See [landing/README.md](landing/README.md).
 
-### Running Tests
-*Testing setup coming soon...*
+## API (`/api/v1`)
 
-### Manual Testing
-1. **User Registration**: Test creating new accounts
-2. **Authentication**: Test login/logout functionality
-3. **Bookmark CRUD**: Test creating, reading, updating, and deleting bookmarks
-4. **Collections**: Test creating and managing collections
-5. **Search**: Test search and filtering capabilities
-6. **Responsive Design**: Test on mobile, tablet, and desktop
+The popup talks to this JSON API with a Bearer JWT.
 
-## 🤝 Contributing
+| Method | Path | Notes |
+|--------|------|--------|
+| `GET` | `/health` | Liveness |
+| `POST` | `/auth/register` | Create account |
+| `POST` | `/auth/login` | Returns `{ token, user }` |
+| `GET` | `/auth/me` | Current user |
+| `PUT` | `/auth/me` | Update profile |
+| `PUT` | `/auth/password` | Change password |
+| `DELETE` | `/auth/me` | Delete account and library |
+| `POST` | `/auth/logout` | Client still clears the token |
+| `GET/POST` | `/bookmarks` | List / create |
+| `PUT/DELETE` | `/bookmarks/:id` | Update / delete |
+| `GET/POST` | `/collections` | List / create |
+| `GET/PUT/DELETE` | `/collections/:id` | One collection |
 
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+Password reset uses web pages at `/forgot-password` so the extension can open them in a tab.
 
-### Quick Start for Contributors
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Make your changes and commit: `git commit -m 'Add amazing feature'`
-4. Push to the branch: `git push origin feature/amazing-feature`
-5. Open a Pull Request
+## Scripts
 
-## 📝 License
+| Script | Description |
+|--------|-------------|
+| `npm run dev` | API and Express landing (nodemon) |
+| `npm start` | Production server |
+| `npm run build:extension` | Bundle the unpacked extension to `dist/extension/` |
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## License
 
-## 🙏 Acknowledgments
-
-- [Bootstrap](https://getbootstrap.com/) for the CSS framework
-- [Font Awesome](https://fontawesome.com/) for icons
-- [MongoDB](https://www.mongodb.com/) for the database
-- [Express.js](https://expressjs.com/) for the web framework
-- [Passport.js](http://www.passportjs.org/) for authentication
-
-## 📞 Support
-
-If you have any questions or need help, please:
-1. Check the [Issues](https://github.com/DevOlabode/curate/issues) page
-2. Create a new issue with detailed information
-3. Join our community discussions
-
----
-
-**Made with ❤️ by developers, for developers**
+MIT. See [LICENSE](LICENSE).

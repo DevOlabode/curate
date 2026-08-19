@@ -11,8 +11,7 @@ The public site is a coming-soon landing page. Sign in, library, and account man
 
 ## Status
 
-The extension is not in the Chrome Web Store or Edge Add-ons yet. The landing page explains the product and says coming soon.
-
+The extension is not in the Chrome Web Store or Edge Add-ons yet. The landing page explains the product.
 ## What the extension includes
 
 - **Bookmarks:** title, URL, category, and tags. Open, edit, or delete from the popup.

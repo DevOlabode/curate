@@ -123,16 +123,51 @@
         </div>
       </form>
 
-      <div class="library-section">
-        <h2 class="section-title">Collections</h2>
-        <div id="collection-list" class="collection-list"></div>
-        <p id="collections-empty" class="empty" hidden>No collections yet.</p>
+      <div id="library-empty" class="empty-guide" hidden>
+        <p class="kicker">Getting started</p>
+        <h2>Start your library</h2>
+        <p>Save the first link, or make a collection for a topic you keep returning to.</p>
+        <ol class="empty-steps">
+          <li>Choose bookmark or collection below.</li>
+          <li>Fill in the details.</li>
+          <li>Save. It will show up here.</li>
+        </ol>
+        <div class="row-actions">
+          <button class="btn btn-primary btn-sm" type="button" data-start-composer="bookmark">Add a bookmark</button>
+          <button class="btn btn-secondary btn-sm" type="button" data-start-composer="collection">Create a collection</button>
+        </div>
       </div>
 
-      <div class="library-section">
-        <h2 class="section-title">Bookmarks</h2>
-        <div id="bookmark-list" class="bookmark-list"></div>
-        <p id="empty-state" class="empty" hidden>No bookmarks yet.</p>
+      <div id="library-content">
+        <div class="library-section">
+          <h2 class="section-title">Collections</h2>
+          <div id="collection-list" class="collection-list"></div>
+          <div id="collections-empty" class="empty-guide" hidden>
+            <h3>No collections yet</h3>
+            <p>Group related bookmarks so a topic lives in one place.</p>
+            <ol class="empty-steps">
+              <li>Click Create a collection.</li>
+              <li>Give it a name.</li>
+              <li>Add bookmarks to it later.</li>
+            </ol>
+            <button class="btn btn-primary btn-sm" type="button" data-start-composer="collection">Create a collection</button>
+          </div>
+        </div>
+
+        <div class="library-section">
+          <h2 class="section-title">Bookmarks</h2>
+          <div id="bookmark-list" class="bookmark-list"></div>
+          <div id="empty-state" class="empty-guide" hidden>
+            <h3>No bookmarks yet</h3>
+            <p>Save a docs page, repo, or article you will want again.</p>
+            <ol class="empty-steps">
+              <li>Click Add a bookmark.</li>
+              <li>Add a title and URL.</li>
+              <li>Optionally tag it or file it in a collection.</li>
+            </ol>
+            <button class="btn btn-primary btn-sm" type="button" data-start-composer="bookmark">Add a bookmark</button>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -171,7 +206,16 @@
       </form>
 
       <div id="collection-bookmarks" class="bookmark-list"></div>
-      <p id="collection-empty" class="empty" hidden>No bookmarks in this collection.</p>
+      <div id="collection-empty" class="empty-guide" hidden>
+        <h3>This collection is empty</h3>
+        <p>Add the first bookmark so this set is useful.</p>
+        <ol class="empty-steps">
+          <li>Click Add a bookmark.</li>
+          <li>Add a title and URL.</li>
+          <li>Save. It stays in this collection.</li>
+        </ol>
+        <button class="btn btn-primary btn-sm" type="button" id="collection-empty-add">Add a bookmark</button>
+      </div>
     </section>
 
     <section id="view-settings" class="view" hidden>

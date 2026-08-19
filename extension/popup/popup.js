@@ -42,6 +42,8 @@ const collectionEmpty = $('#collection-empty');
 const collectionAddForm = $('#collection-add-form');
 const addSubmit = $('#add-submit');
 const collectionAddSubmit = $('#collection-add-submit');
+const libraryEmpty = $('#library-empty');
+const libraryContent = $('#library-content');
 const profileForm = $('#profile-form');
 const passwordForm = $('#password-form');
 const deleteForm = $('#delete-form');
@@ -218,9 +220,31 @@ async function loadLibrary() {
   ]);
   collectionsCache = collections;
   cacheBookmarks(bookmarks);
+  const bothEmpty = bookmarks.length === 0 && collections.length === 0;
+  libraryEmpty.hidden = !bothEmpty;
+  libraryContent.hidden = bothEmpty;
   renderCollections(collections);
   renderBookmarkList(bookmarkList, bookmarks, emptyState);
   fillCollectionSelect();
+}
+
+function openComposer(type = 'bookmark') {
+  hideCollectionComposer();
+  editingBookmarkId = null;
+  addSubmit.textContent = 'Save';
+  setComposerTabsHidden(false);
+  addForm.hidden = false;
+  setComposerType(type);
+  fillCollectionSelect();
+  addForm.scrollIntoView({ block: 'nearest' });
+}
+
+function openCollectionComposer() {
+  editingBookmarkId = null;
+  collectionAddSubmit.textContent = 'Save';
+  collectionAddForm.hidden = false;
+  collectionAddForm.reset();
+  collectionAddForm.scrollIntoView({ block: 'nearest' });
 }
 
 function hideComposer() {
@@ -347,13 +371,19 @@ authForm.addEventListener('submit', async (event) => {
 });
 
 $('#show-add-form').addEventListener('click', () => {
-  hideCollectionComposer();
-  editingBookmarkId = null;
-  addSubmit.textContent = 'Save';
-  setComposerTabsHidden(false);
-  addForm.hidden = false;
-  setComposerType('bookmark');
-  fillCollectionSelect();
+  openComposer('bookmark');
+});
+
+libraryEmpty.addEventListener('click', (event) => {
+  const btn = event.target.closest('[data-start-composer]');
+  if (!btn) return;
+  openComposer(btn.dataset.startComposer);
+});
+
+libraryContent.addEventListener('click', (event) => {
+  const btn = event.target.closest('[data-start-composer]');
+  if (!btn) return;
+  openComposer(btn.dataset.startComposer);
 });
 
 $('#cancel-add').addEventListener('click', () => {
@@ -417,10 +447,11 @@ addForm.addEventListener('submit', async (event) => {
 });
 
 $('#show-collection-add').addEventListener('click', () => {
-  editingBookmarkId = null;
-  collectionAddSubmit.textContent = 'Save';
-  collectionAddForm.hidden = false;
-  collectionAddForm.reset();
+  openCollectionComposer();
+});
+
+$('#collection-empty-add').addEventListener('click', () => {
+  openCollectionComposer();
 });
 
 $('#cancel-collection-add').addEventListener('click', () => {

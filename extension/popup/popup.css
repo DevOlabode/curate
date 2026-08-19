@@ -375,6 +375,42 @@ body {
 .status.error { background: var(--danger-bg); color: var(--danger); }
 .status.success { background: var(--success-bg); color: #1f5c4a; }
 
+.empty-guide {
+  background: var(--surface);
+  border: 1px dashed var(--line);
+  border-radius: 14px;
+  padding: 16px;
+  text-align: left;
+}
+
+.empty-guide .kicker { margin-bottom: 6px; }
+
+.empty-guide h2,
+.empty-guide h3 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  margin: 0 0 6px;
+}
+
+.empty-guide h2 { font-size: 1.25rem; }
+.empty-guide h3 { font-size: 1.02rem; }
+
+.empty-guide p {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.empty-steps {
+  margin: 0 0 14px;
+  padding-left: 1.2rem;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+
+.empty-steps li { margin-bottom: 4px; }
+.empty-steps li:last-child { margin-bottom: 0; }
+
 .empty, .muted, .center { text-align: center; color: var(--muted); }
 .center { margin-top: 12px; }
 .empty { margin: 0; font-size: 0.85rem; }

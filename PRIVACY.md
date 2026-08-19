@@ -1,37 +1,47 @@
 # Curate Privacy Policy
 
-**Last updated:** August 18, 2026
+**Last updated:** August 19, 2026
 
-Curate is an open-source bookmark manager. This policy describes the browser extension and web application.
+This policy describes the Curate website and the Curate API. The website is a coming-soon page. Accounts, bookmarks, and collections live on the Curate server when you use the product.
 
-## What we collect
+The hosted version is at `/privacy` on the Curate site.
 
-When you use Curate, you may provide:
+## This website
 
-- Account information (name, username, email, password)
-- Bookmarks you create (title, URL, category, tags, notes)
+The public site does not ask you to sign up or save bookmarks. It stores only your theme choice (light or dark) in your browser.
+
+Pages load fonts from Google Fonts. Password-reset pages on the Curate app also load styles from public CDNs.
+
+## What the service stores
+
+When you create an account, Curate stores:
+
+- Name, username, email, and a hashed password
+- Bookmarks you save (title, URL, category, tags, and notes)
 - Collection names and descriptions
+- A short-lived reset token if you ask to change a forgotten password
 
-## How data is used
+## How it is used
 
-Data is used only to provide bookmark storage, organization, and sync between the extension and the Curate server you connect to.
+That data is used only to run your account, keep your library, send a password-reset email when you ask for one, and return your bookmarks to the client you signed in with.
 
-## Where data is stored
+## Where it lives
 
-- **Server:** Bookmarks and account data are stored in the MongoDB database operated by the Curate deployment you use.
-- **Extension:** An authentication token and display preferences are stored locally in your browser via `chrome.storage.local`.
+Account and library data sit in the MongoDB database for the Curate instance you use. Password-reset email is sent through Brevo. Session cookies are used on the password-reset pages so those forms can work.
 
 ## What we do not do
 
 - We do not sell your data.
-- The extension does not read your browsing history.
-- The extension does not inject scripts into web pages you visit.
-- No third-party analytics SDKs are included in the extension.
+- We do not run ads on Curate.
+- We do not include analytics SDKs on this site.
+- Your library is private. There is no public feed.
 
-## Data deletion
+## Deleting your data
 
-Delete bookmarks and collections in the app. To remove your account, contact the operator of the Curate instance you use.
+You can delete individual bookmarks and collections from your library. Deleting your account removes the account, bookmarks, and collections stored for you on this server.
 
 ## Contact
 
 For privacy questions, open an issue at the [Curate GitHub repository](https://github.com/DevOlabode/curate).
+
+If this policy changes, the date at the top of this page will change.

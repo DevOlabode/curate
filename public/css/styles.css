@@ -1028,6 +1028,13 @@ html[data-theme="dark"] .hero .bookmark-card {
   font-size: 0.9rem;
 }
 
+.site-footer a {
+  color: var(--muted);
+  font-weight: 550;
+}
+
+.site-footer a:hover { color: var(--ember); }
+
 .auth-shell {
   min-height: calc(100vh - 160px);
   display: grid;
@@ -1262,6 +1269,22 @@ body.is-landing::after {
   max-width: 36rem;
 }
 
+.soon-hero.is-compact {
+  padding: 56px 0 32px;
+}
+
+.soon-hero.is-compact h1 {
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  max-width: none;
+}
+
+.soon-updated {
+  margin: 18px 0 0;
+  font-size: 0.92rem;
+  font-weight: 550;
+  color: var(--muted);
+}
+
 .soon-meta {
   display: flex;
   flex-wrap: wrap;
@@ -1298,6 +1321,28 @@ body.is-landing::after {
 }
 
 .soon-prose p:last-child { margin-bottom: 0; }
+
+.soon-prose ul {
+  margin: 0 0 16px;
+  padding: 0 0 0 1.2rem;
+  max-width: 40rem;
+  color: var(--ink-soft);
+}
+
+.soon-prose li {
+  margin: 0 0 8px;
+  font-size: 1.06rem;
+  line-height: 1.65;
+}
+
+.soon-prose li:last-child { margin-bottom: 0; }
+
+.soon-prose a {
+  color: var(--ember);
+  font-weight: 550;
+}
+
+.soon-prose a:hover { text-decoration: underline; }
 
 .soon-features {
   list-style: none;
@@ -1367,10 +1412,31 @@ body.is-landing::after {
   max-width: 34rem;
 }
 
+.soon-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 24px 40px 40px;
+  font-size: 0.88rem;
+}
+
+.soon-footer a {
+  color: var(--muted);
+  font-weight: 550;
+}
+
+.soon-footer a:hover,
+.soon-footer a[aria-current="page"] {
+  color: var(--ember);
+}
+
 @media (max-width: 720px) {
   .soon-header,
   .soon-page,
-  .soon-close-inner {
+  .soon-close-inner,
+  .soon-footer {
     padding-left: 20px;
     padding-right: 20px;
   }

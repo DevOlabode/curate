@@ -1,0 +1,132 @@
+<%- layout('./layout/boilerplate.ejs') %>
+
+<header class="soon-header">
+  <a class="soon-brand" href="/">
+    <img class="soon-logo" src="/images/download.svg" alt="" width="32" height="32">
+    Curate
+  </a>
+  <div class="soon-header-actions">
+    <a href="/#about">About</a>
+    <a href="/#features">Features</a>
+    <a href="/privacy" aria-current="page">Privacy</a>
+    <span class="soon-status">Coming soon</span>
+    <button id="theme-toggle" class="btn btn-sm" aria-label="Toggle theme" title="Toggle dark/light mode">
+      <i class="fas fa-moon"></i>
+    </button>
+  </div>
+</header>
+
+<main class="soon-page">
+  <section class="soon-hero is-compact">
+    <p class="soon-eyebrow">Policy</p>
+    <h1>Privacy</h1>
+    <p class="soon-updated">Last updated August 19, 2026</p>
+  </section>
+
+  <section class="soon-section">
+    <div class="soon-section-head">
+      <h2>Who this covers</h2>
+    </div>
+    <div class="soon-prose">
+      <p>
+        This policy describes the Curate website and the Curate API. The website is a coming-soon page. Accounts, bookmarks, and collections live on the Curate server when you use the product.
+      </p>
+    </div>
+  </section>
+
+  <section class="soon-section">
+    <div class="soon-section-head">
+      <h2>This website</h2>
+    </div>
+    <div class="soon-prose">
+      <p>
+        The public site does not ask you to sign up or save bookmarks. It stores only your theme choice (light or dark) in your browser.
+      </p>
+      <p>
+        Pages load fonts from Google Fonts. Password-reset pages on this app also load styles from public CDNs.
+      </p>
+    </div>
+  </section>
+
+  <section class="soon-section">
+    <div class="soon-section-head">
+      <h2>What the service stores</h2>
+    </div>
+    <div class="soon-prose">
+      <p>When you create an account, Curate stores:</p>
+      <ul>
+        <li>Name, username, email, and a hashed password</li>
+        <li>Bookmarks you save (title, URL, category, tags, and notes)</li>
+        <li>Collection names and descriptions</li>
+        <li>A short-lived reset token if you ask to change a forgotten password</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="soon-section">
+    <div class="soon-section-head">
+      <h2>How it is used</h2>
+    </div>
+    <div class="soon-prose">
+      <p>
+        That data is used only to run your account, keep your library, send a password-reset email when you ask for one, and return your bookmarks to the client you signed in with.
+      </p>
+    </div>
+  </section>
+
+  <section class="soon-section">
+    <div class="soon-section-head">
+      <h2>Where it lives</h2>
+    </div>
+    <div class="soon-prose">
+      <p>
+        Account and library data sit in the MongoDB database for the Curate instance you use. Password-reset email is sent through Brevo. Session cookies are used on the password-reset pages so those forms can work.
+      </p>
+    </div>
+  </section>
+
+  <section class="soon-section">
+    <div class="soon-section-head">
+      <h2>What we do not do</h2>
+    </div>
+    <div class="soon-prose">
+      <ul>
+        <li>We do not sell your data.</li>
+        <li>We do not run ads on Curate.</li>
+        <li>We do not include analytics SDKs on this site.</li>
+        <li>Your library is private. There is no public feed.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="soon-section">
+    <div class="soon-section-head">
+      <h2>Deleting your data</h2>
+    </div>
+    <div class="soon-prose">
+      <p>
+        You can delete individual bookmarks and collections from your library. Deleting your account removes the account, bookmarks, and collections stored for you on this server.
+      </p>
+    </div>
+  </section>
+
+  <section class="soon-section">
+    <div class="soon-section-head">
+      <h2>Contact</h2>
+    </div>
+    <div class="soon-prose">
+      <p>
+        For privacy questions, open an issue at the
+        <a href="https://github.com/DevOlabode/curate">Curate GitHub repository</a>.
+      </p>
+      <p>
+        If this policy changes, the date at the top of this page will change.
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer class="soon-footer">
+  <a href="/">Home</a>
+  <a href="/privacy" aria-current="page">Privacy</a>
+</footer>

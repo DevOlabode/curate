@@ -29,7 +29,7 @@ The extension is not in the Chrome Web Store or Edge Add-ons yet. The landing pa
 | `landing/` | Static coming-soon site for Vercel |
 | `extension/` | Manifest V3 popup source |
 | `src/shared/` | Shared API client used by the extension |
-| `index.js` | Express API, password reset, and the same landing at `/` |
+| `index.js` | Express API, password reset, landing at `/`, and privacy at `/privacy` |
 | `dist/extension/` | Built unpacked extension (`npm run build:extension`) |
 
 ## Local development
@@ -56,7 +56,8 @@ npm run dev
 ```
 
 API: `http://localhost:3000/api/v1`  
-Landing (Express): `http://localhost:3000`
+Landing (Express): `http://localhost:3000`  
+Privacy: `http://localhost:3000/privacy`
 
 ### Browser extension
 

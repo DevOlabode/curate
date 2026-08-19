@@ -70,6 +70,10 @@ app.get('/', (req, res)=>{
     res.render('home', { landing: true })
 });
 
+app.get('/privacy', (req, res) => {
+    res.render('privacy', { landing: true })
+});
+
 
 app.all(/(.*)/, (req, res, next) => {
     next(new ExpressError("That page doesn’t exist.", 404))

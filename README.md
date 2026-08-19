@@ -79,7 +79,9 @@ More detail: [extension/README.md](extension/README.md).
 
 ## Landing page (Vercel)
 
-The deployable static site is in [`landing/`](landing/). No Node, Mongo, or env vars.
+The deployable static site is in [`landing/`](landing/). No Node, Mongo, or env vars. Privacy is at `/privacy`.
+
+In Vercel: set **Root Directory** to `landing`, framework **Other**, leave build and output empty. Do not run `node index.js` on Vercel.
 
 In Vercel: set **Root Directory** to `landing`, framework **Other**, leave build and output empty. Do not run `node index.js` on Vercel.
 

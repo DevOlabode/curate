@@ -30,7 +30,7 @@
   "permissions": ["storage"],
   "host_permissions": [
     "http://localhost:3000/*",
-    "https://developer-bookmark-vault-5.onrender.com/*"
+    "https://curate-h0ga.onrender.com/*"
   ],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;"

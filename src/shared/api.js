@@ -36,10 +36,13 @@ export async function apiRequest(path, options = {}) {
     headers.Authorization = `Bearer ${token}`;
   }
 
+  const { _retried, ...fetchOptions } = options;
+
   try {
     const response = await fetch(`${baseUrl}${API_PREFIX}${path}`, {
-      ...options,
+      ...fetchOptions,
       headers,
+      credentials: 'omit',
       signal: controller.signal,
     });
 
@@ -52,12 +55,19 @@ export async function apiRequest(path, options = {}) {
     return data;
   } catch (err) {
     if (err.name === 'AbortError') {
-      throw new ApiError('Request timed out', 408);
+      throw new ApiError('Request timed out. The server may still be waking up. Try again.', 408);
     }
     if (err instanceof ApiError) {
       throw err;
     }
-    throw new ApiError(err.message || 'Network error', 0);
+    if (!_retried) {
+      await new Promise((resolve) => setTimeout(resolve, 1200));
+      return apiRequest(path, { ...fetchOptions, _retried: true });
+    }
+    throw new ApiError(
+      `Could not reach ${baseUrl}. Open extension options, set Production (${baseUrl || 'https://curate-h0ga.onrender.com'}), save, then reload the extension.`,
+      0
+    );
   } finally {
     clearTimeout(timeout);
   }

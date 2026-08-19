@@ -5,24 +5,57 @@ export const DEFAULT_API_URLS = {
 };
 
 export const API_PREFIX = '/api/v1';
-export const REQUEST_TIMEOUT_MS = 15000;
+export const REQUEST_TIMEOUT_MS = 30000;
+
+const LEGACY_HOSTS = [
+  'https://developer-bookmark-vault-5.onrender.com',
+];
+
+function normalizeBaseUrl(url) {
+  return String(url || '').replace(/\/$/, '');
+}
+
+function isLocalHost(url) {
+  return /^(https?:\/\/)?(localhost|127\.0\.0\.1)(:\d+)?$/i.test(normalizeBaseUrl(url));
+}
 
 export async function getApiBaseUrl() {
   const { getStorageArea } = await import('./browser.js');
   const storage = getStorageArea();
-  const stored = await storage.get(['apiBaseUrl', 'environment']);
-  if (stored.apiBaseUrl) {
-    return stored.apiBaseUrl.replace(/\/$/, '');
+  const stored = await storage.get([
+    'apiBaseUrl',
+    'environment',
+    'apiHostMigratedToRender',
+  ]);
+
+  if (!stored.apiHostMigratedToRender) {
+    await storage.set({
+      apiBaseUrl: DEFAULT_API_URLS.production,
+      environment: 'production',
+      apiHostMigratedToRender: true,
+    });
+    return DEFAULT_API_URLS.production;
   }
+
   const env = stored.environment === 'development' ? 'development' : 'production';
-  return DEFAULT_API_URLS[env];
+  let url = normalizeBaseUrl(stored.apiBaseUrl);
+
+  if (env === 'production') {
+    if (!url || isLocalHost(url) || LEGACY_HOSTS.includes(url)) {
+      url = DEFAULT_API_URLS.production;
+      await storage.set({ apiBaseUrl: url, environment: 'production' });
+    }
+    return url;
+  }
+
+  return url || DEFAULT_API_URLS.development;
 }
 
 export async function setApiBaseUrl(url, environment = 'production') {
   const { getStorageArea } = await import('./browser.js');
   const storage = getStorageArea();
   await storage.set({
-    apiBaseUrl: url.replace(/\/$/, ''),
+    apiBaseUrl: normalizeBaseUrl(url),
     environment,
   });
 }

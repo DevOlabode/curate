@@ -1,6 +1,6 @@
 # Curate landing
 
-Static coming-soon site. No Node, Mongo, or env vars.
+Static product site. No Node, Mongo, or env vars.
 
 ## Preview locally
 

@@ -66,12 +66,15 @@ app.use('/collections/:id/bookmarks', collectionBookmarksRoutes)
 
 app.use('/api/v1', apiRoutes);
 
+const CHROME_STORE_URL = process.env.CHROME_STORE_URL
+    || 'https://chromewebstore.google.com/detail/curate/nlkfmdiphacjgicdcagonbfnpcdjfapo';
+
 app.get('/', (req, res)=>{
-    res.render('home', { landing: true })
+    res.render('home', { landing: true, chromeStoreUrl: CHROME_STORE_URL })
 });
 
 app.get('/privacy', (req, res) => {
-    res.render('privacy', { landing: true })
+    res.render('privacy', { landing: true, chromeStoreUrl: CHROME_STORE_URL })
 });
 
 

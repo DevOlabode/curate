@@ -1269,6 +1269,42 @@ body.is-landing::after {
   max-width: 36rem;
 }
 
+.soon-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 20px;
+  margin-top: 32px;
+}
+
+.soon-store-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: var(--ember);
+  color: #fffaf4;
+  font-weight: 650;
+  font-size: 0.95rem;
+}
+
+.soon-store-btn:hover {
+  color: #fffaf4;
+  filter: brightness(1.06);
+}
+
+.soon-cta-note {
+  font-size: 0.9rem;
+  font-weight: 550;
+  color: var(--muted);
+}
+
+.soon-header-actions a.soon-install {
+  color: var(--ember);
+  font-weight: 650;
+}
+
 .soon-hero.is-compact {
   padding: 56px 0 32px;
 }
@@ -1444,6 +1480,8 @@ body.is-landing::after {
   .soon-header { padding-top: 14px; padding-bottom: 14px; }
 
   .soon-header-actions a { display: none; }
+
+  .soon-header-actions a.soon-install { display: inline; }
 
   .soon-hero { padding: 56px 0 48px; }
 

@@ -4,14 +4,14 @@ A private bookmark library for developers, as a Chrome and Edge extension.
 
 Save docs, repos, tools, and articles from a popup. File them into collections. Open them later without digging through a bookmarks bar.
 
-The public site is a coming-soon landing page. Sign in, library, and account management live in the extension. The Express app behind this repo is the API and password-reset pages.
+The public site is the product landing page, with a Chrome Web Store install link. Sign in, library, and account management live in the extension. The Express app behind this repo is the API and password-reset pages.
 
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)
 
 ## Status
 
-The extension is not in the Chrome Web Store or Edge Add-ons yet. The landing page explains the product.
+Curate is on the [Chrome Web Store](https://chromewebstore.google.com/detail/curate/nlkfmdiphacjgicdcagonbfnpcdjfapo). Edge Add-ons is still coming soon.
 ## What the extension includes
 
 - **Bookmarks:** title, URL, category, and tags. Open, edit, or delete from the popup.
@@ -25,7 +25,7 @@ The extension is not in the Chrome Web Store or Edge Add-ons yet. The landing pa
 
 | Path | Role |
 |------|------|
-| `landing/` | Static coming-soon site for Vercel |
+| `landing/` | Static landing site for Vercel |
 | `extension/` | Manifest V3 popup source |
 | `src/shared/` | Shared API client used by the extension |
 | `index.js` | Express API, password reset, landing at `/`, and privacy at `/privacy` |
@@ -78,9 +78,7 @@ More detail: [extension/README.md](extension/README.md).
 
 ## Landing page (Vercel)
 
-The deployable static site is in [`landing/`](landing/). No Node, Mongo, or env vars. Privacy is at `/privacy`.
-
-In Vercel: set **Root Directory** to `landing`, framework **Other**, leave build and output empty. Do not run `node index.js` on Vercel.
+The deployable static site is in [`landing/`](landing/). No Node, Mongo, or env vars. Privacy is at `/privacy`. The Chrome install link is on the homepage.
 
 In Vercel: set **Root Directory** to `landing`, framework **Other**, leave build and output empty. Do not run `node index.js` on Vercel.
 

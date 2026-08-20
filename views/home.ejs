@@ -9,7 +9,7 @@
     <a href="#about">About</a>
     <a href="#features">Features</a>
     <a href="/privacy">Privacy</a>
-    <span class="soon-status">Coming soon</span>
+    <a class="soon-install" href="<%= chromeStoreUrl %>" target="_blank" rel="noopener noreferrer">Add to Chrome</a>
     <button id="theme-toggle" class="btn btn-sm" aria-label="Toggle theme" title="Toggle dark/light mode">
       <i class="fas fa-moon"></i>
     </button>
@@ -23,10 +23,14 @@
     <p class="soon-lede">
       Curate is a private library in your toolbar. Save docs, repos, tools, and articles from a popup, file them into collections, and find them again without hunting through a bookmarks bar.
     </p>
+    <div class="soon-cta">
+      <a class="soon-store-btn" href="<%= chromeStoreUrl %>" target="_blank" rel="noopener noreferrer">Add to Chrome</a>
+      <span class="soon-cta-note">Edge is coming soon.</span>
+    </div>
     <div class="soon-meta">
-      <span>Chrome and Edge</span>
+      <span>Available on Chrome</span>
+      <span>Edge coming soon</span>
       <span>Private accounts</span>
-      <span>Coming soon</span>
     </div>
   </section>
 
@@ -46,7 +50,7 @@
 
   <section class="soon-section">
     <div class="soon-section-head">
-      <h2 id="features">What it will include</h2>
+        <h2 id="features">What it includes</h2>
     </div>
     <ol class="soon-features">
       <li>
@@ -95,17 +99,21 @@
   </section>
 </main>
 
-<section class="soon-close" id="soon">
+<section class="soon-close" id="install">
   <div class="soon-close-inner">
-    <p class="soon-eyebrow">Status</p>
-    <h2>Coming soon.</h2>
+    <p class="soon-eyebrow">Install</p>
+    <h2>On Chrome now.</h2>
     <p>
-      Curate will ship as a Chrome and Edge extension. There is no download and no web signup on this site yet. When it is ready, this page is where you will find it.
+      Get Curate from the Chrome Web Store. There is no web signup on this site. Sign in inside the popup. Edge is still on the way.
     </p>
+    <div class="soon-cta">
+      <a class="soon-store-btn" href="<%= chromeStoreUrl %>" target="_blank" rel="noopener noreferrer">Add to Chrome</a>
+    </div>
   </div>
 </section>
 
 <footer class="soon-footer">
   <a href="/">Home</a>
   <a href="/privacy">Privacy</a>
+  <a href="<%= chromeStoreUrl %>" target="_blank" rel="noopener noreferrer">Chrome Web Store</a>
 </footer>

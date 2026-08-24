@@ -9,7 +9,8 @@
     <a href="#about">About</a>
     <a href="#features">Features</a>
     <a href="/privacy">Privacy</a>
-    <a class="soon-install" href="<%= chromeStoreUrl %>" target="_blank" rel="noopener noreferrer">Add to Chrome</a>
+    <a class="soon-install" href="<%= chromeStoreUrl %>" target="_blank" rel="noopener noreferrer">Chrome</a>
+    <a class="soon-install" href="<%= edgeStoreUrl %>" target="_blank" rel="noopener noreferrer">Edge</a>
     <button id="theme-toggle" class="btn btn-sm" aria-label="Toggle theme" title="Toggle dark/light mode">
       <i class="fas fa-moon"></i>
     </button>
@@ -25,11 +26,11 @@
     </p>
     <div class="soon-cta">
       <a class="soon-store-btn" href="<%= chromeStoreUrl %>" target="_blank" rel="noopener noreferrer">Add to Chrome</a>
-      <span class="soon-cta-note">Edge is coming soon.</span>
+      <a class="soon-store-btn is-secondary" href="<%= edgeStoreUrl %>" target="_blank" rel="noopener noreferrer">Add to Edge</a>
     </div>
     <div class="soon-meta">
       <span>Available on Chrome</span>
-      <span>Edge coming soon</span>
+      <span>Available on Edge</span>
       <span>Private accounts</span>
     </div>
   </section>
@@ -102,12 +103,13 @@
 <section class="soon-close" id="install">
   <div class="soon-close-inner">
     <p class="soon-eyebrow">Install</p>
-    <h2>On Chrome now.</h2>
+    <h2>On Chrome and Edge.</h2>
     <p>
-      Get Curate from the Chrome Web Store. There is no web signup on this site. Sign in inside the popup. Edge is still on the way.
+      Get Curate from the Chrome Web Store or Microsoft Edge Add-ons. There is no web signup on this site. Sign in inside the popup.
     </p>
     <div class="soon-cta">
       <a class="soon-store-btn" href="<%= chromeStoreUrl %>" target="_blank" rel="noopener noreferrer">Add to Chrome</a>
+      <a class="soon-store-btn is-secondary" href="<%= edgeStoreUrl %>" target="_blank" rel="noopener noreferrer">Add to Edge</a>
     </div>
   </div>
 </section>
@@ -116,4 +118,5 @@
   <a href="/">Home</a>
   <a href="/privacy">Privacy</a>
   <a href="<%= chromeStoreUrl %>" target="_blank" rel="noopener noreferrer">Chrome Web Store</a>
+  <a href="<%= edgeStoreUrl %>" target="_blank" rel="noopener noreferrer">Microsoft Edge Add-ons</a>
 </footer>

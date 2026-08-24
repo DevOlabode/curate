@@ -68,13 +68,15 @@ app.use('/api/v1', apiRoutes);
 
 const CHROME_STORE_URL = process.env.CHROME_STORE_URL
     || 'https://chromewebstore.google.com/detail/curate/nlkfmdiphacjgicdcagonbfnpcdjfapo';
+const EDGE_STORE_URL = process.env.EDGE_STORE_URL
+    || 'https://microsoftedge.microsoft.com/addons/detail/curate/ailonhflbailiggfiimmkkmbeoggbjpk';
 
 app.get('/', (req, res)=>{
-    res.render('home', { landing: true, chromeStoreUrl: CHROME_STORE_URL })
+    res.render('home', { landing: true, chromeStoreUrl: CHROME_STORE_URL, edgeStoreUrl: EDGE_STORE_URL })
 });
 
 app.get('/privacy', (req, res) => {
-    res.render('privacy', { landing: true, chromeStoreUrl: CHROME_STORE_URL })
+    res.render('privacy', { landing: true, chromeStoreUrl: CHROME_STORE_URL, edgeStoreUrl: EDGE_STORE_URL })
 });
 
 

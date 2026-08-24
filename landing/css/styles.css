@@ -198,6 +198,18 @@ html[data-theme="dark"] .icon-sun { display: block; }
   filter: brightness(1.06);
 }
 
+.soon-store-btn.is-secondary {
+  background: transparent;
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1.5px var(--line);
+}
+
+.soon-store-btn.is-secondary:hover {
+  color: var(--ink);
+  filter: none;
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+}
+
 .soon-cta-note {
   font-size: 0.9rem;
   font-weight: 550;
@@ -386,6 +398,8 @@ html[data-theme="dark"] .icon-sun { display: block; }
   .soon-header-actions a { display: none; }
 
   .soon-header-actions a.soon-install { display: inline; }
+
+  .soon-header-actions { gap: 14px; }
 
   .soon-hero { padding: 56px 0 48px; }
 

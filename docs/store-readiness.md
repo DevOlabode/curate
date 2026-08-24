@@ -62,9 +62,9 @@ Publish a privacy policy URL covering:
 
 ## Microsoft Edge Add-ons checklist
 
-- [ ] Same `dist/extension` package (Chromium-compatible)
-- [ ] Edge Partner Center listing
-- [ ] Privacy policy URL
+- [x] Same `dist/extension` package (Chromium-compatible)
+- [x] Edge Partner Center listing ([Curate on Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/curate/ailonhflbailiggfiimmkkmbeoggbjpk))
+- [x] Privacy policy URL
 
 ## Open-source repository
 

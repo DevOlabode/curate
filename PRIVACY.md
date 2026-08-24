@@ -2,7 +2,7 @@
 
 **Last updated:** August 19, 2026
 
-This policy describes the Curate website and the Curate API. The website is a coming-soon page. Accounts, bookmarks, and collections live on the Curate server when you use the product.
+This policy describes the Curate website and the Curate API. The website is a product landing page. Accounts, bookmarks, and collections live on the Curate server when you use the product.
 
 The hosted version is at `/privacy` on the Curate site.
 

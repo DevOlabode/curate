@@ -1,18 +1,34 @@
 {
   "name": "curate",
   "version": "1.0.0",
+  "description": "Private bookmark library for developers, as a Chrome and Edge extension",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DevOlabode/curate.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DevOlabode/curate/issues"
+  },
+  "homepage": "https://github.com/DevOlabode/curate#readme",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
     "build": "npm run build:extension",
     "build:extension": "node scripts/build-extension.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --check index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "Curate - developer bookmark vault (web app + browser extension)",
+  "keywords": [
+    "bookmarks",
+    "browser-extension",
+    "chrome-extension",
+    "edge-extension"
+  ],
+  "author": "Samuel Olabode",
+  "license": "MIT",
   "dependencies": {
     "connect-flash": "^0.1.1",
     "connect-mongo": "^5.1.0",

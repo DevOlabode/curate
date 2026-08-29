@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions and support
+    url: https://github.com/DevOlabode/curate/blob/main/SUPPORT.md
+    about: Install help, local setup, and usage questions. Not for bugs.
+  - name: Security vulnerability
+    url: https://github.com/DevOlabode/curate/security/advisories/new
+    about: Report a security issue privately. Do not file a public issue.
+  - name: Chrome Web Store
+    url: https://chromewebstore.google.com/detail/curate/nlkfmdiphacjgicdcagonbfnpcdjfapo
+    about: Install Curate for Google Chrome
+  - name: Microsoft Edge Add-ons
+    url: https://microsoftedge.microsoft.com/addons/detail/curate/ailonhflbailiggfiimmkkmbeoggbjpk
+    about: Install Curate for Microsoft Edge

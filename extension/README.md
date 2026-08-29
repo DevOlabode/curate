@@ -47,7 +47,7 @@ API connection (environment and base URL) is developer-only. Open it from `chrom
 
 ## Architecture
 
-See `docs/phase1-analysis.md`, `docs/authentication.md`, `docs/security-audit.md`, and `docs/store-readiness.md`.
+See [docs/architecture.md](../docs/architecture.md) and [docs/development.md](../docs/development.md).
 
 ## Permissions
 

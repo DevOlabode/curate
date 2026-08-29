@@ -1,0 +1,8 @@
+# Default reviewer for every change.
+* @DevOlabode
+
+# When trusted contributors join, split ownership like this:
+# /landing/    @DevOlabode
+# /extension/  @DevOlabode
+# /src/        @DevOlabode
+# /docs/       @DevOlabode

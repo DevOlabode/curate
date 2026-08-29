@@ -1,0 +1,69 @@
+name: Good first issue
+description: Maintainer template for a beginner-friendly task
+title: "[Good first issue]: "
+labels: ["good first issue"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template when filing a task a new contributor can finish in one PR.
+
+        A good first issue names the problem, the files to touch, and how to know it is done.
+
+        Example:
+
+        **Title:** Improve the empty state for collections
+
+        **Current behavior:** The collections empty state in the popup is easy to miss.
+
+        **Goal:** Make it clearer how to create a first collection.
+
+        **Relevant files:**
+        - `extension/popup/popup.html` (`#collections-empty`)
+        - `extension/popup/popup.css` (`.empty-guide`)
+
+        **Acceptance criteria:**
+        - [ ] Copy explains how to create a collection
+        - [ ] There is a button that starts collection creation
+        - [ ] Layout still fits the popup
+        - [ ] Controls are keyboard accessible and have visible labels
+  - type: textarea
+    id: current
+    attributes:
+      label: Current behavior
+      description: What a new contributor will see today.
+    validations:
+      required: true
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: What “done” looks like.
+    validations:
+      required: true
+  - type: textarea
+    id: files
+    attributes:
+      label: Relevant files
+      description: Concrete paths. Point at the code, not the whole repo.
+      placeholder: |
+        extension/popup/popup.html
+        extension/popup/popup.css
+    validations:
+      required: true
+  - type: textarea
+    id: criteria
+    attributes:
+      label: Acceptance criteria
+      value: |
+        - [ ] Clear explanation of the change
+        - [ ] Works in the popup (or the named surface)
+        - [ ] No unrelated refactors
+        - [ ] Docs updated if the change is user-facing
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Extra notes
+      description: Setup gotchas, related issues, or screenshots of the current UI.

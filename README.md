@@ -1,46 +1,58 @@
+<p align="center">
+  <img src="landing/images/download.svg" alt="Curate" width="72" height="72">
+</p>
+
 # Curate
 
 A private bookmark library for developers, as a Chrome and Edge extension.
 
-Save docs, repos, tools, and articles from a popup. File them into collections. Open them later without digging through a bookmarks bar.
+Save docs, repos, tools, and articles from a popup. File them into collections. Open them later without digging through a bookmarks bar. There is no public feed.
 
-The public site is the product landing page, with Chrome Web Store and Microsoft Edge Add-ons install links. Sign in, library, and account management live in the extension. The Express app behind this repo is the API and password-reset pages.
+[Chrome Web Store](https://chromewebstore.google.com/detail/curate/nlkfmdiphacjgicdcagonbfnpcdjfapo) · [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/curate/ailonhflbailiggfiimmkkmbeoggbjpk) · [Contributing](CONTRIBUTING.md) · [Roadmap](docs/roadmap.md)
 
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)
+![PRs welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)
 
-## Status
+## Screenshots
 
-Curate is on the [Chrome Web Store](https://chromewebstore.google.com/detail/curate/nlkfmdiphacjgicdcagonbfnpcdjfapo) and [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/curate/ailonhflbailiggfiimmkkmbeoggbjpk).
+The live popup is on the store listings:
 
-## What the extension includes
+- [Curate on the Chrome Web Store](https://chromewebstore.google.com/detail/curate/nlkfmdiphacjgicdcagonbfnpcdjfapo)
+- [Curate on Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/curate/ailonhflbailiggfiimmkkmbeoggbjpk)
 
-- **Bookmarks:** title, URL, category, and tags. Open, edit, or delete from the popup.
-- **Collections:** named groups of related links. Add bookmarks into a collection from that view.
-- **Accounts in the popup:** register, sign in, edit profile, change password, log out, delete account.
-- **Private by default:** links stay on your account. No public feed.
+The public site lives in [`landing/`](landing/). Sign in, the library, and account management are in the extension, not on the website.
+
+## Features
+
+- **Bookmarks** — title, URL, category, and tags. Open, edit, or delete from the popup.
+- **Collections** — named groups of related links. Add into a collection from that view.
+- **Accounts in the popup** — register, sign in, edit profile, change password, log out, delete account.
+- **Private by default** — links stay on your account.
 - **Light and dark** theme.
-- **Library first:** the home screen is your collections and bookmarks. Forms appear when you add or edit.
+- **Library first** — the home screen is your collections and bookmarks. Forms appear when you add or edit.
 
-## Repo layout
+## Tech stack
 
-| Path | Role |
-|------|------|
-| `landing/` | Static landing site for Vercel |
-| `extension/` | Manifest V3 popup source |
-| `src/shared/` | Shared API client used by the extension |
-| `index.js` | Express API, password reset, landing at `/`, and privacy at `/privacy` |
-| `dist/extension/` | Built unpacked extension (`npm run build:extension`) |
+| Piece | Stack |
+|-------|--------|
+| Extension | Manifest V3, vanilla JS, HTML, CSS |
+| API | Node.js 18+, Express 5, Joi, JWT |
+| Database | MongoDB (Mongoose) |
+| Landing | Static HTML/CSS (`landing/`) |
 
-## Local development
+Chrome and Edge share the same unpacked build.
 
-### Prerequisites
+## Installation
 
-- Node.js 18 or newer
-- MongoDB
-- npm
+**Use the product**
 
-### API server
+1. Install from the [Chrome Web Store](https://chromewebstore.google.com/detail/curate/nlkfmdiphacjgicdcagonbfnpcdjfapo) or [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/curate/ailonhflbailiggfiimmkkmbeoggbjpk).
+2. Open the toolbar popup and create an account or sign in.
+
+**Run from source** (contributors and self-hosting) — [Development setup](#development-setup) below, or [docs/development.md](docs/development.md).
+
+## Development setup
 
 ```bash
 git clone https://github.com/DevOlabode/curate.git
@@ -49,70 +61,60 @@ npm install
 cp .env.example .env
 ```
 
-Set at least `MONGO_URI`, `SESSION_SECRET`, and `JWT_SECRET` in `.env`. See [`.env.example`](.env.example).
+Set `MONGO_URI`, `SESSION_SECRET`, and `JWT_SECRET`. Then:
 
 ```bash
 npm run dev
-```
-
-API: `http://localhost:3000/api/v1`  
-Landing (Express): `http://localhost:3000`  
-Privacy: `http://localhost:3000/privacy`
-
-### Browser extension
-
-```bash
 npm run build:extension
 ```
 
-Then in Chrome (`chrome://extensions`) or Edge (`edge://extensions`):
+Load `dist/extension/` as unpacked in Chrome or Edge. In **Details → Extension options**, set environment to Development (`http://localhost:3000`).
 
-1. Turn on Developer mode.
-2. Load unpacked.
-3. Select `dist/extension/`.
+Full walkthrough: [docs/development.md](docs/development.md). How to send a PR: [CONTRIBUTING.md](CONTRIBUTING.md).
 
-For local API calls, open the extension options from `chrome://extensions` (Details, then Extension options) and set environment to Development (`http://localhost:3000`). That page is for developers. It is not in the popup.
+## Architecture overview
 
-After source changes, run `npm run build:extension` again and reload the extension.
+```text
+Popup  --Bearer JWT-->  /api/v1  -->  MongoDB
+```
 
-More detail: [extension/README.md](extension/README.md).
+The popup cannot use the website's session cookie (`chrome-extension://` origin), so the extension talks to `/api/v1` with a JWT in `chrome.storage.local`. There are no content scripts and no history permission.
 
-## Landing page (Vercel)
+| Path | Role |
+|------|------|
+| `extension/` | MV3 popup, options, service worker |
+| `src/shared/` | API client used by the extension |
+| `routes/api/` | JSON API |
+| `landing/` | Static product site |
+| `index.js` | Express API, password reset, optional Express landing |
 
-The deployable static site is in [`landing/`](landing/). No Node, Mongo, or env vars. Privacy is at `/privacy`. Chrome and Edge install links are on the homepage.
+See [docs/architecture.md](docs/architecture.md).
 
-In Vercel: set **Root Directory** to `landing`, framework **Other**, leave build and output empty. Do not run `node index.js` on Vercel.
+## Contributing
 
-See [landing/README.md](landing/README.md).
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before you open a PR.
 
-## API (`/api/v1`)
+1. Fork, clone, branch (`feature/…`, `fix/…`, `docs/…`).
+2. Claim or open an [issue](https://github.com/DevOlabode/curate/issues/new/choose).
+3. Make one focused change, test it, open a PR.
 
-The popup talks to this JSON API with a Bearer JWT.
+New here? Look for [`good first issue`](https://github.com/DevOlabode/curate/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22).
 
-| Method | Path | Notes |
-|--------|------|--------|
-| `GET` | `/health` | Liveness |
-| `POST` | `/auth/register` | Create account |
-| `POST` | `/auth/login` | Returns `{ token, user }` |
-| `GET` | `/auth/me` | Current user |
-| `PUT` | `/auth/me` | Update profile |
-| `PUT` | `/auth/password` | Change password |
-| `DELETE` | `/auth/me` | Delete account and library |
-| `POST` | `/auth/logout` | Client still clears the token |
-| `GET/POST` | `/bookmarks` | List / create |
-| `PUT/DELETE` | `/bookmarks/:id` | Update / delete |
-| `GET/POST` | `/collections` | List / create |
-| `GET/PUT/DELETE` | `/collections/:id` | One collection |
+Please follow the [Code of Conduct](CODE_OF_CONDUCT.md). Usage questions belong in [SUPPORT.md](SUPPORT.md), not in Issues. Security reports go to [SECURITY.md](SECURITY.md).
 
-Password reset uses web pages at `/forgot-password` so the extension can open them in a tab.
+## Roadmap
 
-## Scripts
+Shipped: private library in the popup, Chrome and Edge listings. Next: tests, tighter auth, clearer empty states. Details: [docs/roadmap.md](docs/roadmap.md). How decisions are made: [GOVERNANCE.md](GOVERNANCE.md).
 
-| Script | Description |
-|--------|-------------|
-| `npm run dev` | API and Express landing (nodemon) |
-| `npm start` | Production server |
-| `npm run build:extension` | Bundle the unpacked extension to `dist/extension/` |
+## Contributors
+
+Maintainer: [Samuel Olabode](https://github.com/DevOlabode) ([@DevOlabode](https://github.com/DevOlabode)).
+
+<a href="https://github.com/DevOlabode/curate/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=DevOlabode/curate" alt="Contributors to Curate" />
+</a>
+
+PRs are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 

@@ -66,10 +66,8 @@ app.use('/collections/:id/bookmarks', collectionBookmarksRoutes)
 
 app.use('/api/v1', apiRoutes);
 
-const CHROME_STORE_URL = process.env.CHROME_STORE_URL
-    || 'https://chromewebstore.google.com/detail/curate/nlkfmdiphacjgicdcagonbfnpcdjfapo';
-const EDGE_STORE_URL = process.env.EDGE_STORE_URL
-    || 'https://microsoftedge.microsoft.com/addons/detail/curate/ailonhflbailiggfiimmkkmbeoggbjpk';
+const CHROME_STORE_URL = 'https://chromewebstore.google.com/detail/curate/nlkfmdiphacjgicdcagonbfnpcdjfapo';
+const EDGE_STORE_URL ='https://microsoftedge.microsoft.com/addons/detail/curate/ailonhflbailiggfiimmkkmbeoggbjpk';
 
 app.get('/', (req, res)=>{
     res.render('home', { landing: true, chromeStoreUrl: CHROME_STORE_URL, edgeStoreUrl: EDGE_STORE_URL })
@@ -102,7 +100,6 @@ app.use((err, req, res, next)=>{
 });
 
 const PORT=process.env.PORT || 3000;
-
 app.listen(PORT, ()=>{
     console.log(PORT);
     console.log(`App is listening on PORT ${PORT}`)

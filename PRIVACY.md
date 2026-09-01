@@ -1,6 +1,6 @@
 # Curate Privacy Policy
 
-**Last updated:** August 19, 2026
+**Last updated:** September 1, 2026
 
 This policy describes the Curate website and the Curate API. The website is a product landing page. Accounts, bookmarks, and collections live on the Curate server when you use the product.
 
@@ -42,6 +42,6 @@ You can delete individual bookmarks and collections from your library. Deleting 
 
 ## Contact
 
-For privacy questions, open an issue at the [Curate GitHub repository](https://github.com/DevOlabode/curate).
+ For privacy questions, contact the developer at [email](mailto:solabode223@gmail.com).
 
 If this policy changes, the date at the top of this page will change.

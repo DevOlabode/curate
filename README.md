@@ -108,11 +108,7 @@ Shipped: private library in the popup, Chrome and Edge listings. Next: tests, ti
 
 ## Contributors
 
-Maintainer: [Samuel Olabode](https://github.com/DevOlabode) ([@DevOlabode](https://github.com/DevOlabode)).
-
-<a href="https://github.com/DevOlabode/curate/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=DevOlabode/curate" alt="Contributors to Curate" />
-</a>
+Maintainer: ([@DevOlabode](https://github.com/DevOlabode)).
 
 PRs are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
 

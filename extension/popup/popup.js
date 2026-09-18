@@ -660,10 +660,21 @@ deleteForm.addEventListener('submit', async (event) => {
   }
 });
 
+function updateThemeToggle(theme) {
+  const toggleBtn = $('#theme-toggle');
+  if (!toggleBtn) return;
+  const isDark = theme === 'dark';
+  const label = isDark ? 'Switch to light theme' : 'Switch to dark theme';
+  toggleBtn.setAttribute('aria-label', label);
+  toggleBtn.title = label;
+  toggleBtn.setAttribute('aria-pressed', String(isDark));
+}
+
 $('#theme-toggle').addEventListener('click', async () => {
   const current = document.documentElement.getAttribute('data-theme') || 'light';
   const next = current === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', next);
+  updateThemeToggle(next);
   await setTheme(next);
 });
 
@@ -691,6 +702,7 @@ document.querySelectorAll('.password-toggle').forEach((btn) => {
 async function initTheme() {
   const theme = await getTheme();
   document.documentElement.setAttribute('data-theme', theme);
+  updateThemeToggle(theme);
   const forgotLink = $('#forgot-password-link');
   if (forgotLink) {
     forgotLink.href = `${await getApiBaseUrl()}/forgot-password`;

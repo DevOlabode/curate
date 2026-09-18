@@ -228,6 +228,13 @@ async function loadLibrary() {
   fillCollectionSelect();
 }
 
+function focusComposerField(type = composerType) {
+  const field = type === 'collection'
+    ? $('#collection-name')
+    : addForm.elements.title;
+  field?.focus();
+}
+
 function openComposer(type = 'bookmark') {
   hideCollectionComposer();
   editingBookmarkId = null;
@@ -237,8 +244,7 @@ function openComposer(type = 'bookmark') {
   setComposerType(type);
   fillCollectionSelect();
   addForm.scrollIntoView({ block: 'nearest' });
-  const focusEl = type === 'collection' ? addForm.elements.name : addForm.elements.title;
-  focusEl?.focus();
+  focusComposerField(type);
 }
 
 function openCollectionComposer() {
@@ -400,6 +406,7 @@ addForm.querySelectorAll('.composer-tab').forEach((tab) => {
   tab.addEventListener('click', () => {
     if (editingBookmarkId) return;
     setComposerType(tab.dataset.type);
+    focusComposerField(tab.dataset.type);
   });
 });
 

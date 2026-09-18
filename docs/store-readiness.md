@@ -26,13 +26,14 @@ The extension **does not**:
 - Sell data
 - Run analytics SDKs
 - Inject content scripts into arbitrary pages
-- Read browsing history (no `tabs` / `history` permission)
+- Read browsing history (no `tabs` / `history` permission; `activeTab` only exposes the current tab after a user gesture)
 
 ## Permissions justification (for store review)
 
 Copy into store submission:
 
 > **storage** - Saves your login token and extension preferences on your device.  
+> **activeTab** - Reads the current tab title and URL after you click the toolbar icon or use the add-bookmark shortcut, so the composer can prefill http(s) pages.  
 > **host_permissions** - Allows the extension to sync bookmarks with the Curate server.
 
 ## Privacy policy requirements

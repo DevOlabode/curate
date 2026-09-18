@@ -48,7 +48,7 @@ Popup  --Bearer JWT-->  /api/v1  -->  MongoDB
 Options page           (same API, developer host override)
 ```
 
-There are **no content scripts**. The extension does not inject into web pages and does not read browsing history. Permissions are `storage` plus host access to the Curate API (production and localhost).
+There are **no content scripts**. The extension does not inject into web pages and does not read browsing history. Permissions are `storage`, `activeTab` (current tab URL/title after a toolbar click or the add-bookmark command), plus host access to the Curate API (production and localhost).
 
 ## Auth in brief
 

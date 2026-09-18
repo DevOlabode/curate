@@ -121,6 +121,8 @@ database). It covers:
 - `tests/api/bookmarks.test.js` - bookmark CRUD, ownership, validation
 - `tests/api/collections.test.js` - collection CRUD, ownership, validation
 - `tests/unit/validators.test.js` - `normalizeUrl`, `parseTags`, Joi schemas
+- `tests/unit/shortcuts.test.mjs` - popup shortcut helpers (Esc routing, savable tab URLs)
+- `tests/unit/extension-manifest.test.js` - add-bookmark command and `activeTab`
 
 Tests run against a throwaway MongoDB started in memory by
 `mongodb-memory-server` - no local MongoDB, `MONGO_URI`, or other setup is

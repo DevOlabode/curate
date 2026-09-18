@@ -20,7 +20,8 @@
     "build": "npm run build:extension",
     "build:extension": "node scripts/build-extension.js",
     "test": "node --test",
-    "test:watch": "node --test --watch"
+    "test:watch": "node --test --watch",
+    "test:coverage": "node scripts/coverage-report.js"
   },
   "keywords": [
     "bookmarks",

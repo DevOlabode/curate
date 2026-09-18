@@ -11,6 +11,7 @@ extension (`extension/manifest.json`).
 ### Added
 
 - Open-source contributor docs and GitHub community files (issues, PRs, CI, code of conduct)
+- `npm run test:coverage` (Node built-in coverage) and a CI `coverage-report` artifact; no percentage gate
 
 ### Changed
 

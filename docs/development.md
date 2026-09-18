@@ -84,6 +84,7 @@ Vercel: set Root Directory to `landing`, framework Other, empty build and output
 | `npm start` | Production server |
 | `npm test` | Automated test suite (`node --test`) |
 | `npm run test:watch` | Automated test suite in watch mode |
+| `npm run test:coverage` | Same suite plus Node's built-in coverage report |
 | `npm run build:extension` | Bundle unpacked extension to `dist/extension/` |
 
 ## API surface
@@ -124,11 +125,54 @@ database). It covers:
 
 Tests run against a throwaway MongoDB started in memory by
 `mongodb-memory-server` - no local MongoDB, `MONGO_URI`, or other setup is
-needed, and your dev/production data is never touched. CI runs `npm test` and
-`npm run build:extension` on every push and pull request.
+needed, and your dev/production data is never touched. CI runs
+`npm run test:coverage` and `npm run build:extension` on every push and pull
+request. Coverage is informational: CI does not fail on a percentage. The
+text report is uploaded as the `coverage-report` workflow artifact
+(`coverage/coverage.txt`).
 
 There is still no end-to-end UI suite. Manually check the flow you changed in
 the loaded unpacked extension.
+
+### Coverage
+
+```bash
+npm run test:coverage
+```
+
+This wraps `node --test --experimental-test-coverage` (no extra dependency;
+see `scripts/coverage-report.js`). After the suite finishes, Node prints a
+per-file table and writes the same output to `coverage/coverage.txt`
+(gitignored).
+
+How to read the table:
+
+| Column | Meaning |
+|--------|---------|
+| `file` | Source file the runner loaded |
+| `line %` | Share of executable lines that ran |
+| `branch %` | Share of branches (if/else, ternaries, and similar) that ran |
+| `funcs %` | Share of functions that were called |
+| `uncovered lines` | Line numbers or ranges the suite never hit |
+
+The `all files` row is the headline number. Files the suite does not load
+(the extension popup, landing site, most Express HTML routes) do not appear.
+
+**Baseline** (refreshed with this change on Node 22; CI is Node 20, so expect
+small drift):
+
+| | line % | branch % | funcs % |
+|---|--------|----------|---------|
+| **all files** | **67** | **83** | **63** |
+
+- At 100% lines: `routes/api/*`, `middleware/apiAuth.js`, `middleware/validateId.js`, `models/collection.js`, `models/user.js`, `joiSchema.js`.
+- Partial, because the suite does not hit every handler: `controllers/api/auth.js` (~44% lines), `controllers/api/bookmarks.js` (~63%), `controllers/api/collections.js` (~68%), `models/bookmark.js` (~85%).
+- Still thin: `utils/mailer.js` (~9% lines, 0% functions), `utils/passwordReset.js` (50% lines, 0% functions), `utils/friendlyError.js` (~51% lines, ~42% branches).
+- Express HTML controllers (`controllers/user.js`, `controllers/bookmarks.js`, and the rest) are mostly unused by this suite. Extension and landing code are not loaded, so they do not appear.
+
+The table includes test files the runner loaded. That baseline is a snapshot,
+not a gate. Raise it by adding tests, not by adding a threshold. Coverage
+needs Node 18.15 or newer (`--experimental-test-coverage`).
 
 ## Project map
 

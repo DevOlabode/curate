@@ -14,6 +14,7 @@ const EXCLUDE = new Set([
   '.env',
   '.env.local',
   'node_modules',
+  'package.json',
 ]);
 
 function copyEntry(src, dest) {
@@ -48,6 +49,15 @@ function validateManifest(dir) {
       throw new Error(`manifest.json missing required key: ${key}`);
     }
   });
+
+  const hosts = manifest.host_permissions || [];
+  const broad = ['<all_urls>', '*://*/*', 'http://*/*', 'https://*/*'];
+  if (hosts.some((pattern) => broad.includes(pattern))) {
+    throw new Error('host_permissions must not use a broad wildcard');
+  }
+  if (!Array.isArray(manifest.optional_host_permissions)) {
+    throw new Error('manifest.json missing optional_host_permissions');
+  }
 
   for (const size of ['16', '32', '48', '128']) {
     const iconPath = path.join(dir, manifest.icons[size]);

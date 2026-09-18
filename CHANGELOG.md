@@ -11,6 +11,7 @@ extension (`extension/manifest.json`).
 ### Added
 
 - Open-source contributor docs and GitHub community files (issues, PRs, CI, code of conduct)
+- Self-hosted API base URL in extension options, with validation and optional host permissions
 
 ### Changed
 

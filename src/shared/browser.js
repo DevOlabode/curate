@@ -19,3 +19,25 @@ export function getRuntime() {
 export function getStorageArea(area = 'local') {
   return getBrowser().storage[area];
 }
+
+export function getPermissionsApi() {
+  return getBrowser().permissions || null;
+}
+
+export async function requestHostPermission(originPattern) {
+  const permissions = getPermissionsApi();
+  if (!permissions?.request) return true;
+  return permissions.request({ origins: [originPattern] });
+}
+
+export async function hasHostPermission(originPattern) {
+  const permissions = getPermissionsApi();
+  if (!permissions?.contains) return false;
+  return permissions.contains({ origins: [originPattern] });
+}
+
+export async function removeHostPermission(originPattern) {
+  const permissions = getPermissionsApi();
+  if (!permissions?.remove) return false;
+  return permissions.remove({ origins: [originPattern] });
+}

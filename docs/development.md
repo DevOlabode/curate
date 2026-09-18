@@ -53,7 +53,13 @@ In Chrome (`chrome://extensions`) or Edge (`edge://extensions`):
 2. Load unpacked.
 3. Select `dist/extension/`.
 
-Open **Details → Extension options** and set environment to **Development** (`http://localhost:3000`). That page is for developers. It is not in the popup.
+Open **Details → Extension options** and choose an environment:
+
+- **Development** — `http://localhost:3000` (other loopback ports are allowed)
+- **Production** — the hosted Curate API (fixed)
+- **Self-hosted** — your own `https://` Curate URL. Chrome will prompt for access to that host only.
+
+That page is for developers and self-hosters. It is not in the popup.
 
 After you change popup, options, or `src/shared/` code:
 
@@ -121,6 +127,7 @@ database). It covers:
 - `tests/api/bookmarks.test.js` - bookmark CRUD, ownership, validation
 - `tests/api/collections.test.js` - collection CRUD, ownership, validation
 - `tests/unit/validators.test.js` - `normalizeUrl`, `parseTags`, Joi schemas
+- `tests/unit/apiUrl.test.js` - self-hosted API URL validation, storage resolution, manifest permissions
 
 Tests run against a throwaway MongoDB started in memory by
 `mongodb-memory-server` - no local MongoDB, `MONGO_URI`, or other setup is

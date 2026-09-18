@@ -48,7 +48,17 @@ Popup  --Bearer JWT-->  /api/v1  -->  MongoDB
 Options page           (same API, developer host override)
 ```
 
-There are **no content scripts**. The extension does not inject into web pages and does not read browsing history. Permissions are `storage` plus host access to the Curate API (production and localhost).
+There are **no content scripts**. The extension does not inject into web pages and does not read browsing history. Default permissions are `storage` plus host access to the hosted Curate API and `http://localhost:3000`. A self-hosted API URL is opt-in: the options page validates the URL, then `chrome.permissions.request()` asks for that origin only via `optional_host_permissions`. Default `host_permissions` stay narrow on purpose.
+
+### Self-hosted API URLs
+
+| Environment | URL | Host access |
+|-------------|-----|-------------|
+| Production | Hosted Render URL (fixed) | Default `host_permissions` |
+| Development | Loopback only (`localhost`, `127.0.0.1`, `[::1]`) | Default for port 3000; optional grant for other loopback ports |
+| Self-hosted | Caller-supplied `https://` URL (no wildcards, credentials, query, or fragment) | Optional grant for that origin |
+
+`http://` is rejected except on loopback so `connect-src` can stay `https:` plus localhost variants instead of a blanket `*`. Path prefixes are kept (`https://example.com/curate` → `/curate/api/v1/...`). Validation lives in `src/shared/apiUrl.js`.
 
 ## Auth in brief
 

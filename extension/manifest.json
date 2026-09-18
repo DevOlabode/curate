@@ -35,7 +35,17 @@
     "http://localhost:3000/*",
     "https://curate-h0ga.onrender.com/*"
   ],
+  "optional_host_permissions": [
+    "https://*/*",
+    "https://*:*/*",
+    "http://localhost/*",
+    "http://localhost:*/*",
+    "http://127.0.0.1/*",
+    "http://127.0.0.1:*/*",
+    "http://[::1]/*",
+    "http://[::1]:*/*"
+  ],
   "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://curate-h0ga.onrender.com http://localhost:3000"
+    "extension_pages": "script-src 'self'; object-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https: http://localhost:* http://127.0.0.1:* http://[::1]:*"
   }
 }

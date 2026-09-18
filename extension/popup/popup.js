@@ -164,7 +164,7 @@ function bookmarkRowHtml(bookmark) {
     </a>
     <div class="item-actions">
       <button class="text-btn" type="button" data-edit="${bookmark._id}" aria-label="Edit ${title}">Edit</button>
-      <button class="icon-btn icon-btn-danger" type="button" data-delete="${bookmark._id}" aria-label="Delete ${title}" title="Delete">×</button>
+      <button class="icon-btn icon-btn-danger" type="button" data-delete="${bookmark._id}" aria-label="Delete ${title}" title="Delete ${title}"><span aria-hidden="true">×</span></button>
     </div>
   `;
 }
@@ -195,7 +195,7 @@ function renderCollections(collections) {
         <span class="collection-meta">${count} bookmark${count === 1 ? '' : 's'}</span>
         ${collection.description ? `<span class="collection-desc">${escapeHtml(collection.description)}</span>` : ''}
       </button>
-      <button class="icon-btn icon-btn-danger" type="button" data-delete-collection="${collection._id}" aria-label="Delete ${escapeHtml(collection.name)}" title="Delete">×</button>
+      <button class="icon-btn icon-btn-danger" type="button" data-delete-collection="${collection._id}" aria-label="Delete ${escapeHtml(collection.name)}" title="Delete ${escapeHtml(collection.name)}"><span aria-hidden="true">×</span></button>
     `;
     collectionList.appendChild(item);
   });
@@ -660,10 +660,24 @@ deleteForm.addEventListener('submit', async (event) => {
   }
 });
 
+function applyThemeToggleState(theme) {
+  const toggle = $('#theme-toggle');
+  if (!toggle) return;
+  const nextTheme = theme === 'dark' ? 'light' : 'dark';
+  const label = `Switch to ${nextTheme} theme`;
+  toggle.setAttribute('aria-label', label);
+  toggle.setAttribute('title', label);
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  applyThemeToggleState(theme);
+}
+
 $('#theme-toggle').addEventListener('click', async () => {
   const current = document.documentElement.getAttribute('data-theme') || 'light';
   const next = current === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
+  applyTheme(next);
   await setTheme(next);
 });
 
@@ -690,7 +704,7 @@ document.querySelectorAll('.password-toggle').forEach((btn) => {
 
 async function initTheme() {
   const theme = await getTheme();
-  document.documentElement.setAttribute('data-theme', theme);
+  applyTheme(theme);
   const forgotLink = $('#forgot-password-link');
   if (forgotLink) {
     forgotLink.href = `${await getApiBaseUrl()}/forgot-password`;

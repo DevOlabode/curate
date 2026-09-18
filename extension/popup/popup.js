@@ -237,6 +237,8 @@ function openComposer(type = 'bookmark') {
   setComposerType(type);
   fillCollectionSelect();
   addForm.scrollIntoView({ block: 'nearest' });
+  const focusEl = type === 'collection' ? addForm.elements.name : addForm.elements.title;
+  focusEl?.focus();
 }
 
 function openCollectionComposer() {
@@ -245,6 +247,7 @@ function openCollectionComposer() {
   collectionAddForm.hidden = false;
   collectionAddForm.reset();
   collectionAddForm.scrollIntoView({ block: 'nearest' });
+  collectionAddForm.elements.title?.focus();
 }
 
 function hideComposer() {

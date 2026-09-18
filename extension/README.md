@@ -56,10 +56,29 @@ Output: `dist/extension/`
 
 1. Copy `.env.example` → `.env` and set `JWT_SECRET`.
 2. Start the web/API server: `npm run dev`
-3. Open extension options from `chrome://extensions` (Details, then Extension options) and set environment to **Development** (`http://localhost:3000`).
+3. Open extension options from `chrome://extensions` (Details, then Extension options) and set environment to **Development** (`http://localhost:3000`), or **Self-hosted** with your own `https://` API URL.
 4. Rebuild after source changes: `npm run build:extension`, then reload the extension.
 
-API connection (environment and base URL) is developer-only. Open it from `chrome://extensions` (Details, then Extension options). It is not shown in the popup.
+API connection (environment and base URL) is for developers and self-hosters. Open it from `chrome://extensions` (Details, then Extension options). It is not shown in the popup.
+
+### Self-hosted API
+
+You do not need to edit `manifest.json` or rebuild to point the extension at your own Curate server.
+
+1. Load the unpacked extension (store build or `dist/extension/`).
+2. Open **Details → Extension options**.
+3. Choose **Self-hosted**.
+4. Enter a full URL with a scheme, for example `https://curate.example.com`.
+5. Save. Chrome or Edge will ask for permission to reach that host only.
+
+Rules the options page enforces:
+
+- Scheme is required (`https://`, or `http://` only for localhost / `127.0.0.1` / `[::1]`).
+- No `*` wildcards, credentials, query strings, or fragments.
+- A path prefix is kept (`https://example.com/curate` calls `/curate/api/v1/...`).
+- Production stays locked to the hosted API so everyday installs do not silently switch hosts.
+
+Default `host_permissions` remain the hosted URL and `http://localhost:3000`. Extra hosts use `optional_host_permissions` plus `chrome.permissions.request()` at save time. The self-hosted server must allow `chrome-extension://` origins (the bundled CORS config already does).
 
 ## Scripts
 
@@ -76,6 +95,7 @@ See [docs/architecture.md](../docs/architecture.md) and [docs/development.md](..
 ## Permissions
 
 - `storage` - auth token and preferences
-- Host permissions - Curate API (production + localhost for dev)
+- Host permissions - hosted Curate API and `http://localhost:3000`
+- Optional host permissions - a self-hosted origin the user grants at runtime
 
-No content scripts. No broad site access.
+No content scripts. No `<all_urls>` or other broad default host access.

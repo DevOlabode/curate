@@ -61,7 +61,7 @@ npm run dev
 npm run build:extension
 ```
 
-Load `dist/extension/` as an unpacked extension. Point it at `http://localhost:3000` from the developer options page.
+Load `dist/extension/` as an unpacked extension. Point it at `http://localhost:3000` (Development) or your own `https://` host (Self-hosted) from the developer options page.
 
 ### 4. Find or claim an issue
 
@@ -73,7 +73,7 @@ Load `dist/extension/` as an unpacked extension. Point it at `http://localhost:3
 
 Keep the PR to one change. Match the style of nearby files. Do not commit `.env`, secrets, or `node_modules`.
 
-Do not widen extension permissions (`storage`, host permissions) without an issue that explains why.
+Do not widen default extension permissions (`storage`, `host_permissions`) without an issue that explains why. Self-hosted API hosts must stay on `optional_host_permissions`.
 
 ### 6. Test
 

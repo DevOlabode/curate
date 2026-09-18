@@ -9,6 +9,7 @@ This is the direction of the project, not a contract. Features start as [issues]
 - Accounts in the popup (register, sign in, profile, password, delete)
 - `/api/v1` JSON API with Bearer JWT
 - Automated API tests (`node --test`) for auth, bookmarks, and collections, running in CI
+- Configurable self-hosted API URLs via optional host permissions (no rebuild)
 - Light and dark theme
 - Product landing page and privacy policy
 - [Chrome Web Store](https://chromewebstore.google.com/detail/curate/nlkfmdiphacjgicdcagonbfnpcdjfapo)
@@ -21,7 +22,6 @@ Work that would help the project most, in no strict order:
 - **Test coverage reporting** — a baseline and a documented way to run coverage locally
 - **Clearer empty and error states** in the popup, labeled as `good first issue` when they are small enough
 - **Token handling** — shorter-lived JWTs or a revocation path (see [security-audit.md](security-audit.md))
-- **Self-hosted API URLs** — `optional_host_permissions` so a custom host does not require a rebuild
 - **Contributor onboarding** — keep `good first issue` items specific (file paths and acceptance criteria)
 
 ## Considering

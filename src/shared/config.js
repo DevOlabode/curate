@@ -1,25 +1,27 @@
-/** Default API base URLs - no secrets. Overridable in options. */
-export const DEFAULT_API_URLS = {
-  development: 'http://localhost:3000',
-  production: 'https://curate-h0ga.onrender.com',
-};
+import {
+  DEFAULT_API_URLS,
+  normalizeEnvironment,
+  sanitizeApiBaseUrl,
+  resolveStoredApiConfig,
+  ApiUrlError,
+} from './apiUrl.js';
 
-export const API_PREFIX = '/api/v1';
+export {
+  DEFAULT_API_URLS,
+  API_PREFIX,
+  ENVIRONMENTS,
+  ApiUrlError,
+  normalizeEnvironment,
+  normalizeBaseUrl,
+  sanitizeApiBaseUrl,
+  resolveStoredApiConfig,
+  toHostPermissionPattern,
+  needsOptionalHostPermission,
+} from './apiUrl.js';
+
 export const REQUEST_TIMEOUT_MS = 30000;
 
-const LEGACY_HOSTS = [
-  'https://developer-bookmark-vault-5.onrender.com',
-];
-
-function normalizeBaseUrl(url) {
-  return String(url || '').replace(/\/$/, '');
-}
-
-function isLocalHost(url) {
-  return /^(https?:\/\/)?(localhost|127\.0\.0\.1)(:\d+)?$/i.test(normalizeBaseUrl(url));
-}
-
-export async function getApiBaseUrl() {
+async function loadStoredApiConfig() {
   const { getStorageArea } = await import('./browser.js');
   const storage = getStorageArea();
   const stored = await storage.get([
@@ -27,42 +29,49 @@ export async function getApiBaseUrl() {
     'environment',
     'apiHostMigratedToRender',
   ]);
-
-  if (!stored.apiHostMigratedToRender) {
-    await storage.set({
-      apiBaseUrl: DEFAULT_API_URLS.production,
-      environment: 'production',
-      apiHostMigratedToRender: true,
-    });
-    return DEFAULT_API_URLS.production;
+  const resolved = resolveStoredApiConfig(stored);
+  if (resolved.shouldPersist) {
+    await storage.set(resolved.persist);
   }
+  return resolved;
+}
 
-  const env = stored.environment === 'development' ? 'development' : 'production';
-  let url = normalizeBaseUrl(stored.apiBaseUrl);
+export async function getApiConfig() {
+  const resolved = await loadStoredApiConfig();
+  return {
+    apiBaseUrl: resolved.apiBaseUrl,
+    environment: resolved.environment,
+  };
+}
 
-  if (env === 'production') {
-    if (!url || isLocalHost(url) || LEGACY_HOSTS.includes(url)) {
-      url = DEFAULT_API_URLS.production;
-      await storage.set({ apiBaseUrl: url, environment: 'production' });
-    }
-    return url;
-  }
-
-  return url || DEFAULT_API_URLS.development;
+export async function getApiBaseUrl() {
+  const { apiBaseUrl } = await getApiConfig();
+  return apiBaseUrl;
 }
 
 export async function setApiBaseUrl(url, environment = 'production') {
   const { getStorageArea } = await import('./browser.js');
   const storage = getStorageArea();
+  const env = normalizeEnvironment(environment);
+
+  let nextUrl = DEFAULT_API_URLS.production;
+  if (env !== 'production') {
+    const sanitized = sanitizeApiBaseUrl(url, { environment: env });
+    if (!sanitized.ok) {
+      throw new ApiUrlError(sanitized.error);
+    }
+    nextUrl = sanitized.url;
+  }
+
   await storage.set({
-    apiBaseUrl: normalizeBaseUrl(url),
-    environment,
+    apiBaseUrl: nextUrl,
+    environment: env,
+    apiHostMigratedToRender: true,
   });
+  return nextUrl;
 }
 
 export async function getEnvironment() {
-  const { getStorageArea } = await import('./browser.js');
-  const storage = getStorageArea();
-  const { environment } = await storage.get(['environment']);
-  return environment === 'development' ? 'development' : 'production';
+  const { environment } = await getApiConfig();
+  return environment;
 }

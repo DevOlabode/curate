@@ -14,7 +14,7 @@
     <header>
       <p class="kicker">Developer</p>
       <h1>API connection</h1>
-      <p class="subtitle">Point the extension at a local or custom Curate server. Users never see this page.</p>
+      <p class="subtitle">Point the extension at the hosted API, localhost, or your own Curate server. Users never see this page.</p>
     </header>
 
     <div id="status" class="status" hidden></div>
@@ -24,15 +24,26 @@
         <label class="field">
           <span>Environment</span>
           <select name="environment" id="environment">
-            <option value="production">Production</option>
+            <option value="production">Production (hosted Curate)</option>
             <option value="development">Development (localhost)</option>
+            <option value="selfhosted">Self-hosted</option>
           </select>
         </label>
         <label class="field">
           <span>API base URL</span>
-          <input name="apiBaseUrl" id="apiBaseUrl" type="url" required>
+          <input
+            name="apiBaseUrl"
+            id="apiBaseUrl"
+            type="url"
+            required
+            spellcheck="false"
+            autocomplete="off"
+            autocapitalize="none"
+            placeholder="https://curate.example.com"
+            aria-describedby="api-url-hint"
+          >
         </label>
-        <p class="hint">Custom URLs must be listed in <code>host_permissions</code> inside <code>manifest.json</code>.</p>
+        <p class="hint" id="api-url-hint"></p>
         <button class="btn btn-primary" type="submit">Save settings</button>
         <button class="btn btn-secondary" type="button" id="test-connection">Test connection</button>
       </form>

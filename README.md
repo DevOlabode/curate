@@ -68,7 +68,7 @@ npm run dev
 npm run build:extension
 ```
 
-Load `dist/extension/` as unpacked in Chrome or Edge. In **Details → Extension options**, set environment to Development (`http://localhost:3000`).
+Load `dist/extension/` as unpacked in Chrome or Edge. In **Details → Extension options**, set environment to Development (`http://localhost:3000`) or Self-hosted with your own `https://` API URL.
 
 Full walkthrough: [docs/development.md](docs/development.md). How to send a PR: [CONTRIBUTING.md](CONTRIBUTING.md).
 

@@ -7,7 +7,7 @@
 
 | Area | Status | Notes |
 |------|--------|-------|
-| Manifest permissions | Pass | Only `storage` + scoped host permissions |
+| Manifest permissions | Pass | `storage` + scoped default host permissions; self-hosted hosts are optional |
 | Secrets in bundle | Pass | No `.env`, JWT secret, or DB credentials in extension |
 | CSP | Pass | `script-src 'self'`, no inline scripts |
 | XSS / innerHTML | Mitigated | User content escaped before DOM insertion in popup/options |
@@ -24,12 +24,13 @@
 | `storage` | Persist auth token, theme, API URL preference |
 | `host_permissions` (production URL) | HTTPS API calls to deployed Curate backend |
 | `host_permissions` (localhost) | Local development only |
+| `optional_host_permissions` | User-granted access to one self-hosted API origin |
 
 ## Findings
 
-### Low - Static host permissions for custom API URLs
+### Resolved - Custom API URLs no longer need a rebuild
 
-Users who set a custom API base URL in options must also add that origin to `host_permissions` in `manifest.json` and rebuild. Documented in options UI and store readiness doc.
+Self-hosted hosts are requested at runtime with `optional_host_permissions`. Default `host_permissions` stay limited to the hosted API and localhost. URLs are validated in `src/shared/apiUrl.js` (scheme required, no wildcards, `http://` only on loopback).
 
 ### Low - JWT in local storage
 
@@ -50,8 +51,7 @@ Users re-authenticate after JWT expiry.
 ## Recommendations (future, not blocking)
 
 1. Optional refresh tokens + server revocation list.
-2. `optional_host_permissions` workflow for self-hosted API URLs.
-3. Automated extension E2E tests in CI.
+2. Automated extension E2E tests in CI.
 
 ## Web application
 

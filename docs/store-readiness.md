@@ -33,7 +33,8 @@ The extension **does not**:
 Copy into store submission:
 
 > **storage** - Saves your login token and extension preferences on your device.  
-> **host_permissions** - Allows the extension to sync bookmarks with the Curate server.
+> **host_permissions** - Allows the extension to sync bookmarks with the hosted Curate server and with localhost during development.  
+> **optional host permissions** - If you point the extension at your own Curate server, Chrome asks for access to that host only. Everyday installs never receive that grant.
 
 ## Privacy policy requirements
 

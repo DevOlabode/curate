@@ -65,9 +65,39 @@ export async function apiRequest(path, options = {}) {
       return apiRequest(path, { ...fetchOptions, _retried: true });
     }
     throw new ApiError(
-      `Could not reach ${baseUrl}. Open extension options, set Production (${baseUrl || 'https://curate-h0ga.onrender.com'}), save, then reload the extension.`,
+      `Could not reach ${baseUrl}. Open extension options, confirm the API URL` +
+        `${baseUrl ? '' : ' (Production is https://curate-h0ga.onrender.com)'} ` +
+        'and host permission if you are self-hosting, save, then reload the extension.',
       0
     );
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+export async function probeApiHealth(baseUrl) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
+  try {
+    const response = await fetch(`${baseUrl}${API_PREFIX}/health`, {
+      headers: { Accept: 'application/json' },
+      credentials: 'omit',
+      signal: controller.signal,
+    });
+    const data = await parseJson(response);
+    if (!response.ok) {
+      throw new ApiError(data.error || 'Request failed', response.status, data);
+    }
+    return data;
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      throw new ApiError('Request timed out. The server may still be waking up. Try again.', 408);
+    }
+    if (err instanceof ApiError) {
+      throw err;
+    }
+    throw new ApiError(`Could not reach ${baseUrl}.`, 0);
   } finally {
     clearTimeout(timeout);
   }

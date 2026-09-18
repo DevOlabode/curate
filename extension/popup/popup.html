@@ -114,7 +114,7 @@
         <div id="collection-fields" hidden>
           <label class="field">
             <span>Name</span>
-            <input name="name">
+            <input id="collection-name" name="name" placeholder="Frontend" autocomplete="off">
           </label>
           <label class="field">
             <span>Description</span>
@@ -148,14 +148,20 @@
           <h2 class="section-title">Collections</h2>
           <div id="collection-list" class="collection-list"></div>
           <div id="collections-empty" class="empty-guide" hidden>
+            <p class="kicker">Organize</p>
             <h3>No collections yet</h3>
-            <p>Group related bookmarks so a topic lives in one place.</p>
+            <p id="collections-empty-copy">Group related bookmarks so a topic lives in one place.</p>
             <ol class="empty-steps">
-              <li>Click Create a collection.</li>
+              <li>Click <strong>Create a collection</strong> below.</li>
               <li>Give it a name.</li>
               <li>Add bookmarks to it later.</li>
             </ol>
-            <button class="btn btn-primary btn-sm" type="button" data-start-composer="collection">Create a collection</button>
+            <button
+              class="btn btn-primary btn-sm"
+              type="button"
+              data-start-composer="collection"
+              aria-describedby="collections-empty-copy"
+            >Create a collection</button>
           </div>
         </div>
 

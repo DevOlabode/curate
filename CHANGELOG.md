@@ -14,6 +14,8 @@ extension (`extension/manifest.json`).
 
 ### Changed
 
+- Clearer collections empty state in the popup, with focus on the name field when creating a collection
+
 ### Fixed
 
 ## [1.0.1] - 2026-08-24

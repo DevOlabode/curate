@@ -11,6 +11,17 @@ import {
 import { getTheme, setTheme } from '../shared/storage.js';
 import { getApiBaseUrl } from '../shared/config.js';
 import { normalizeUrl } from '../shared/url.js';
+import {
+  ESCAPE_ACTIONS,
+  MESSAGE_TYPES as SHORTCUT_MESSAGES,
+  PENDING_ADD_KEY,
+  fillEmptyBookmarkFields,
+  pendingAddFromStorage,
+  queryActiveTabPage,
+  resolveEscapeAction,
+  shouldHandleEscapeKey,
+  tabPageFromTab,
+} from '../shared/shortcuts.mjs';
 
 const $ = (sel) => document.querySelector(sel);
 
@@ -228,7 +239,28 @@ async function loadLibrary() {
   fillCollectionSelect();
 }
 
-function openComposer(type = 'bookmark') {
+function announceShortcut(message) {
+  const live = $('#shortcut-announce');
+  if (!live) return;
+  live.textContent = '';
+  live.textContent = message;
+}
+
+function pendingStorage() {
+  return globalThis.chrome?.storage?.session || globalThis.chrome?.storage?.local || null;
+}
+
+async function readActiveTabPage() {
+  return queryActiveTabPage(globalThis.chrome?.tabs);
+}
+
+async function prefillBookmarkComposer(form, page) {
+  if (editingBookmarkId || !form) return;
+  const nextPage = page || await readActiveTabPage();
+  fillEmptyBookmarkFields(form, nextPage);
+}
+
+function openComposer(type = 'bookmark', page) {
   hideCollectionComposer();
   editingBookmarkId = null;
   addSubmit.textContent = 'Save';
@@ -237,17 +269,55 @@ function openComposer(type = 'bookmark') {
   setComposerType(type);
   fillCollectionSelect();
   addForm.scrollIntoView({ block: 'nearest' });
+  if (type === 'bookmark') {
+    void prefillBookmarkComposer(addForm, page);
+  }
   const focusEl = type === 'collection' ? addForm.elements.name : addForm.elements.title;
   focusEl?.focus();
 }
 
-function openCollectionComposer() {
+function openCollectionComposer(page) {
   editingBookmarkId = null;
   collectionAddSubmit.textContent = 'Save';
   collectionAddForm.hidden = false;
   collectionAddForm.reset();
   collectionAddForm.scrollIntoView({ block: 'nearest' });
+  void prefillBookmarkComposer(collectionAddForm, page);
   collectionAddForm.elements.title?.focus();
+}
+
+function openAddBookmarkFromCommand(page) {
+  if (!currentUser) return false;
+  if (!views.collection.hidden) {
+    activeCollectionId = null;
+    hideCollectionComposer();
+    showView('main');
+  } else if (!views.settings.hidden) {
+    showView('main');
+  } else if (views.main.hidden) {
+    return false;
+  }
+  hideComposer();
+  openComposer('bookmark', page);
+  announceShortcut('Add bookmark form opened');
+  return true;
+}
+
+async function readAndClearPendingAdd() {
+  const storage = pendingStorage();
+  if (!storage?.get || !storage?.remove) return null;
+  const data = await storage.get(PENDING_ADD_KEY);
+  const pending = pendingAddFromStorage(data?.[PENDING_ADD_KEY]);
+  if (pending) {
+    await storage.remove(PENDING_ADD_KEY);
+  }
+  return pending;
+}
+
+async function consumePendingAddBookmark() {
+  const pending = await readAndClearPendingAdd();
+  if (!pending) return;
+  openAddBookmarkFromCommand(pending);
 }
 
 function hideComposer() {
@@ -322,6 +392,7 @@ async function boot() {
     const user = await getSessionUser();
     if (user) {
       await bootMain(user);
+      await consumePendingAddBookmark();
     } else {
       $('#open-settings').hidden = true;
       showView('auth');
@@ -357,6 +428,7 @@ authForm.addEventListener('submit', async (event) => {
     if (authMode === 'login') {
       const user = await login(data.get('username'), data.get('password'));
       await bootMain(user);
+      await consumePendingAddBookmark();
     } else {
       const user = await register({
         firstName: data.get('firstName'),
@@ -366,6 +438,7 @@ authForm.addEventListener('submit', async (event) => {
         password: data.get('password'),
       });
       await bootMain(user);
+      await consumePendingAddBookmark();
     }
     authForm.reset();
     resetPasswordToggles();
@@ -712,6 +785,71 @@ async function initTheme() {
   if (forgotLink) {
     forgotLink.href = `${await getApiBaseUrl()}/forgot-password`;
   }
+}
+
+function handleEscapeKey(event) {
+  if (!shouldHandleEscapeKey(event)) return;
+
+  const action = resolveEscapeAction({
+    addFormOpen: !addForm.hidden,
+    collectionAddFormOpen: !collectionAddForm.hidden,
+    onCollectionView: !views.collection.hidden,
+    onSettingsView: !views.settings.hidden,
+    targetIsSelect: event.target instanceof HTMLSelectElement,
+  });
+
+  if (!action) return;
+  event.preventDefault();
+
+  if (action === ESCAPE_ACTIONS.SUPPRESS) return;
+
+  if (action === ESCAPE_ACTIONS.CLOSE_COMPOSER) {
+    editingBookmarkId = null;
+    hideComposer();
+    $('#show-add-form')?.focus();
+    announceShortcut('Add form closed');
+    return;
+  }
+
+  if (action === ESCAPE_ACTIONS.CLOSE_COLLECTION_COMPOSER) {
+    editingBookmarkId = null;
+    hideCollectionComposer();
+    $('#show-collection-add')?.focus();
+    announceShortcut('Add form closed');
+    return;
+  }
+
+  if (action === ESCAPE_ACTIONS.BACK_COLLECTION) {
+    $('#collection-back')?.click();
+    $('#show-add-form')?.focus();
+    announceShortcut('Back to library');
+    return;
+  }
+
+  if (action === ESCAPE_ACTIONS.BACK_SETTINGS) {
+    $('#settings-back')?.click();
+    $('#show-add-form')?.focus();
+    announceShortcut('Back to library');
+  }
+}
+
+document.addEventListener('keydown', handleEscapeKey, true);
+
+if (globalThis.chrome?.runtime?.onMessage) {
+  chrome.runtime.onMessage.addListener((message) => {
+    if (message?.type !== SHORTCUT_MESSAGES.OPEN_ADD_BOOKMARK) return;
+    void readAndClearPendingAdd();
+    openAddBookmarkFromCommand(tabPageFromTab(message));
+  });
+}
+
+if (globalThis.chrome?.storage?.onChanged) {
+  const areaName = chrome.storage.session ? 'session' : 'local';
+  chrome.storage.onChanged.addListener((changes, namespace) => {
+    if (namespace !== areaName || !changes[PENDING_ADD_KEY]?.newValue) return;
+    if (!currentUser) return;
+    void consumePendingAddBookmark();
+  });
 }
 
 initTheme();

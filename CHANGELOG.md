@@ -11,6 +11,7 @@ extension (`extension/manifest.json`).
 ### Added
 
 - Open-source contributor docs and GitHub community files (issues, PRs, CI, code of conduct)
+- Popup keyboard shortcuts: `Esc` closes the composer or goes back to the library; `Alt+Shift+S` opens Add a bookmark and prefills the current http(s) tab
 
 ### Changed
 

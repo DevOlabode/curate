@@ -7,7 +7,7 @@
 
 | Area | Status | Notes |
 |------|--------|-------|
-| Manifest permissions | Pass | Only `storage` + scoped host permissions |
+| Manifest permissions | Pass | `storage`, `activeTab`, and scoped host permissions |
 | Secrets in bundle | Pass | No `.env`, JWT secret, or DB credentials in extension |
 | CSP | Pass | `script-src 'self'`, no inline scripts |
 | XSS / innerHTML | Mitigated | User content escaped before DOM insertion in popup/options |
@@ -22,6 +22,7 @@
 | Permission | Justification |
 |------------|---------------|
 | `storage` | Persist auth token, theme, API URL preference |
+| `activeTab` | Read the current tab URL/title after a user gesture so Add bookmark can prefill http(s) pages |
 | `host_permissions` (production URL) | HTTPS API calls to deployed Curate backend |
 | `host_permissions` (localhost) | Local development only |
 

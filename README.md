@@ -31,6 +31,7 @@ The public site lives in [`landing/`](landing/). Sign in, the library, and accou
 - **Private by default** — links stay on your account.
 - **Light and dark** theme.
 - **Library first** — the home screen is your collections and bookmarks. Forms appear when you add or edit.
+- **Keyboard shortcuts** — `Alt+Shift+S` saves the current tab; `Esc` closes a form or goes back. See [extension/README.md](extension/README.md).
 
 ## Tech stack
 

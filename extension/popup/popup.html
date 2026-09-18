@@ -27,6 +27,7 @@
     </header>
 
     <div id="status" class="status" hidden></div>
+    <div id="shortcut-announce" class="visually-hidden" aria-live="polite"></div>
 
     <section id="view-loading" class="view">
       <p class="muted center">Loading…</p>
@@ -77,7 +78,7 @@
           <p class="kicker">Library</p>
           <p class="user-line" id="user-line"></p>
         </div>
-        <button class="btn btn-primary btn-sm" type="button" id="show-add-form">+ Add</button>
+        <button class="btn btn-primary btn-sm" type="button" id="show-add-form" aria-keyshortcuts="Alt+Shift+S" title="Add a bookmark (Alt+Shift+S)">+ Add</button>
       </div>
 
       <form id="add-form" class="add-form" hidden>
@@ -124,7 +125,7 @@
 
         <div class="row-actions">
           <button class="btn btn-primary btn-sm" type="submit" id="add-submit">Save</button>
-          <button class="btn btn-secondary btn-sm" type="button" id="cancel-add">Cancel</button>
+          <button class="btn btn-secondary btn-sm" type="button" id="cancel-add" aria-keyshortcuts="Escape" title="Cancel (Esc)">Cancel</button>
         </div>
       </form>
 
@@ -177,7 +178,7 @@
     </section>
 
     <section id="view-collection" class="view" hidden>
-      <button type="button" class="back-btn" id="collection-back">Back to library</button>
+      <button type="button" class="back-btn" id="collection-back" aria-keyshortcuts="Escape" title="Back to library (Esc)">Back to library</button>
       <div class="toolbar">
         <div>
           <p class="kicker">Collection</p>
@@ -206,7 +207,7 @@
         </label>
         <div class="row-actions">
           <button class="btn btn-primary btn-sm" type="submit" id="collection-add-submit">Save</button>
-          <button class="btn btn-secondary btn-sm" type="button" id="cancel-collection-add">Cancel</button>
+          <button class="btn btn-secondary btn-sm" type="button" id="cancel-collection-add" aria-keyshortcuts="Escape" title="Cancel (Esc)">Cancel</button>
         </div>
       </form>
 
@@ -224,7 +225,7 @@
     </section>
 
     <section id="view-settings" class="view" hidden>
-      <button type="button" class="back-btn" id="settings-back">Back to library</button>
+      <button type="button" class="back-btn" id="settings-back" aria-keyshortcuts="Escape" title="Back to library (Esc)">Back to library</button>
       <h1 class="view-title">Account</h1>
       <p class="view-subtitle" id="settings-user-line"></p>
 
@@ -274,6 +275,21 @@
         </label>
         <button class="btn btn-primary btn-sm" type="submit">Update password</button>
       </form>
+
+      <section class="settings-block" aria-labelledby="shortcuts-heading">
+        <h2 class="section-title" id="shortcuts-heading">Keyboard shortcuts</h2>
+        <p class="hint">These work in the popup. Mouse and touch still work the same way. Remap or disable the save command from <code>chrome://extensions/shortcuts</code> or <code>edge://extensions/shortcuts</code>.</p>
+        <dl class="shortcut-list">
+          <div>
+            <dt><kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd></dt>
+            <dd>Add a bookmark from the current tab. On a Mac this is Option+Shift+S.</dd>
+          </div>
+          <div>
+            <dt><kbd>Esc</kbd></dt>
+            <dd>Close the add or edit form, or return to the library. On the library with no form open, closes the popup.</dd>
+          </div>
+        </dl>
+      </section>
 
       <div class="settings-block">
         <button class="btn btn-secondary" type="button" id="logout-btn">Log out</button>

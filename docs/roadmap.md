@@ -9,6 +9,7 @@ This is the direction of the project, not a contract. Features start as [issues]
 - Accounts in the popup (register, sign in, profile, password, delete)
 - `/api/v1` JSON API with Bearer JWT
 - Automated API tests (`node --test`) for auth, bookmarks, and collections, running in CI
+- Keyboard shortcuts in the popup (`Esc` to cancel/back, `Alt+Shift+S` to add the current tab)
 - Light and dark theme
 - Product landing page and privacy policy
 - [Chrome Web Store](https://chromewebstore.google.com/detail/curate/nlkfmdiphacjgicdcagonbfnpcdjfapo)
@@ -30,7 +31,6 @@ These need an issue and a design discussion before a PR:
 
 - Search and filter across bookmarks
 - Import / export a personal library
-- Keyboard shortcuts in the popup
 - Firefox, if MV3 APIs and store review stay aligned with Chrome/Edge
 
 Curate stays private. A public feed or social sharing is out of scope unless that decision changes in an issue.

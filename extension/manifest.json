@@ -29,8 +29,18 @@
     "type": "module"
   },
   "permissions": [
-    "storage"
+    "storage",
+    "activeTab"
   ],
+  "commands": {
+    "add-bookmark": {
+      "suggested_key": {
+        "default": "Alt+Shift+S",
+        "mac": "Alt+Shift+S"
+      },
+      "description": "Add a bookmark from the current tab"
+    }
+  },
   "host_permissions": [
     "http://localhost:3000/*",
     "https://curate-h0ga.onrender.com/*"

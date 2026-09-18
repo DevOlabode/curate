@@ -28,8 +28,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Syntax check
+      - name: Run tests
         run: npm test
 
       - name: Build extension
         run: npm run build:extension
+
+      - name: Verify extension build output
+        run: |
+          test -f dist/extension/manifest.json
+          node -e "if (require('./dist/extension/manifest.json').manifest_version !== 3) process.exit(1)"

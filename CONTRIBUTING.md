@@ -42,7 +42,7 @@ git remote add upstream https://github.com/DevOlabode/curate.git
 
 ### 2. Create a branch
 
-Branch off an up-to-date `main` (or `master`, if that is the default).
+Branch off an up-to-date `main` branch.
 
 ```bash
 git fetch upstream
@@ -77,19 +77,26 @@ Do not widen extension permissions (`storage`, host permissions) without an issu
 
 ### 6. Test
 
-There is no automated UI suite yet. Before you open a PR:
+Before you open a PR:
 
 ```bash
 npm test
 npm run build:extension
 ```
 
-Then exercise the path you changed:
+`npm test` runs the automated suite (`node --test`) against `app.js` - auth, bookmark, and
+collection API behavior, plus validator unit tests. It uses an in-memory MongoDB
+(`mongodb-memory-server`), so it needs no database setup and never touches your
+`MONGO_URI`. There is no automated UI suite, so also do manual testing whenever
+you touch the popup, options page, or landing site:
 
 - Reload the unpacked extension.
 - Sign in against your local API.
 - Confirm the popup (and options page, if you touched it) still work.
 - If you changed the landing site, check `landing/index.html` and `landing/privacy.html`.
+
+If you add or change API behavior, add or update a test under `tests/api/` or
+`tests/unit/` rather than relying on manual checks alone.
 
 ### 7. Open a pull request
 
@@ -146,6 +153,8 @@ Keep the subject under ~72 characters. Explain *why* in the body when the diff i
 | Developer API settings | `extension/options/` |
 | Shared API client | `src/shared/` |
 | JSON API | `routes/api/`, `controllers/api/` |
+| Express app wiring | `app.js` (server startup is `index.js`) |
+| Automated tests | `tests/api/`, `tests/unit/` |
 | Product site | `landing/` |
 | Contributor docs | `docs/`, files in the repo root |
 

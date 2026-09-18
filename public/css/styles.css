@@ -113,28 +113,6 @@ body {
   transition: background-color 0.35s var(--ease), color 0.35s var(--ease);
 }
 
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    radial-gradient(1200px 500px at 10% -10%, rgba(196, 73, 29, 0.08), transparent 50%),
-    radial-gradient(900px 480px at 100% 0%, rgba(31, 92, 74, 0.08), transparent 46%),
-    radial-gradient(700px 400px at 50% 120%, rgba(199, 163, 90, 0.08), transparent 50%);
-}
-
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.35;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
-}
-
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   font-weight: 600;

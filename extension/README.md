@@ -4,6 +4,30 @@ Manifest V3 browser extension for [Curate](https://github.com/DevOlabode/curate)
 
 Targets **Google Chrome** and **Microsoft Edge** (Chromium).
 
+## Directory structure
+
+```text
+extension/
+├── assets/
+│   ├── icons/          # Generated PNG icons (16/32/48/128) - checked in, rebuilt by build:extension
+│   └── logo.svg        # Source logo
+├── background/
+│   └── service-worker.js   # MV3 service worker - install handling, auth message passing
+├── options/
+│   ├── options.html    # Developer-only settings page (API host, environment)
+│   ├── options.js
+│   └── options.css
+├── popup/
+│   ├── popup.html      # Primary user-facing UI - sign in, library, collections
+│   ├── popup.js
+│   └── popup.css
+└── manifest.json        # MV3 manifest - permissions, icons, popup/background entry points
+```
+
+Shared code used by both `popup/` and `options/` (API client, auth, storage,
+Chrome/Edge shim) lives outside this folder in [`src/shared/`](../src/shared/)
+and is copied in at build time.
+
 ## Build
 
 ```bash

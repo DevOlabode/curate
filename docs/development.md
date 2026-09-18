@@ -82,7 +82,8 @@ Vercel: set Root Directory to `landing`, framework Other, empty build and output
 |--------|-------------|
 | `npm run dev` | API + Express pages (nodemon) |
 | `npm start` | Production server |
-| `npm test` | Syntax check of `index.js` |
+| `npm test` | Automated test suite (`node --test`) |
+| `npm run test:watch` | Automated test suite in watch mode |
 | `npm run build:extension` | Bundle unpacked extension to `dist/extension/` |
 
 ## API surface
@@ -108,7 +109,26 @@ Password reset is HTML at `/forgot-password` so the extension can open it in a t
 
 ## Tests
 
-CI runs `npm test` and `npm run build:extension`. There is no end-to-end suite yet. Manually check the flow you changed in the loaded unpacked extension.
+```bash
+npm test
+```
+
+Runs `node --test` against `app.js` (the Express app, exported separately from
+`index.js` so it can be exercised without a real HTTP server or a real
+database). It covers:
+
+- `tests/api/auth.test.js` - registration, login, `/auth/me`, account deletion
+- `tests/api/bookmarks.test.js` - bookmark CRUD, ownership, validation
+- `tests/api/collections.test.js` - collection CRUD, ownership, validation
+- `tests/unit/validators.test.js` - `normalizeUrl`, `parseTags`, Joi schemas
+
+Tests run against a throwaway MongoDB started in memory by
+`mongodb-memory-server` - no local MongoDB, `MONGO_URI`, or other setup is
+needed, and your dev/production data is never touched. CI runs `npm test` and
+`npm run build:extension` on every push and pull request.
+
+There is still no end-to-end UI suite. Manually check the flow you changed in
+the loaded unpacked extension.
 
 ## Project map
 

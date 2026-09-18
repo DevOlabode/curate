@@ -19,7 +19,8 @@
     "dev": "nodemon index.js",
     "build": "npm run build:extension",
     "build:extension": "node scripts/build-extension.js",
-    "test": "node --check index.js"
+    "test": "node --test",
+    "test:watch": "node --test --watch"
   },
   "keywords": [
     "bookmarks",
@@ -49,6 +50,8 @@
     "passport-local-mongoose": "^8.0.0"
   },
   "devDependencies": {
-    "pngjs": "^7.0.0"
+    "mongodb-memory-server": "^11.2.0",
+    "pngjs": "^7.0.0",
+    "supertest": "^7.2.2"
   }
 }

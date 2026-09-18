@@ -29,8 +29,15 @@ curate/
 ├── models/                 # User, bookmark, collection (MongoDB)
 ├── landing/                # Static site (Vercel)
 ├── views/                  # Express HTML (landing fallback, password reset)
+├── tests/                  # node --test suite (api/, unit/, helpers/)
+├── app.js                  # Express app: middleware, routes, error handling
+├── index.js                # Env, DB connection, HTTP server startup
 └── dist/extension/         # Build output (gitignored)
 ```
+
+`app.js` exports the configured Express app with no server listening or DB
+connection, so tests can import it directly. `index.js` loads environment
+variables, connects to MongoDB, then starts the HTTP server with that app.
 
 `npm run build:extension` copies `extension/` and `src/shared/` into `dist/extension/` and checks `manifest.json`.
 

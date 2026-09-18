@@ -14,6 +14,14 @@ Closes #
 - [ ] Refactor
 - [ ] Tests
 
+## Testing
+
+Describe how you tested these changes. Check the items that apply to your change.
+
+- [ ] Automated tests (`npm test`)
+- [ ] Manual testing
+- [ ] Extension build completed successfully (`npm run build:extension`)
+
 ## Screenshots
 
 <!-- Add screenshots for UI changes (popup, options, or landing) -->

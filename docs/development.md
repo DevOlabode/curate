@@ -158,8 +158,8 @@ How to read the table:
 The `all files` row is the headline number. Files the suite does not load
 (the extension popup, landing site, most Express HTML routes) do not appear.
 
-**Baseline** (refreshed with this change on Node 22; CI is Node 20, so expect
-small drift):
+**Baseline** (refreshed with this change; same totals on Node 20 in CI and
+Node 22 locally):
 
 | | line % | branch % | funcs % |
 |---|--------|----------|---------|

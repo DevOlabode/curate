@@ -49,7 +49,7 @@ export async function apiRequest(path, options = {}) {
     const data = await parseJson(response);
 
     if (!response.ok) {
-      throw new ApiError(data.error || 'Request failed', response.status, data);
+      throw new ApiError(data.error || 'Something went wrong. Please try again.', response.status, data);
     }
 
     return data;

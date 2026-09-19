@@ -96,7 +96,9 @@ you touch the popup, options page, or landing site:
 - If you changed the landing site, check `landing/index.html` and `landing/privacy.html`.
 
 If you add or change API behavior, add or update a test under `tests/api/` or
-`tests/unit/` rather than relying on manual checks alone.
+`tests/unit/` rather than relying on manual checks alone. To see which files
+the suite exercises, run `npm run test:coverage`. How to read the table and
+the current baseline are in [docs/development.md](docs/development.md).
 
 ### 7. Open a pull request
 

@@ -33,9 +33,9 @@
   ],
   "host_permissions": [
     "http://localhost:3000/*",
-    "https://curate-h0ga.onrender.com/*"
+    "https://curate-eight-omega.vercel.app/*"
   ],
   "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://curate-h0ga.onrender.com http://localhost:3000"
+    "extension_pages": "script-src 'self'; object-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://curate-eight-omega.vercel.app http://localhost:3000"
   }
 }

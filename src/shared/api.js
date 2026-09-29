@@ -65,7 +65,7 @@ export async function apiRequest(path, options = {}) {
       return apiRequest(path, { ...fetchOptions, _retried: true });
     }
     throw new ApiError(
-      `Could not reach ${baseUrl}. Open extension options, set Production (${baseUrl || 'https://curate-h0ga.onrender.com'}), save, then reload the extension.`,
+      `Could not reach ${baseUrl}. Open extension options, set Production (${baseUrl || 'https://curate-eight-omega.vercel.app'}), save, then reload the extension.`,
       0
     );
   } finally {

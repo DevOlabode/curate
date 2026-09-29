@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="landing/images/download.svg" alt="Curate" width="72" height="72">
+  <img src="landing/images/download.svg" alt="Curate" width="72" height="71">
 </p>
 
 # Curate

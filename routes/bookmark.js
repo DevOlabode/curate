@@ -1,5 +1,5 @@
 const express = require('express');
-const {isLoggedIn, validateBookmark} = require('../middleware');
+const {isLoggedIn, validateBookmark} = require('../utils/middleware');
 const catchAsync = require('../utils/catchAsync');
 const bookmarks = require('../controllers/bookmarks')
 const { requireValidId } = require('../middleware/validateId');

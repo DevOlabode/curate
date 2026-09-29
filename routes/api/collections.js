@@ -1,7 +1,7 @@
 const express = require('express');
 const catchAsync = require('../../utils/catchAsync');
 const { apiAuth } = require('../../middleware/apiAuth');
-const { validateBookmark, validateCollection } = require('../../middleware');
+const { validateBookmark, validateCollection } = require('../../utils/middleware');
 const collections = require('../../controllers/api/collections');
 const { requireValidId } = require('../../middleware/validateId');
 

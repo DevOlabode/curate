@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { isLoggedIn, validateCollection } = require('../middleware');
+const { isLoggedIn, validateCollection } = require('../utils/middleware');
 const catchAsync = require('../utils/catchAsync');
 const collections = require('../controllers/collections')
 const { requireValidId } = require('../middleware/validateId');

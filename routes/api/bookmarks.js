@@ -1,7 +1,7 @@
 const express = require('express');
 const catchAsync = require('../../utils/catchAsync');
 const { apiAuth } = require('../../middleware/apiAuth');
-const { validateBookmark } = require('../../middleware');
+const { validateBookmark } = require('../../utils/middleware');
 const bookmarks = require('../../controllers/api/bookmarks');
 const { requireValidId } = require('../../middleware/validateId');
 

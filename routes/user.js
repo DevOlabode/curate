@@ -3,7 +3,7 @@ const router = express.Router();
 
 const catchAsync = require('../utils/catchAsync');
 const user = require('../controllers/user')
-const {loginAuthenticate, storeReturnTo, isLoggedIn, redirectIfLoggedIn} = require('../middleware')
+const {loginAuthenticate, storeReturnTo, isLoggedIn, redirectIfLoggedIn} = require('../utils/middleware')
 
 
 router.route('/signup')

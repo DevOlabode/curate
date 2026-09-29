@@ -12,12 +12,11 @@
   },
   "homepage": "https://github.com/DevOlabode/curate#readme",
   "engines": {
-    "node": ">=18"
+    "node": "24.x"
   },
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "build": "npm run build:extension",
     "build:extension": "node scripts/build-extension.js",
     "test": "node --test",
     "test:watch": "node --test --watch"

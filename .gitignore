@@ -25,3 +25,6 @@ build/
 
 # Extension build artifacts (source icons regenerated on build)
 extension/assets/icons/*.png
+
+# Packaged extension for store upload (build output)
+*.zip

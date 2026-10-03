@@ -61,6 +61,21 @@ Output: `dist/extension/`
 
 API connection (environment and base URL) is developer-only. Open it from `chrome://extensions` (Details, then Extension options). It is not shown in the popup.
 
+## Keyboard shortcuts
+
+| Shortcut | Where | Action |
+|----------|-------|--------|
+| `Alt+Shift+C` (macOS: `Ctrl+Shift+C`) | Anywhere in the browser | Open the popup in **Add a bookmark** with the current tab's title and URL filled in |
+| `Esc` | Popup, add/edit form open | Close the form (same as **Cancel**) |
+| `Esc` | Popup, collection or account view | Go back to the library |
+| `Esc` | Popup, library | Close the popup (browser default) |
+
+The add shortcut can be changed or turned off at `chrome://extensions/shortcuts`
+(`edge://extensions/shortcuts` in Edge). It avoids `Ctrl+Shift+B`, which is
+reserved for the bookmarks bar in Chrome. It uses the `activeTab` permission,
+which only gives access to the current tab when you press the shortcut. It
+shows no install warning.
+
 ## Scripts
 
 | Script | Description |
@@ -76,6 +91,7 @@ See [docs/architecture.md](../docs/architecture.md) and [docs/development.md](..
 ## Permissions
 
 - `storage` - auth token and preferences
+- `activeTab` - read the current tab's title and URL, only when the add-bookmark shortcut is pressed
 - Host permissions - Curate API (production + localhost for dev)
 
 No content scripts. No broad site access.

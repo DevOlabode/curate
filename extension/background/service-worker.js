@@ -14,6 +14,19 @@ chrome.runtime.onInstalled.addListener((details) => {
   }
 });
 
+// activeTab is granted by the shortcut, so tab.url/title are readable here.
+chrome.commands.onCommand.addListener(async (command, tab) => {
+  if (command !== 'add-bookmark') return;
+  await chrome.storage.session.set({
+    pendingAdd: { url: tab?.url || '', title: tab?.title || '' },
+  });
+  try {
+    await chrome.action.openPopup();
+  } catch (err) {
+    console.warn('[Curate] Could not open popup:', err);
+  }
+});
+
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message?.type === MESSAGE_TYPES.GET_AUTH_STATE) {
     chrome.storage.local.get(['authToken', 'authUser'], (data) => {

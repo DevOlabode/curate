@@ -9,6 +9,7 @@ import {
   deleteAccount,
 } from '../shared/auth.js';
 import { getTheme, setTheme } from '../shared/storage.js';
+import { getStorageArea } from '../shared/browser.js';
 import { getApiBaseUrl } from '../shared/config.js';
 import { normalizeUrl } from '../shared/url.js';
 
@@ -291,6 +292,20 @@ async function bootMain(user) {
   userLine.textContent = `Signed in as ${user.username}`;
   hideComposer();
   await loadLibrary();
+  await openPendingAdd();
+}
+
+// Set by the add-bookmark keyboard command in the service worker.
+async function openPendingAdd() {
+  const session = getStorageArea('session');
+  const { pendingAdd } = await session.get('pendingAdd');
+  if (!pendingAdd) return;
+  await session.remove('pendingAdd');
+  openComposer('bookmark');
+  if (/^https?:/i.test(pendingAdd.url)) {
+    addForm.elements.title.value = pendingAdd.title;
+    addForm.elements.url.value = pendingAdd.url;
+  }
 }
 
 async function openCollection(id) {
@@ -331,6 +346,7 @@ async function boot() {
     } else {
       $('#open-settings').hidden = true;
       showView('auth');
+      await getStorageArea('session').remove('pendingAdd');
     }
   } catch (err) {
     $('#open-settings').hidden = true;
@@ -710,6 +726,21 @@ document.querySelectorAll('.password-toggle').forEach((btn) => {
     btn.textContent = show ? 'Hide' : 'See';
     btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
   });
+});
+
+// Esc steps back one level; at the library root it falls through and the
+// browser closes the popup as before.
+document.addEventListener('keydown', (event) => {
+  if (event.key !== 'Escape' || event.defaultPrevented) return;
+  const target = [
+    !collectionAddForm.hidden && !views.collection.hidden && '#cancel-collection-add',
+    !addForm.hidden && !views.main.hidden && '#cancel-add',
+    !views.collection.hidden && '#collection-back',
+    !views.settings.hidden && '#settings-back',
+  ].find(Boolean);
+  if (!target) return;
+  event.preventDefault();
+  $(target).click();
 });
 
 async function initTheme() {

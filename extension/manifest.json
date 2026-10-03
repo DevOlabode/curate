@@ -27,8 +27,18 @@
     "service_worker": "background/service-worker.js",
     "type": "module"
   },
+  "commands": {
+    "add-bookmark": {
+      "suggested_key": {
+        "default": "Alt+Shift+C",
+        "mac": "MacCtrl+Shift+C"
+      },
+      "description": "Add the current page to Curate"
+    }
+  },
   "permissions": [
-    "storage"
+    "storage",
+    "activeTab"
   ],
   "host_permissions": [
     "http://localhost:3000/*",

@@ -72,6 +72,27 @@ On `401`, the popup clears the token and shows sign-in.
 
 Chrome and Edge both expose the `chrome.*` MV3 APIs. `src/shared/browser.js` is the compatibility shim.
 
+## Known leftovers
+
+`app.js` still mounts the old EJS library routes (`/bookmark`, `/collections`, `/login`, `/signup`, `/user/*`) from before the extension conversion. Nothing links to them and the landing page says there is no web signup, but they are reachable. They are scheduled for removal in [phases/Phase_0.md](phases/Phase_0.md). Only `/`, `/privacy` and the password reset pages will remain.
+
+## Planned changes
+
+The plan for Oct 2026 to Jan 2027 ([phases/](phases/README.md)) changes this architecture in three ways:
+
+- **Environments:** a separate staging deployment, database and extension build ([Phase 1](phases/Phase_1.md)).
+- **Content pipeline:** saving a bookmark enqueues a job in a MongoDB `jobs` collection. The job runs right after the response (`waitUntil`) and is retried by a GitHub Actions sweeper. It fetches the page safely and stores readable text and metadata on the bookmark ([Phase 3](phases/Phase_3.md)).
+- **Search:** `GET /api/v1/search` queries an Atlas Search index over titles, tags, notes and extracted page text ([Phase 4](phases/Phase_4.md)).
+
+```text
+Popup --Bearer JWT--> /api/v1 --> MongoDB (bookmarks, jobs) <-- Atlas Search index
+                         |                ^
+                         +-- waitUntil ---+-- fetch + extract (SSRF-safe)
+                 GitHub Actions sweeper --+   (retries, backfill)
+```
+
+Design decisions are recorded in [adr/](adr/README.md).
+
 ## Historical notes
 
 Design work from the web-app-to-extension conversion is in [phase1-analysis.md](phase1-analysis.md), [phase2-architecture.md](phase2-architecture.md), [security-audit.md](security-audit.md), and [store-readiness.md](store-readiness.md). Prefer this file for the current shape of the repo.

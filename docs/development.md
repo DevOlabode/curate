@@ -25,6 +25,14 @@ Set at least:
 
 See [`.env.example`](../.env.example) for the rest. Never commit `.env`. Never put those secrets in `extension/` or `src/shared/`.
 
+**Use a local database for development, never a hosted production or staging cluster.** The simplest option is Docker:
+
+```bash
+docker run -d -p 27017:27017 mongodb/mongodb-atlas-local
+```
+
+Then set `MONGO_URI=mongodb://localhost:27017/curate_dev?directConnection=true`. Always include a database name in the URI; without one, MongoDB uses its default `test` database. The Atlas-local image also supports Atlas Search, which the planned search feature needs ([phases/Phase_4.md](phases/Phase_4.md)).
+
 ## 2. Start the API
 
 ```bash

@@ -28,3 +28,6 @@ extension/assets/icons/*.png
 
 # Packaged extension for store upload (build output)
 *.zip
+
+# Private planning notes
+docs/private/

@@ -104,7 +104,7 @@ Please follow the [Code of Conduct](CODE_OF_CONDUCT.md). Usage questions belong 
 
 ## Roadmap
 
-Shipped: private library in the popup, Chrome and Edge listings. Next: tests, tighter auth, clearer empty states. Details: [docs/roadmap.md](docs/roadmap.md). How decisions are made: [GOVERNANCE.md](GOVERNANCE.md).
+Shipped: private library in the popup, Chrome and Edge listings. Next (Oct 2026 – Jan 2027): staging and safer releases, a background pipeline that extracts page text, full-text search across everything you've saved, and faster capture (shortcut, right-click save). Details: [docs/roadmap.md](docs/roadmap.md) and the phase-by-phase plan in [docs/phases/](docs/phases/README.md). How decisions are made: [GOVERNANCE.md](GOVERNANCE.md).
 
 ## Contributors
 

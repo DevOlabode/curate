@@ -55,4 +55,6 @@ sequenceDiagram
 
 - Tokens are inspectable if a device is compromised - use HTTPS only in production.
 - No refresh-token rotation in v1; tokens expire per `JWT_EXPIRES_IN` (default 7d).
+- Changing or resetting a password does not yet invalidate existing tokens. A `tokenVersion` claim that is bumped on password change and reset is planned in [phases/Phase_0.md](phases/Phase_0.md).
+- Auth endpoints are not yet rate-limited; limits are planned in the same phase.
 - Password never stored in extension storage.

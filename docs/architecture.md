@@ -10,7 +10,7 @@ A stranger's bookmarks never appear on the website. The toolbar popup is the pro
 
 ## Why the API is JWT, not cookies
 
-The popup runs on a `chrome-extension://` origin. It cannot reliably share the web app's session cookie. The extension therefore authenticates with a Bearer JWT stored in `chrome.storage.local`. The server keeps a short-lived session only to show flash messages on the `/forgot-password` and `/reset-password` pages; nobody signs in on the website.
+The popup runs on a `chrome-extension://` origin. The extension therefore authenticates with a Bearer JWT stored in `chrome.storage.local`. Nobody signs in on the website, and it sets no cookies: the `/forgot-password` and `/reset-password` pages render their messages directly.
 
 Details: [authentication.md](authentication.md).
 
@@ -55,7 +55,7 @@ There are **no content scripts**. The extension does not inject into web pages a
 | Client | Mechanism |
 |--------|-----------|
 | Extension | `POST /api/v1/auth/login` → JWT in `chrome.storage.local` |
-| Password-reset pages | Reset token in the emailed link (session only for flash messages) |
+| Password-reset pages | Reset token in the emailed link |
 | Landing site | None (theme preference only) |
 
 On `401`, the popup clears the token and shows sign-in.
@@ -68,7 +68,7 @@ On `401`, the popup clears the token and shows sign-in.
 | API | Node.js 18+, Express 5, Joi, jsonwebtoken |
 | Data | MongoDB, Mongoose |
 | Password hashing | passport-local-mongoose (PBKDF2) |
-| Reset pages | EJS, express-session, connect-flash |
+| Reset pages | EJS (no sessions) |
 | Landing | Static HTML/CSS |
 
 Chrome and Edge both expose the `chrome.*` MV3 APIs. `src/shared/browser.js` is the compatibility shim.
@@ -76,6 +76,15 @@ Chrome and Edge both expose the `chrome.*` MV3 APIs. `src/shared/browser.js` is 
 ## Website routes
 
 The website serves only `/`, `/privacy`, `/forgot-password` and `/reset-password/:token`. The old EJS library (`/bookmark`, `/collections`, `/login`, `/signup`, `/user/*`) from before the extension conversion was removed in [Phase 0](phases/Phase_0.md).
+
+## Environments and startup checks
+
+`config/env.js` runs before anything else. It refuses to start, listing every problem at once, when:
+
+- `NODE_ENV=production` and any of `APP_ENV`, `MONGO_URI`, `JWT_SECRET` is missing
+- the database named in `MONGO_URI` doesn't belong to `APP_ENV` (production uses `curate_prod`, staging `curate_staging`, local development anything else)
+
+If the database is unreachable, the app keeps serving: `/api/v1/health` returns 503 and each request retries the connection (`api/index.js`). Outside production, `utils/mailer.js` only sends to `STAGING_EMAIL_ALLOWLIST`.
 
 ## Rate limits
 

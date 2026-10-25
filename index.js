@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== "production") {
 
 const app = require('./app');
 
-require('./config/dbConfig')();
+require('./config/dbConfig')().catch(() => process.exit(1));
 
 const PORT=process.env.PORT || 3000;
 app.listen(PORT, ()=>{

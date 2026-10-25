@@ -1,0 +1,28 @@
+name: Smoke test
+
+# Runs after Vercel finishes a deployment. Production deploys are tested from
+# the release checklist instead, so this only runs against staging.
+on:
+  deployment_status:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: Deployment URL to test
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.deployment_status.state == 'success' &&
+       !contains(github.event.deployment.environment, 'Production'))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node scripts/smoke.js "${{ inputs.url || github.event.deployment_status.environment_url }}"

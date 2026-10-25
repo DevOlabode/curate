@@ -61,7 +61,7 @@ npm install
 cp .env.example .env
 ```
 
-Set `MONGO_URI`, `SESSION_SECRET`, and `JWT_SECRET`. Then:
+Set `MONGO_URI` (a local database, e.g. `mongodb://localhost:27017/curate_dev`) and `JWT_SECRET`. Then:
 
 ```bash
 npm run dev
@@ -78,7 +78,7 @@ Full walkthrough: [docs/development.md](docs/development.md). How to send a PR: 
 Popup  --Bearer JWT-->  /api/v1  -->  MongoDB
 ```
 
-The popup cannot use the website's session cookie (`chrome-extension://` origin), so the extension talks to `/api/v1` with a JWT in `chrome.storage.local`. There are no content scripts and no history permission.
+The popup runs on a `chrome-extension://` origin, so the extension talks to `/api/v1` with a JWT in `chrome.storage.local`. There are no content scripts and no history permission.
 
 | Path | Role |
 |------|------|

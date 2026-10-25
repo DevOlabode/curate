@@ -56,7 +56,7 @@ Follow [docs/development.md](docs/development.md). Short version:
 ```bash
 npm install
 cp .env.example .env
-# Set MONGO_URI, SESSION_SECRET, and JWT_SECRET
+# Set MONGO_URI (a local database) and JWT_SECRET
 npm run dev
 npm run build:extension
 ```

@@ -1,0 +1,38 @@
+name: Backup production database
+
+# Nightly encrypted dump to Cloudflare R2. Never use workflow artifacts for
+# this: on a public repo, any signed-in GitHub user can download them.
+# Retention (14 days) is an R2 lifecycle rule on the bucket.
+on:
+  schedule:
+    - cron: '30 7 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    environment: production-backup
+    steps:
+      - name: Install age
+        run: sudo apt-get update -q && sudo apt-get install -y -q age
+
+      - name: Dump and encrypt
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          AGE_RECIPIENT: ${{ vars.BACKUP_AGE_RECIPIENT }}
+        run: |
+          set -euo pipefail
+          FILE="curate-$(date -u +%Y-%m-%dT%H%M).archive.gz.age"
+          docker run --rm -e MONGO_URI mongo:8 sh -c 'mongodump --uri="$MONGO_URI" --archive --gzip' | age -r "$AGE_RECIPIENT" > "$FILE"
+          test -s "$FILE"
+          echo "FILE=$FILE" >> "$GITHUB_ENV"
+
+      - name: Upload to R2
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+        run: aws s3 cp "$FILE" "s3://${{ vars.R2_BUCKET }}/$FILE" --endpoint-url "${{ vars.R2_ENDPOINT }}"

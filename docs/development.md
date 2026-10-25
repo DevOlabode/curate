@@ -53,6 +53,15 @@ npm run dev
 npm run build:extension
 ```
 
+That is the **development** build: production API plus `localhost:3000`. The other variants:
+
+| Command | Build | Use |
+|---|---|---|
+| `npm run build:extension:production` | Production API only | The store upload |
+| `STAGING_API_URL=https://… npm run build:extension:staging` | "Curate (Staging)", staging API only, "STG" badge | Load unpacked to test staging. Never upload. |
+
+Each build checks its manifest: permissions must be on the allowlist in `scripts/build-extension.js`, and the production build must not mention localhost or staging.
+
 Output: `dist/extension/`.
 
 In Chrome (`chrome://extensions`) or Edge (`edge://extensions`):
@@ -92,7 +101,10 @@ Vercel: set Root Directory to `landing`, framework Other, empty build and output
 | `npm start` | Production server |
 | `npm test` | Automated test suite (`node --test`) |
 | `npm run test:watch` | Automated test suite in watch mode |
-| `npm run build:extension` | Bundle unpacked extension to `dist/extension/` |
+| `npm run build:extension` | Development build of the extension to `dist/extension/` |
+| `node seeds/seed.js` | Seed test users and links (only `APP_ENV=staging` or `development`) |
+| `node scripts/migrate.js [--dry-run]` | Apply pending `migrations/` |
+| `node scripts/smoke.js <url>` | End-to-end check against a running deployment |
 
 ## API surface
 

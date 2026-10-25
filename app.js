@@ -1,23 +1,18 @@
-if (process.env.NODE_ENV === 'production') {
-    for (const name of ['SESSION_SECRET', 'JWT_SECRET']) {
-        if (!process.env[name]) throw new Error(`${name} must be set in production`);
-    }
-}
+const { checkEnv } = require('./config/env');
+const APP_ENV = checkEnv();
 
 const express = require('express');
 const cors = require('cors');
 const app = express();
 const path = require('path');
 const ejsMate = require('ejs-mate');
-const session = require('express-session');
-const flash = require('connect-flash');
 
 const userRoutes = require('./routes/user');
 const ExpressError = require('./utils/expressError');
 const apiRoutes = require('./routes/api');
 const corsOptions = require('./config/corsConfig');
 const { apiErrorHandler } = require('./middleware/apiError');
-const { friendlyError, redirectForError } = require('./utils/friendlyError');
+const { friendlyError } = require('./utils/friendlyError');
 
 
 app.set('view engine', 'ejs');
@@ -29,21 +24,23 @@ if (process.env.NODE_ENV === 'production') {
     app.set('trust proxy', 1);
 }
 
+if (APP_ENV !== 'production') {
+    // Keep staging and preview deployments out of search engines.
+    app.use((req, res, next) => {
+        res.set('X-Robots-Tag', 'noindex, nofollow');
+        next();
+    });
+}
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors(corsOptions));
 
-app.use(session(require('./config/sessionConfig')));
-
-app.use(flash());
-
+// Pages pass one-off messages straight to render(); no sessions or cookies.
 app.use((req, res, next) => {
-    res.locals.success = req.flash('success');
-    res.locals.error = req.flash('error');
-    res.locals.warning = req.flash('warning');
-    res.locals.info = req.flash('info');
+    Object.assign(res.locals, { success: [], error: [], warning: [], info: [] });
     next();
 });
 
@@ -55,7 +52,10 @@ const CHROME_STORE_URL = 'https://chromewebstore.google.com/detail/curate/nlkfmd
 const EDGE_STORE_URL ='https://microsoftedge.microsoft.com/addons/detail/curate/ailonhflbailiggfiimmkkmbeoggbjpk';
 
 app.get('/', (req, res)=>{
-    res.render('home', { landing: true, chromeStoreUrl: CHROME_STORE_URL, edgeStoreUrl: EDGE_STORE_URL })
+    const success = req.query.reset === 'done'
+        ? ['Your password is updated. Sign in from the Curate extension.']
+        : [];
+    res.render('home', { landing: true, chromeStoreUrl: CHROME_STORE_URL, edgeStoreUrl: EDGE_STORE_URL, success })
 });
 
 app.get('/privacy', (req, res) => {
@@ -74,11 +74,6 @@ app.use((err, req, res, next)=>{
 
     if (statusCode >= 500) {
         console.error(err);
-    }
-
-    if (statusCode === 400 || statusCode === 404) {
-        req.flash(statusCode === 404 ? 'error' : 'warning', message);
-        return res.redirect(redirectForError(req));
     }
 
     res.status(statusCode).render('error', { message, statusCode })

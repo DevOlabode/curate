@@ -12,8 +12,7 @@ module.exports.forgotPassword = async (req, res) => {
     const genericMessage = 'If that email is in Curate, we sent a reset link. Check your inbox.';
 
     if (!email) {
-        req.flash('error', 'Please enter the email on your account.');
-        return res.redirect('/forgot-password');
+        return res.status(400).render('user/forgotPassword', { error: ['Please enter the email on your account.'] });
     }
 
     const user = await User.findOne({ email: new RegExp(`^${email.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') });
@@ -37,13 +36,13 @@ module.exports.forgotPassword = async (req, res) => {
             user.resetPasswordToken = undefined;
             user.resetPasswordExpires = undefined;
             await user.save();
-            req.flash('error', 'We couldn’t send that email right now. Please try again in a few minutes.');
-            return res.redirect('/forgot-password');
+            return res.status(502).render('user/forgotPassword', {
+                error: ['We couldn’t send that email right now. Please try again in a few minutes.'],
+            });
         }
     }
 
-    req.flash('success', genericMessage);
-    res.redirect('/forgot-password');
+    res.render('user/forgotPassword', { success: [genericMessage] });
 };
 
 module.exports.resetPasswordForm = async (req, res) => {
@@ -54,8 +53,7 @@ module.exports.resetPasswordForm = async (req, res) => {
     });
 
     if (!user) {
-        req.flash('error', 'That reset link is invalid or has expired. Request a new one.');
-        return res.redirect('/forgot-password');
+        return res.status(400).render('user/forgotPassword', { error: ['That reset link is invalid or has expired. Request a new one.'] });
     }
 
     res.render('user/resetPassword', { token: req.params.token });
@@ -66,13 +64,11 @@ module.exports.resetPassword = async (req, res) => {
     const { password, confirmPassword } = req.body;
 
     if (!password || password.length < 8) {
-        req.flash('error', 'Please choose a password with at least 8 characters.');
-        return res.redirect(`/reset-password/${token}`);
+        return res.status(400).render('user/resetPassword', { token, error: ['Please choose a password with at least 8 characters.'] });
     }
 
     if (password !== confirmPassword) {
-        req.flash('error', 'Those passwords don’t match.');
-        return res.redirect(`/reset-password/${token}`);
+        return res.status(400).render('user/resetPassword', { token, error: ['Those passwords don’t match.'] });
     }
 
     const hashed = hashResetToken(token);
@@ -82,8 +78,7 @@ module.exports.resetPassword = async (req, res) => {
     });
 
     if (!user) {
-        req.flash('error', 'That reset link is invalid or has expired. Request a new one.');
-        return res.redirect('/forgot-password');
+        return res.status(400).render('user/forgotPassword', { error: ['That reset link is invalid or has expired. Request a new one.'] });
     }
 
     await user.setPassword(password);
@@ -92,6 +87,5 @@ module.exports.resetPassword = async (req, res) => {
     user.tokenVersion = (user.tokenVersion || 0) + 1;
     await user.save();
 
-    req.flash('success', 'Your password is updated. Sign in from the Curate extension.');
-    res.redirect('/');
+    res.redirect('/?reset=done');
 };

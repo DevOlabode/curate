@@ -20,6 +20,11 @@ extension (`extension/manifest.json`).
 - Changing or resetting your password signs out other devices. The device you changed it on stays signed in.
 - Session cookies are `secure` and `SameSite=Lax` in production; the server refuses to start in production without its secrets
 
+### Changed
+
+- If the database is unreachable, the API now answers `/api/v1/health` with 503 instead of crashing
+- The website no longer uses sessions or sets cookies; the password-reset pages show their messages directly
+
 ### Fixed
 
 - One privacy policy instead of three copies, now covering the short-lived rate-limit counters

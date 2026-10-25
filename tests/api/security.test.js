@@ -102,9 +102,27 @@ test('health returns 503 when the database does not answer', async (t) => {
 test('the old web library routes are gone', async () => {
   for (const route of ['/bookmark', '/collections', '/login', '/signup', '/user/info']) {
     const res = await request(app).get(route);
-    assert.equal(res.status, 302, route);
-    assert.equal(res.headers.location, '/', route);
+    assert.equal(res.status, 404, route);
   }
+});
+
+test('the website sets no cookies', async () => {
+  for (const route of ['/', '/privacy', '/forgot-password']) {
+    const res = await request(app).get(route);
+    assert.equal(res.headers['set-cookie'], undefined, route);
+  }
+});
+
+test('forgot-password shows its message on the same page', async () => {
+  const res = await request(app).post('/forgot-password').type('form').send({ email: 'nobody@example.com' });
+  assert.equal(res.status, 200);
+  assert.match(res.text, /If that email is in Curate, we sent a reset link/);
+});
+
+test('an invalid reset link explains itself', async () => {
+  const res = await request(app).get('/reset-password/not-a-real-token');
+  assert.equal(res.status, 400);
+  assert.match(res.text, /invalid or has expired/);
 });
 
 test('the password reset pages still render', async () => {
@@ -120,5 +138,5 @@ test('the app refuses to start in production without secrets', () => {
     encoding: 'utf8',
   });
   assert.notEqual(result.status, 0);
-  assert.match(result.stderr, /SESSION_SECRET must be set in production/);
+  assert.match(result.stderr, /Missing environment variables: APP_ENV, MONGO_URI, JWT_SECRET/);
 });

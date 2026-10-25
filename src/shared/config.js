@@ -1,3 +1,5 @@
+import { BUILD_ENV, BUILD_API_URL } from './build-env.js';
+
 /** Default API base URLs - no secrets. Overridable in options. */
 export const DEFAULT_API_URLS = {
   development: 'http://localhost:3000',
@@ -21,6 +23,9 @@ function isLocalHost(url) {
 }
 
 export async function getApiBaseUrl() {
+  // The staging build is locked to its API so it can never reach production.
+  if (BUILD_ENV === 'staging') return BUILD_API_URL;
+
   const { getStorageArea } = await import('./browser.js');
   const storage = getStorageArea();
   const stored = await storage.get([

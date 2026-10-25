@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, master]
+    branches: [main, staging]
   pull_request:
 
 permissions:
@@ -31,10 +31,19 @@ jobs:
       - name: Run tests
         run: npm test
 
-      - name: Build extension
-        run: npm run build:extension
+      # Each build checks its own manifest: permissions allowlist, and no
+      # localhost or staging URL in the production build.
+      - name: Build extension (production)
+        run: npm run build:extension:production
 
-      - name: Verify extension build output
-        run: |
-          test -f dist/extension/manifest.json
-          node -e "if (require('./dist/extension/manifest.json').manifest_version !== 3) process.exit(1)"
+      - name: Build extension (staging)
+        run: npm run build:extension:staging
+        env:
+          STAGING_API_URL: ${{ vars.STAGING_API_URL || 'https://staging.example.invalid' }}
+
+      - name: Upload staging extension
+        if: github.ref == 'refs/heads/staging'
+        uses: actions/upload-artifact@v4
+        with:
+          name: curate-extension-staging
+          path: dist/extension

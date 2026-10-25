@@ -43,4 +43,4 @@ Please give us a reasonable window before any public write-up. If you have not h
 
 ## Maintainer notes
 
-Extension JavaScript is public. Never put `JWT_SECRET`, `SESSION_SECRET`, `MONGO_URI`, or SMTP credentials in `extension/`, `src/shared/`, or `landing/`.
+Extension JavaScript is public. Never put `JWT_SECRET`, `MONGO_URI`, or SMTP credentials in `extension/`, `src/shared/`, or `landing/`.

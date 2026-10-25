@@ -1,0 +1,39 @@
+name: Migrate database
+
+# Run staging first, verify, then production (which waits for approval in the
+# production GitHub Environment).
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Which database
+        type: choice
+        options: [staging, production]
+        required: true
+      dry_run:
+        description: List pending migrations without applying them
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.environment == 'staging' && 'staging' || 'main' }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --omit=dev
+      - run: node scripts/migrate.js ${{ inputs.dry_run && '--dry-run' || '' }}
+        env:
+          NODE_ENV: production
+          APP_ENV: ${{ inputs.environment }}
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          JWT_SECRET: unused-by-migrations

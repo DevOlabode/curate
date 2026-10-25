@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const { appEnv } = require('../config/env');
 
 function appUrl(req) {
   if (process.env.APP_URL) {
@@ -24,7 +25,23 @@ function createTransport() {
   });
 }
 
+// Outside production, mail only goes to STAGING_EMAIL_ALLOWLIST: exact addresses
+// or "@domain.com" entries, comma-separated. Everything else is logged and dropped.
+function canDeliver(to, env = process.env) {
+  if (appEnv(env) === 'production') return true;
+  const address = String(to || '').trim().toLowerCase();
+  return (env.STAGING_EMAIL_ALLOWLIST || '')
+    .split(',')
+    .map((entry) => entry.trim().toLowerCase())
+    .filter(Boolean)
+    .some((entry) => (entry.startsWith('@') ? address.endsWith(entry) : address === entry));
+}
+
 async function sendPasswordResetEmail({ req, to, resetUrl, firstName }) {
+  if (!canDeliver(to)) {
+    console.info(`[mail] ${appEnv()}: dropped password reset email to a non-allowlisted address`);
+    return;
+  }
   const transport = createTransport();
   if (!transport) {
     throw new Error('Email is not configured');
@@ -61,4 +78,4 @@ async function sendPasswordResetEmail({ req, to, resetUrl, firstName }) {
   });
 }
 
-module.exports = { appUrl, sendPasswordResetEmail };
+module.exports = { appUrl, canDeliver, sendPasswordResetEmail };

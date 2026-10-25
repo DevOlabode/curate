@@ -8,6 +8,55 @@ A staging environment that cannot touch production data or email real users, and
 
 Staging is not "another copy of production." Each safeguard below exists to stop a specific failure.
 
+## Status (Oct 24, 2026)
+
+**Code done** on `feature/phase-1`:
+
+- Startup check (`config/env.js`) that lists every missing variable at once and refuses a database that doesn't match `APP_ENV`.
+- A database outage now returns 503 from `/health` instead of crashing the app.
+- Sessions removed. They existed only for flash messages on the reset pages, and their second database connection crashed the app when MongoDB was unreachable. This also removed `SESSION_SECRET` and three dependencies.
+- Email guard, staging/production/development extension builds with manifest checks, migration runner, seed script, smoke script, and workflows for CI, smoke tests, migrations and backups.
+
+Changes from the original plan:
+
+- **Uptime monitoring moved here** from Phase 2, after the Oct 24 outage went unnoticed.
+- `scripts/migrate.js` replaces `migrate-mongo`: ~40 lines, no dependency.
+- No separate staging icon. The name "Curate (Staging)" and an "STG" badge mark it.
+
+### Setup checklist (needs your accounts)
+
+Do these in order. **Step 1 must happen before this branch is merged**, or production will refuse to start.
+
+1. **Vercel → Production env:** add `APP_ENV=production`. (`SESSION_SECRET` is no longer used; delete it after the merge.)
+2. **Uptime:** Better Stack (free) monitor on `https://curate-eight-omega.vercel.app/api/v1/health`, checking every 3 minutes, alerting your email. Optional: a public status page.
+3. **Atlas:** new project `curate-staging` with its own M0 cluster, its own database user, and Network Access `0.0.0.0/0`. The connection string ends in `/curate_staging`.
+4. **Git:** create the `staging` branch from `main` and push it.
+5. **Vercel → Preview env, scoped to the `staging` branch only:** `APP_ENV=staging`, `MONGO_URI` (staging), a new `JWT_SECRET`, `STAGING_EMAIL_ALLOWLIST` (your address). Delete any Preview variable that isn't branch-scoped. Note the branch URL (`curate-git-staging-….vercel.app`).
+6. **GitHub → Settings:**
+   - Variables: `STAGING_API_URL` = the staging URL.
+   - Environment `staging`: secret `MONGO_URI` (staging).
+   - Environment `production`: secret `MONGO_URI` (production), **required reviewer: you**.
+   - Environment `production-backup`: secret `MONGO_URI` (production; ideally a read-only Atlas user), secrets `R2_ACCESS_KEY_ID` and `R2_SECRET_ACCESS_KEY`, variables `R2_BUCKET`, `R2_ENDPOINT`, `BACKUP_AGE_RECIPIENT`.
+   - Branch protection on `main` and `staging`: require a PR and a green CI.
+7. **Backups:** create an R2 bucket with a 14-day lifecycle rule and an API token for it. Run `age-keygen -o curate-backup.key`, keep the private key in your password manager (never in GitHub), and put the public key in `BACKUP_AGE_RECIPIENT`. Run "Backup production database" once by hand, then restore it locally:
+   ```bash
+   age -d -i curate-backup.key curate-….archive.gz.age \
+     | mongorestore --archive --gzip --uri "mongodb://localhost:27017" --nsFrom 'test.*' --nsTo 'restore_check.*'
+   ```
+8. **Seed staging** from your machine:
+   `APP_ENV=staging MONGO_URI="<staging uri>" SEED_PASSWORD="<pick one>" node seeds/seed.js`
+9. **Migrations:** run "Migrate database" for `staging` (dry run, then for real), then for `production`.
+10. **Smoke test:** after the first staging deploy, the "Smoke test" workflow runs on its own. Check that it passes.
+
+### Later in this phase: move production to `curate_prod`
+
+Production still uses Mongo's default `test` database, which `config/env.js` allows temporarily. To move it, pick a quiet hour:
+
+1. `mongodump --uri "<prod uri>" --db test --archive | mongorestore --uri "<prod uri>" --archive --nsFrom 'test.*' --nsTo 'curate_prod.*'`
+2. Change the production `MONGO_URI` to end in `/curate_prod` and redeploy.
+3. Check `/health` and sign in with the extension.
+4. In a later release, remove `'test'` from `ALLOWED_DATABASES.production` and drop the old database.
+
 ## What gets built
 
 ### Separate database
@@ -64,7 +113,7 @@ Wired up in [Phase 2](Phase_2.md): Sentry with `environment=staging` (alert rule
 
 ### Migrations
 
-- `migrate-mongo` with a changelog collection.
+- `scripts/migrate.js`: a small runner (no dependency) that applies `migrations/NNN-*.js` in order and records each in a `migrations` collection. No down migrations: expand/contract means a rollback is a code rollback.
 - **Expand/contract:** a release only adds fields or indexes, the code tolerates both shapes, and removals happen in a later release.
 - Migrations run through a manually triggered GitHub workflow: staging first, then production with environment approval.
 - Mongoose `autoIndex` off in production; indexes are created only by migrations.
@@ -85,7 +134,7 @@ Wired up in [Phase 2](Phase_2.md): Sentry with `environment=staging` (alert rule
 
 ## Data model changes
 
-- Migration changelog collection (created by `migrate-mongo`).
+- `migrations` collection (created by `scripts/migrate.js`).
 - First migrations: move production to `curate_prod`; create the Phase 0 indexes through a migration so staging and production match.
 
 ## Tests required

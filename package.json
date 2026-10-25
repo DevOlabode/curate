@@ -18,6 +18,8 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "build:extension": "node scripts/build-extension.js",
+    "build:extension:production": "node scripts/build-extension.js --env=production",
+    "build:extension:staging": "node scripts/build-extension.js --env=staging",
     "test": "node --test",
     "test:watch": "node --test --watch"
   },
@@ -30,14 +32,11 @@
   "author": "Samuel Olabode",
   "license": "MIT",
   "dependencies": {
-    "connect-flash": "^0.1.1",
-    "connect-mongo": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "ejs": "^3.1.10",
     "ejs-mate": "^4.0.0",
     "express": "^5.1.0",
-    "express-session": "^1.18.2",
     "joi": "^18.0.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.17.0",

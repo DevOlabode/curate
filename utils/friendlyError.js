@@ -97,15 +97,8 @@ function friendlyKnownMessage(message) {
   return map[message];
 }
 
-function redirectForError(req) {
-  if (req.path.startsWith('/reset-password') || req.path.startsWith('/forgot-password')) {
-    return '/forgot-password';
-  }
-  return '/';
-}
 
 module.exports = {
   friendlyError,
   friendlyJoiMessage,
-  redirectForError,
 };

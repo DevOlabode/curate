@@ -2,7 +2,7 @@
 
 ## Overview
 
-There is no website sign-in. The browser extension uses **Bearer JWT** against `/api/v1` because MV3 popups run on `chrome-extension://` and cannot reliably share the web session cookie.
+There is no website sign-in. The browser extension uses **Bearer JWT** against `/api/v1` because MV3 popups run on a `chrome-extension://` origin. The website sets no cookies.
 
 ## Flow
 
@@ -30,7 +30,6 @@ sequenceDiagram
 ## Server secrets (never in extension)
 
 - `JWT_SECRET` - signs tokens
-- `SESSION_SECRET` - web sessions only
 - `MONGO_URI` - database
 
 ## Expired / invalid tokens

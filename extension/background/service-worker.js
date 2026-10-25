@@ -8,6 +8,13 @@ const MESSAGE_TYPES = {
   CLEAR_AUTH: 'CLEAR_AUTH',
 };
 
+import { BUILD_ENV } from '../shared/build-env.js';
+
+if (BUILD_ENV === 'staging') {
+  chrome.action.setBadgeText({ text: 'STG' });
+  chrome.action.setBadgeBackgroundColor({ color: '#c4491d' });
+}
+
 chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === 'install' || details.reason === 'update') {
     console.info('[Curate] Extension installed/updated:', details.reason);

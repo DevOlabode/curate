@@ -61,7 +61,7 @@ The definition lives in the repo at `search/bookmarks.index.json` and is applied
 
 ### Backfill
 
-- `scripts/backfill-content.js` enqueues jobs in batches of 500 with staggered `runAt`.
+- `scripts/backfill-content.js` enqueues a job for every bookmark without content. The library is a few dozen bookmarks today, so no batching or throttling; the sweeper drains it.
 - Resumable and idempotent: skips bookmarks that already have content or an open job.
 - Runs on staging first, then production through the workflow with approval.
 - Most of the production backfill has already run during the [Phase 3](Phase_3.md) dark launch.
@@ -104,7 +104,7 @@ Follow the [standard checklist](../release-process.md#release-checklist), plus:
 - **Before store submission:** privacy policy updated and the store data disclosures say "website content" is collected.
 - Staging Fri Dec 4; staging soak Mon–Tue Dec 7–8; production Wed Dec 9; store submissions Wed Dec 9.
 - Release notes and CHANGELOG.
-- **Email 1** once both stores are live (~Dec 11–14). Draft below.
+- **Email 1** once both stores are live (~Dec 11–14). With one active existing user, send it as a personal email, not a Brevo campaign. The draft below is the template for that email and for future announcements.
 
 ### Email 1 draft
 

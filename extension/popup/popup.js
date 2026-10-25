@@ -11,6 +11,7 @@ import {
 import { getTheme, setTheme } from '../shared/storage.js';
 import { getApiBaseUrl } from '../shared/config.js';
 import { normalizeUrl } from '../shared/url.js';
+import { getBrowser } from '../shared/browser.js';
 
 const $ = (sel) => document.querySelector(sel);
 
@@ -235,6 +236,19 @@ function focusComposerField(type = composerType) {
   field?.focus();
 }
 
+// activeTab gives the popup the current tab's URL and title after the toolbar click.
+async function prefillFromCurrentTab(form) {
+  if (form.elements.url.value) return;
+  try {
+    const [tab] = await getBrowser().tabs.query({ active: true, currentWindow: true });
+    if (!tab?.url || !/^https?:/i.test(tab.url)) return;
+    form.elements.url.value = tab.url;
+    if (!form.elements.title.value) form.elements.title.value = tab.title || '';
+  } catch {
+    // No tab access (e.g. browser pages): leave the form empty.
+  }
+}
+
 function openComposer(type = 'bookmark') {
   hideCollectionComposer();
   editingBookmarkId = null;
@@ -245,6 +259,7 @@ function openComposer(type = 'bookmark') {
   fillCollectionSelect();
   addForm.scrollIntoView({ block: 'nearest' });
   focusComposerField(type);
+  if (type === 'bookmark') prefillFromCurrentTab(addForm);
 }
 
 function openCollectionComposer() {
@@ -254,6 +269,7 @@ function openCollectionComposer() {
   collectionAddForm.reset();
   collectionAddForm.scrollIntoView({ block: 'nearest' });
   collectionAddForm.elements.title?.focus();
+  prefillFromCurrentTab(collectionAddForm);
 }
 
 function hideComposer() {
@@ -407,6 +423,7 @@ addForm.querySelectorAll('.composer-tab').forEach((tab) => {
     if (editingBookmarkId) return;
     setComposerType(tab.dataset.type);
     focusComposerField(tab.dataset.type);
+    if (tab.dataset.type === 'bookmark') prefillFromCurrentTab(addForm);
   });
 });
 

@@ -9,6 +9,15 @@ What Curate measures and the target for each measure. Instrumentation is built i
 - Internal and smoke-test accounts (`User.isInternal`) are excluded from every metric.
 - **Raw installs never count as success.** Installs only appear as aggregates in the store dashboards.
 
+## Small numbers
+
+Until a cohort reaches about 30 users, report **counts, not percentages** ("3 of 7 beta users searched in week 1", not "43%"). The percentage targets below apply once a cohort is large enough to make them meaningful.
+
+Cohorts are reported separately (`User.cohort`):
+
+- `beta`: the 5–10 developers recruited in week 4 ([Phase 2](phases/Phase_2.md))
+- `launch`: everyone who signs up from launch week onward
+
 ## Funnel order
 
 Signup happens inside the extension, so the funnel is:

@@ -34,4 +34,6 @@ const collectionSchema = new Schema({
   suppressReservedKeysWarning: true 
 });
 
+collectionSchema.index({ owner: 1 });
+
 module.exports = mongoose.model('Collection', collectionSchema);

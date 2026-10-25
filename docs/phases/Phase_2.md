@@ -17,7 +17,8 @@ Be able to see errors, uptime and real usage before building the bigger features
   - **Never send the raw search query**; only its length and the result count.
   - Events: `signed_up`, `app_opened` (at most once per day per user, deduplicated client-side), `bookmark_saved {source, duplicate}`, `search_performed {resultCount, latencyMs, filters}`, `result_opened {rank}`, `bookmark_opened {from}`.
 - `POST /api/v1/bookmarks/:id/open` updates `openCount` and `lastOpenedAt` and emits `bookmark_opened`. The popup calls it when a bookmark is opened.
-- `User.isInternal` excludes your own and smoke-test accounts from metrics.
+- Exclude `User.isInternal` accounts (added in [Phase 0](Phase_0.md)) from every analytics event and metric. The smoke-test account is created internal.
+- `User.cohort`: `'beta'` or `'launch'`, set at signup from an environment variable, so the beta cohort is reported separately.
 - **Data export:** `GET /api/v1/export` as JSON and as Netscape bookmark HTML. Closes half of issue #16.
 - **Account deletion cascade:** `DELETE /auth/me` also removes jobs and stored content (once they exist), deletes the PostHog person and removes the Brevo contact.
 
@@ -62,7 +63,7 @@ Be able to see errors, uptime and real usage before building the bigger features
 ## Data model changes
 
 - `Bookmark.openCount: Number` (default 0), `Bookmark.lastOpenedAt: Date`
-- `User.isInternal: Boolean` (default false)
+- `User.cohort: String` (`'beta'` until launch week, then `'launch'`)
 
 All additive; no migration needed beyond defaults.
 
@@ -79,6 +80,10 @@ All additive; no migration needed beyond defaults.
 - No personal data in PostHog or Sentry (scrub request bodies in Sentry).
 - Export is authenticated and rate-limited.
 - The Brevo API key exists only in the production environment.
+
+### Beta cohort
+
+Recruit 5–10 developers (classmates, friends, developer communities you're already in) in week 4, once Release A is live. Ask each to use Curate for real for two weeks, and ask for one short piece of feedback at the end. Phases 3 and 4 depend on their saves for tuning extraction and ranking. About 4–5 hours, paid for by the simplifications in Phases 3 and 4.
 
 ## Release checkpoint: Release A v1.1.0 (week 4)
 
@@ -98,6 +103,7 @@ The whole funnel starts reporting (see [metrics.md](../metrics.md)). Search metr
 - The funnel is visible in PostHog.
 - A test email passes SPF, DKIM and DMARC (mail-tester.com score of 9/10 or better).
 - Release A is live in both stores.
+- At least 5 beta users have signed up.
 
 ## Not in this phase
 

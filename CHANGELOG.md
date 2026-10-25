@@ -10,13 +10,31 @@ extension (`extension/manifest.json`).
 
 ### Added
 
+- The add-bookmark forms fill in the current tab's title and URL (`activeTab` permission, no install warning)
+- Rate limits on sign-in, registration and password-reset requests
+- `/api/v1/health` now checks the database and returns 503 when it is unreachable
+- Database indexes for listing bookmarks and collections
+
+### Changed
+
+- Changing or resetting your password signs out other devices. The device you changed it on stays signed in.
+- Session cookies are `secure` and `SameSite=Lax` in production; the server refuses to start in production without its secrets
+
+### Removed
+
+- The old website library (`/bookmark`, `/collections`, `/login`, `/signup`, `/user/*`). It was unlinked; the library lives in the extension. Password reset pages stay.
+
+## [1.0.2] - 2026-09-29
+
+### Added
+
 - Open-source contributor docs and GitHub community files (issues, PRs, CI, code of conduct)
 
 ### Changed
 
 - Clearer collections empty state in the popup, with focus on the name field when creating a collection
-
-### Fixed
+- Production API moved to a new Vercel deployment
+- Removed a deprecated `scripts` entry from `manifest.json`
 
 ## [1.0.1] - 2026-08-24
 

@@ -10,7 +10,7 @@ module.exports.apiAuth = async function apiAuth(req, res, next) {
   try {
     const payload = verifyToken(header.slice(7));
     const user = await User.findById(payload.sub);
-    if (!user) {
+    if (!user || (payload.tv || 0) !== (user.tokenVersion || 0)) {
       return res.status(401).json({ error: 'Your session expired. Please sign in again.' });
     }
     req.user = user;

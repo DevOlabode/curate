@@ -15,22 +15,25 @@ Record the baseline with a read-only aggregate on production:
 - users who saved in at least two distinct weeks since the August 2026 launch
 - bookmarks per user
 
-These are the honest "before" numbers for [metrics.md](../metrics.md).
+These are the honest "before" numbers for [metrics.md](../metrics.md). They are kept in the private plan notes, not in this repository.
+
+**Interview the active user this week.** Ask for 15 minutes: why they saved in a burst, why they stopped, and whether they ever went back to find a saved link. Write the answers in the private plan notes before starting [Phase 3](Phase_3.md).
 
 ## What gets built
 
 ### Backend / API
 
-- **Rate limiting backed by MongoDB** (`express-rate-limit` with a Mongo store; in-memory counters don't work across serverless instances):
-  - `POST /auth/login` and web login: 10 per 15 minutes per IP and username
+- **Rate limiting backed by MongoDB** (`utils/rateLimit.js`: a small fixed-window counter in a Mongo collection with a TTL index; in-memory counters don't work across serverless instances, and this needs no new dependency):
+  - `POST /auth/login`: 10 per 15 minutes per IP and per username
   - `POST /auth/register`: 5 per hour per IP
-  - `POST /auth/forgot-password`: 3 per hour per email, 10 per hour per IP
+  - `POST /auth/forgot-password` and the web form: 3 per hour per email, 10 per hour per IP
 - **Token revocation:** add `User.tokenVersion`, include it as a `tv` claim in the JWT, and bump it on password change and password reset. `apiAuth` rejects tokens whose `tv` doesn't match.
 - **Refuse to boot in production** if `SESSION_SECRET` or `JWT_SECRET` is missing. Remove the `'defaultsecret'` fallback.
 - Session cookie: `secure` and `sameSite: 'lax'` in production, with `app.set('trust proxy', 1)`.
 - **Indexes:** `bookmarks {user: 1, createdAt: -1}`, `collections {owner: 1}`.
 - `/api/v1/health` pings MongoDB with a 2-second timeout and returns 503 when it fails.
-- `config/dbConfig.js`: throw instead of `process.exit(1)` so a serverless instance reports the error.
+- ~~`config/dbConfig.js`: throw instead of `process.exit(1)`~~ **Kept as is:** exiting forces Vercel to start a fresh instance that retries the connection, which is better than a warm instance stuck without a database.
+- `User.isInternal` (default false). Set it on the maintainer account and every test account in production, so none of them count in metrics. Delete test accounts that are no longer needed.
 
 ### Web app
 
@@ -41,7 +44,7 @@ These are the honest "before" numbers for [metrics.md](../metrics.md).
 ### Extension
 
 - Add the `activeTab` permission (no install warning).
-- When the popup opens, prefill the title and URL from the current tab.
+- When the add-bookmark form opens (from the library or inside a collection), prefill the title and URL from the current tab. The one-click save button comes in [Phase 5](Phase_5.md).
 
 ### Infrastructure / DevOps
 
@@ -52,6 +55,7 @@ These are the honest "before" numbers for [metrics.md](../metrics.md).
 ## Data model changes
 
 - `User.tokenVersion: Number`, default 0. No migration needed (missing means 0).
+- `User.isInternal: Boolean`, default false. Set by hand on the maintainer and test accounts.
 - New indexes on `bookmarks` and `collections`. These are created by hand now and moved into migrations once [Phase 1](Phase_1.md) adds the migration tool.
 
 ## Tests required
@@ -77,7 +81,8 @@ Baseline recorded (see above). Nothing new is measured yet.
 ## Definition of done
 
 - Issues 1–5 and 9–11 in the [current-state table](README.md#security-issues-and-bugs-to-fix-first) are fixed or have a merged PR.
-- Baseline numbers recorded.
+- Baseline numbers recorded and the active-user interview done.
+- The maintainer and test accounts are flagged internal or deleted.
 - The popup prefills the current tab.
 
 ## Not in this phase

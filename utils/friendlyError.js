@@ -98,9 +98,9 @@ function friendlyKnownMessage(message) {
 }
 
 function redirectForError(req) {
-  if (req.path.startsWith('/collections')) return '/collections';
-  if (req.path.startsWith('/bookmark')) return '/bookmark';
-  if (req.path.startsWith('/user')) return '/user/info';
+  if (req.path.startsWith('/reset-password') || req.path.startsWith('/forgot-password')) {
+    return '/forgot-password';
+  }
   return '/';
 }
 

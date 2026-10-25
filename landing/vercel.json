@@ -1,3 +1,6 @@
 {
-  "cleanUrls": true
+  "cleanUrls": true,
+  "redirects": [
+    { "source": "/privacy", "destination": "https://curate-eight-omega.vercel.app/privacy", "permanent": true }
+  ]
 }

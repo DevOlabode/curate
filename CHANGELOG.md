@@ -20,6 +20,10 @@ extension (`extension/manifest.json`).
 - Changing or resetting your password signs out other devices. The device you changed it on stays signed in.
 - Session cookies are `secure` and `SameSite=Lax` in production; the server refuses to start in production without its secrets
 
+### Fixed
+
+- One privacy policy instead of three copies, now covering the short-lived rate-limit counters
+
 ### Removed
 
 - The old website library (`/bookmark`, `/collections`, `/login`, `/signup`, `/user/*`). It was unlinked; the library lives in the extension. Password reset pages stay.

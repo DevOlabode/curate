@@ -93,7 +93,7 @@ you touch the popup, options page, or landing site:
 - Reload the unpacked extension.
 - Sign in against your local API.
 - Confirm the popup (and options page, if you touched it) still work.
-- If you changed the landing site, check `landing/index.html` and `landing/privacy.html`.
+- If you changed the landing site, check `landing/index.html`. The privacy policy lives only in `views/privacy.ejs`.
 
 If you add or change API behavior, add or update a test under `tests/api/` or
 `tests/unit/` rather than relying on manual checks alone.

@@ -39,7 +39,7 @@ These are the honest "before" numbers for [metrics.md](../metrics.md). They are 
 
 - **Delete the unlinked EJS library:** `/bookmark`, `/collections`, `/collections/:id/bookmarks`, `/login`, `/signup`, `/logout`, `/user/*`, with their controllers and views. This removes the CSRF exposure, the duplicated controllers and the bugs in `controllers/user.js`.
 - **Keep** `/`, `/privacy`, `/forgot-password` and `/reset-password/:token` (reset emails link to these).
-- Keep one privacy policy (`landing/privacy.html`). `PRIVACY.md` and `/privacy` link or redirect to it.
+- Keep one privacy policy: `views/privacy.ejs`, served at https://curate-eight-omega.vercel.app/privacy. `PRIVACY.md` links to it and `landing/` redirects `/privacy` to it.
 
 ### Extension
 

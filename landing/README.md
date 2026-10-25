@@ -24,4 +24,4 @@ Or from this folder:
 npx vercel
 ```
 
-Do not set a start command like `node index.js`. This folder is HTML, CSS, JS, the logo, and the privacy page.
+Do not set a start command like `node index.js`. This folder is HTML, CSS, JS and the logo. `/privacy` redirects to the single privacy policy at https://curate-eight-omega.vercel.app/privacy (rendered from `views/privacy.ejs`).

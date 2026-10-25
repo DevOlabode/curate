@@ -30,7 +30,7 @@ module.exports.register = async (req, res) => {
   } catch (err) {
     throw new ExpressError(registrationErrorMessage(err), 400);
   }
-  const token = signToken(registeredUser._id);
+  const token = signToken(registeredUser);
 
   res.status(201).json({ token, user: publicUser(registeredUser) });
 };
@@ -58,7 +58,7 @@ module.exports.login = async (req, res) => {
     throw new ExpressError('That username or password doesn’t match.', 401);
   }
 
-  const token = signToken(user._id);
+  const token = signToken(user);
   res.json({ token, user: publicUser(user) });
 };
 
@@ -117,8 +117,10 @@ module.exports.changePassword = async (req, res) => {
   }
 
   await req.user.setPassword(newPassword);
+  req.user.tokenVersion = (req.user.tokenVersion || 0) + 1;
   await req.user.save();
-  res.json({ ok: true, message: 'Your password is updated.' });
+  // Older tokens (other devices) stop working; this client keeps going with a fresh one.
+  res.json({ ok: true, message: 'Your password is updated.', token: signToken(req.user) });
 };
 
 module.exports.deleteMe = async (req, res) => {
@@ -192,6 +194,7 @@ module.exports.resetPassword = async (req, res) => {
   await user.setPassword(password);
   user.resetPasswordToken = undefined;
   user.resetPasswordExpires = undefined;
+  user.tokenVersion = (user.tokenVersion || 0) + 1;
   await user.save();
 
   res.json({ ok: true, message: 'Your password is updated. You can sign in now.' });

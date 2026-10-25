@@ -1,25 +1,8 @@
 const { bookmarkSchema, collectionSchema} = require('../joiSchema.js');
-const passport = require('passport');
 const ExpressError = require('./expressError.js')
 const { friendlyJoiMessage } = require('./friendlyError.js')
 const { normalizeUrl } = require('./normalizeUrl.js')
 
-
-module.exports.isLoggedIn = function(req, res, next){
-    if(!req.isAuthenticated()){
-        req.session.returnTo = req.originalUrl
-        req.flash('warning', 'Please sign in first.');
-        return res.redirect('/login');
-    }
-    next();
-};
-
-module.exports.storeReturnTo = (req, res, next) => {
-    if (req.session.returnTo) {
-        res.locals.returnTo = req.session.returnTo;
-    }
-    next();
-};
 
 module.exports.validateBookmark = (req, res, next)=>{
     const body = { ...req.body };
@@ -44,16 +27,3 @@ module.exports.validateCollection = (req, res, next)=>{
         next()
     }
 };
-
-
-module.exports.loginAuthenticate = passport.authenticate('local', {
-    failureFlash : { type: 'error', message: 'That username or password doesn’t match.' },
-    failureRedirect : '/login'
-});
-
-module.exports.redirectIfLoggedIn = (req, res, next)=>{
-    if (req.isAuthenticated()) {
-        return res.redirect('/');
-    }
-    next();
-}

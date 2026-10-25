@@ -2,7 +2,7 @@
 
 ## Overview
 
-The web app uses **Passport Local + session cookies**. The browser extension uses **Bearer JWT** against `/api/v1` because MV3 popups run on `chrome-extension://` and cannot reliably share the web session cookie.
+There is no website sign-in. The browser extension uses **Bearer JWT** against `/api/v1` because MV3 popups run on `chrome-extension://` and cannot reliably share the web session cookie.
 
 ## Flow
 
@@ -55,6 +55,6 @@ sequenceDiagram
 
 - Tokens are inspectable if a device is compromised - use HTTPS only in production.
 - No refresh-token rotation in v1; tokens expire per `JWT_EXPIRES_IN` (default 7d).
-- Changing or resetting a password does not yet invalidate existing tokens. A `tokenVersion` claim that is bumped on password change and reset is planned in [phases/Phase_0.md](phases/Phase_0.md).
-- Auth endpoints are not yet rate-limited; limits are planned in the same phase.
+- Changing or resetting a password bumps `User.tokenVersion`, so every older token is rejected. `PUT /auth/password` returns a new token, which the extension stores so the current device stays signed in.
+- Sign-in, registration and password-reset requests are rate-limited (see [architecture.md](architecture.md#rate-limits)).
 - Password never stored in extension storage.

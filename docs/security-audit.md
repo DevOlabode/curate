@@ -33,7 +33,7 @@ Users who set a custom API base URL in options must also add that origin to `hos
 
 ### Low - JWT in local storage
 
-Acceptable for v1. **Correction (Oct 2026):** tokens are revocable only by expiry. Changing or resetting a password does **not** invalidate existing tokens, because the JWT carries no password or token version. A `tokenVersion` claim is planned in [Phase 0](phases/Phase_0.md).
+Acceptable for v1. **Correction (Oct 2026):** tokens are revocable only by expiry. Changing or resetting a password does **not** invalidate existing tokens, because the JWT carries no password or token version. Fixed in [Phase 0](phases/Phase_0.md) with a `tokenVersion` claim.
 
 ### Informational - No refresh tokens
 

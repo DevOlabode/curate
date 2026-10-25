@@ -10,7 +10,7 @@ A stranger's bookmarks never appear on the website. The toolbar popup is the pro
 
 ## Why the API is JWT, not cookies
 
-The popup runs on a `chrome-extension://` origin. It cannot reliably share the web app's session cookie. The extension therefore authenticates with a Bearer JWT stored in `chrome.storage.local`. The server still uses Passport Local + sessions for `/forgot-password` pages.
+The popup runs on a `chrome-extension://` origin. It cannot reliably share the web app's session cookie. The extension therefore authenticates with a Bearer JWT stored in `chrome.storage.local`. The server keeps a short-lived session only to show flash messages on the `/forgot-password` and `/reset-password` pages; nobody signs in on the website.
 
 Details: [authentication.md](authentication.md).
 
@@ -55,7 +55,7 @@ There are **no content scripts**. The extension does not inject into web pages a
 | Client | Mechanism |
 |--------|-----------|
 | Extension | `POST /api/v1/auth/login` → JWT in `chrome.storage.local` |
-| Password-reset pages | Session cookie (Passport) |
+| Password-reset pages | Reset token in the emailed link (session only for flash messages) |
 | Landing site | None (theme preference only) |
 
 On `401`, the popup clears the token and shows sign-in.
@@ -67,14 +67,23 @@ On `401`, the popup clears the token and shows sign-in.
 | Extension | Vanilla JS, HTML, CSS, Manifest V3 |
 | API | Node.js 18+, Express 5, Joi, jsonwebtoken |
 | Data | MongoDB, Mongoose |
-| Web auth (reset pages) | Passport Local, express-session |
+| Password hashing | passport-local-mongoose (PBKDF2) |
+| Reset pages | EJS, express-session, connect-flash |
 | Landing | Static HTML/CSS |
 
 Chrome and Edge both expose the `chrome.*` MV3 APIs. `src/shared/browser.js` is the compatibility shim.
 
-## Known leftovers
+## Website routes
 
-`app.js` still mounts the old EJS library routes (`/bookmark`, `/collections`, `/login`, `/signup`, `/user/*`) from before the extension conversion. Nothing links to them and the landing page says there is no web signup, but they are reachable. They are scheduled for removal in [phases/Phase_0.md](phases/Phase_0.md). Only `/`, `/privacy` and the password reset pages will remain.
+The website serves only `/`, `/privacy`, `/forgot-password` and `/reset-password/:token`. The old EJS library (`/bookmark`, `/collections`, `/login`, `/signup`, `/user/*`) from before the extension conversion was removed in [Phase 0](phases/Phase_0.md).
+
+## Rate limits
+
+`utils/rateLimit.js` keeps fixed-window counters in a MongoDB collection (`ratelimithits`, cleaned up by a TTL index), because serverless instances don't share memory. Limits: sign-in 10 per 15 minutes per IP and per username; registration 5 per hour per IP; password-reset requests 10 per hour per IP and 3 per hour per email.
+
+## Token revocation
+
+Each user has a `tokenVersion`. JWTs carry it as `tv`, and `middleware/apiAuth.js` rejects tokens whose version doesn't match. Changing or resetting a password bumps the version, which signs out every other device; `PUT /auth/password` returns a fresh token so the current device stays signed in.
 
 ## Planned changes
 

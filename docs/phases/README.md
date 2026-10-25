@@ -77,19 +77,30 @@ Related documents:
 
 **Before changing anything:** run a read-only aggregate on production and record the baseline: total users, users with at least one bookmark, users who saved in at least two distinct weeks since the August launch, and bookmarks per user.
 
+## Baseline and what it changes
+
+The baseline was recorded on Oct 15, 2026 (numbers are kept outside this repository). The existing user base is very small: a handful of real accounts, one of which saved bookmarks over three days and then stopped. Effectively, every user measured after launch comes from this plan. That changes the plan in six ways:
+
+1. **Talk to the active user in week 1.** A 15-minute conversation: why they saved in a burst, why they stopped, and whether they ever went back to find a saved link. It tests whether search is the real need before about 44 hours go into Phases 3 and 4. Notes go in the private plan notes.
+2. **Recruit a beta cohort of 5–10 developers in week 4**, alongside Release A. Phases 3 and 4 need real saves to tune extraction and ranking, and real people in the funnel. Beta users count in the metrics but are tracked as a separate cohort from launch signups (`User.cohort`, see [Phase 2](Phase_2.md)).
+3. **Report counts, not percentages,** until a cohort reaches about 30 users. See [metrics.md](../metrics.md#small-numbers).
+4. **Smaller migrations and backfill.** The duplicate merge and the content backfill cover a few dozen bookmarks. The scripts must still be correct and idempotent, but they don't need throttling or batch scheduling ([Phase 3](Phase_3.md), [Phase 4](Phase_4.md)).
+5. **Email 1 becomes a personal email** to the existing active user. The full email setup (domain records, consent checkbox, Brevo list) stays, because launch signups need it. Together with point 4, this frees about 4–5 hours, which go to the beta cohort.
+6. **Flag the maintainer and test accounts as internal** so they never count in any metric. This moves `User.isInternal` into [Phase 0](Phase_0.md).
+
 ## Timeline
 
 | Wk | Dates | Work | Ships / sends |
 |---|---|---|---|
-| 1 | Oct 12–18 | Phase 0 fixes, baseline numbers, save current tab | — |
+| 1 | Oct 12–18 | Phase 0 fixes, baseline numbers, save current tab; **interview the active user** | — |
 | 2 | Oct 19–25 | Phase 1: staging Atlas project, Vercel staging branch, boot and email guards, staging extension build | **Staging live** |
 | 3 | Oct 26–Nov 1 | Phase 1: migrations, seed data, R2 backups, smoke script; ADR-003. Phase 2: Sentry, health check, uptime | — |
-| 4 | Nov 2–8 | Phase 2: PostHog, open tracking, domain DNS, Brevo streams, export, privacy policy v2 | **Release A v1.1.0**: staging Wed → prod Fri → **both stores Fri**; changelog only |
+| 4 | Nov 2–8 | Phase 2: PostHog, open tracking, domain DNS, Brevo streams, export, privacy policy v2; **recruit the beta cohort** | **Release A v1.1.0**: staging Wed → prod Fri → **both stores Fri**; changelog only |
 | 5 | Nov 9–15 | Phase 3: model and `urlKey` migration, duplicate report, jobs, SSRF-safe fetcher, extraction | staging only |
 | 6 | Nov 16–22 | Phase 3: retries, `waitUntil` path, sweeper workflows, staging soak with bad URLs; ADR-001 | staging only |
 | 7 | Nov 23–29 | **Pipeline dark launch to production (Mon)**, throttled production backfill. Phase 4: search index, `/search`, ranking | API-only production release, no store submission |
 | 8 | Nov 30–Dec 6 | Phase 4: popup search, fallback, golden set, latency measurement; ADR-002 | Release B to staging Fri |
-| 9 | Dec 7–13 | Staging soak Mon–Tue; production Wed; privacy and store disclosures; store submissions Wed | **Release B v1.2.0**; **Email 1** once both stores are live (~Dec 11–14) |
+| 9 | Dec 7–13 | Staging soak Mon–Tue; production Wed; privacy and store disclosures; store submissions Wed | **Release B v1.2.0**; **Email 1** (personal email to the existing active user) once both stores are live (~Dec 11–14) |
 | 10 | Dec 14–20 | Monitoring and regressions (exam buffer); Phase 5: context menu, shortcuts | — |
 | 11 | Dec 21–27 | Light week (~4h): quick tags, badge feedback, pending-save retry | — |
 | 12 | Dec 28–Jan 3 | Phase 5 finish; launch assets (screenshots, listing, README, GIF, article draft) | **Release C v1.3.0** staging → prod → stores ~Dec 30 |

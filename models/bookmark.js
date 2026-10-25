@@ -37,6 +37,8 @@ const bookmarkSchema = new Schema({
     suppressReservedKeysWarning: true
 });
 
+bookmarkSchema.index({ user: 1, createdAt: -1 });
+
 bookmarkSchema.virtual('href').get(function() {
     return normalizeUrl(this.url);
 });

@@ -99,7 +99,7 @@ M0 allows 512 MB. At about 20 KB per bookmark that's roughly 20,000 bookmarks. T
 - `Bookmark.content`: `{status, title, description, author, siteName, publishedAt, lang, readingMinutes, wordCount, text, canonicalUrl, fetchedAt, error: {code, message}}`
 - `jobs` collection: `{type, bookmarkId, urlKey, status, attempts, maxAttempts, runAt, lockedUntil, lastError, createdAt}`, index `{status: 1, runAt: 1}`, 14-day TTL index on completed jobs.
 
-**Migration order:**
+**Migration order** (the current library is a few dozen bookmarks, so these are simple, idempotent scripts with no throttling or batching):
 
 1. Backfill `urlKey` on all bookmarks.
 2. **Report duplicates read-only** on staging, then production.
@@ -126,7 +126,7 @@ SSRF is the main risk; see "Fetching" above. Also: stored page text is user data
 **Dark launch, Mon Nov 23 (week 7):** deploy the pipeline to production with **no UI changes**. API only, no store submission. New saves start extracting, which gives real failure rates before search exists.
 
 - Run the migrations on staging, verify, then production with approval.
-- Start a throttled production backfill (see [Phase 4](Phase_4.md)).
+- Run the production backfill (see [Phase 4](Phase_4.md)).
 - CHANGELOG entry under the API. No email.
 
 ## Metrics introduced

@@ -62,7 +62,11 @@ export async function updateProfile(payload) {
 }
 
 export async function changePassword(payload) {
-  return api.changePassword(payload);
+  const result = await api.changePassword(payload);
+  if (result.token) {
+    await setAuth(result.token, await getUser());
+  }
+  return result;
 }
 
 export async function deleteAccount() {

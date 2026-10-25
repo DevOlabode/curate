@@ -9,9 +9,13 @@ function assertSecret() {
   }
 }
 
-function signToken(userId) {
+function signToken(user) {
   assertSecret();
-  return jwt.sign({ sub: userId.toString() }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+  return jwt.sign(
+    { sub: user._id.toString(), tv: user.tokenVersion || 0 },
+    JWT_SECRET,
+    { expiresIn: JWT_EXPIRES_IN }
+  );
 }
 
 function verifyToken(token) {

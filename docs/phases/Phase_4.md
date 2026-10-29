@@ -1,10 +1,10 @@
 # Phase 4: Full-text search
 
-**Weeks:** 7–9 (Nov 23–Dec 13, 2026) · **Estimate:** 20 hours + 8 hours for Release B · **Ships:** Release B v1.2.0, Email 1
+**Weeks:** 7–9 (Nov 23–Dec 13, 2026) · **Estimate:** 21 hours + 8 hours for Release B · **Ships:** Release B v1.2.0, Email 1
 
 ## Objective
 
-Search across the extracted text of saved pages, not just titles and tags, with ranking, filters and defined latency targets. Backfill everything saved before the pipeline existed.
+Search across the extracted text of saved pages, not just titles and tags, with ranking, filters and defined latency targets. Collections are searched too, so a user with many bookmarks and collections finds either from one box. Backfill everything saved before the pipeline existed.
 
 ## Search engine choice: MongoDB Atlas Search
 
@@ -56,6 +56,8 @@ The definition lives in the repo at `search/bookmarks.index.json` and is applied
 ### Extension (popup)
 
 - Search box focused on open; `/` focuses it; 150 ms debounce.
+- **Results appear as the user types; Enter is never needed to search.** Requests start at 2 characters; a newer keystroke aborts the in-flight request (`AbortController`) so stale results never overwrite newer ones. Clearing the box restores the normal list.
+- **Collections in results:** matching collections show as a group above bookmark results (name, description, bookmark count). Selecting one opens that collection. They are filtered in the browser from the collection list the popup already loads (case-insensitive substring on `name` and `description`): a user has tens of collections, not thousands, so no index or endpoint is needed.
 - Results show the highlighted snippet, site and date. Arrow keys move, Enter opens.
 - On a 503 or when the flag is off: filter the already-loaded list by title and tags in the browser.
 
@@ -90,6 +92,7 @@ Track cold starts separately from warm requests.
 - **Cross-tenant test:** user B never gets user A's documents.
 - **Golden relevance set:** 30 real queries against the seeded corpus with expected top-3 results. Fails if relevance regresses.
 - Flag off returns the fallback response.
+- Collection filter unit test: matches on name and description, case-insensitive, and only the user's own collections are in the list.
 
 ## Security considerations
 

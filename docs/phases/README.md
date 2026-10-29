@@ -16,7 +16,7 @@ The plan is **not** to turn Curate into a big SaaS. It aims to make Curate:
 
 ## Budget
 
-13 weeks at about 11 hours a week gives about 143 hours. The planned work adds up to about 127 hours, which leaves roughly 16 hours (11%) of buffer, plus one light week over the holidays.
+13 weeks at about 11 hours a week gives about 143 hours. The planned work adds up to about 128 hours, which leaves roughly 15 hours (10%) of buffer, plus one light week over the holidays.
 
 **Cut line:** if the work is behind at the end of week 8, shrink [Phase 5](Phase_5.md) to the keyboard shortcut and context menu only (about 6 hours).
 
@@ -28,7 +28,7 @@ The plan is **not** to turn Curate into a big SaaS. It aims to make Curate:
 | 1. Staging and release pipeline | [Phase_1.md](Phase_1.md) | 2–3 | 15 | Staging environment |
 | 2. Measurement and email | [Phase_2.md](Phase_2.md) | 3–4 | 11 (+5 release) | **Release A v1.1.0** |
 | 3. Content pipeline | [Phase_3.md](Phase_3.md) | 5–7 | 24 | Dark launch, API only |
-| 4. Full-text search | [Phase_4.md](Phase_4.md) | 7–9 | 20 (+8 release) | **Release B v1.2.0**, Email 1 |
+| 4. Full-text search | [Phase_4.md](Phase_4.md) | 7–9 | 21 (+8 release) | **Release B v1.2.0**, Email 1 |
 | 5. Capture polish | [Phase_5.md](Phase_5.md) | 10–12 | 12 | **Release C v1.3.0** |
 | 6. Launch push | [Phase_6.md](Phase_6.md) | 12–13 | 12 | Launch, Email 2 |
 | Design docs | [../adr/README.md](../adr/README.md) | spread | 6 | ADR-001 to ADR-004 |
